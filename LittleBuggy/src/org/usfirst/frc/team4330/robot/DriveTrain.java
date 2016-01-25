@@ -1,13 +1,13 @@
 package org.usfirst.frc.team4330.robot;
 
-import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.Talon;
 
 public class DriveTrain {
-//	private Joystick stick1, stick2;
 	private SpeedController rFW, lFW, rBW, lBW;
-	private SpeedController mRW, mLW;
+	private SpeedController miniMotor;
 	private boolean reverse;
-	private RobotDrive myRobot;
 	
 	public DriveTrain() {
 		reverse = false;
@@ -17,20 +17,22 @@ public class DriveTrain {
 		lFW = new Talon(Map.LEFT_FRONT_WHEEL);
 		lBW = new Talon(Map.LEFT_BACK_WHEEL);
 		
-		mRW = new Talon(Map.MINI_RIGHT_WHEEL);
-		mLW = new Talon(Map.MINI_LEFT_WHEEL);
+		miniMotor = new Talon(Map.MINI_MOTOR_PORT);
+		
+//		mRW = new Talon(Map.MINI_RIGHT_WHEEL);
+//		mLW = new Talon(Map.MINI_LEFT_WHEEL);
 	}
 	
 	public void drive(Joystick left, Joystick right) {
 		if (reverse) {
 			rFW.set(-right.getY());
-			rBW.set(-right.getY());
+			rBW.set(right.getY());
 			lFW.set(left.getY());
 			lBW.set(left.getY());	
 		}
 		
 		rFW.set(right.getY());
-		rBW.set(right.getY());
+		rBW.set(-right.getY());
 		lFW.set(-left.getY());
 		lBW.set(-left.getY());
 	}
@@ -39,10 +41,20 @@ public class DriveTrain {
 		reverse = !reverse;
 	}
 	
+	/*
 	public void miniWheels(Joystick mini) {
 		while (mini.getTrigger()) {
 			mRW.set(-Map.MINI_WHEEL_SPEED);
 			mLW.set(Map.MINI_WHEEL_SPEED);
 		}
+	}
+	*/
+	
+	public void frontMinis() {
+		if (reverse) {
+			miniMotor.set(-Map.MINI_WHEEL_SPEED);
+		}
+		
+		miniMotor.set(Map.MINI_WHEEL_SPEED);
 	}
 }

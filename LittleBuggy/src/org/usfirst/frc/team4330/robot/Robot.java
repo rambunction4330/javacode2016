@@ -2,21 +2,31 @@
 package org.usfirst.frc.team4330.robot;
 
 
-import edu.wpi.first.wpilibj.*;
+// ctrl + shift + o to automatically get imports
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotDrive;
+
 
 /**
- * 2016 final.
+ * 2016 final code!!
+ * 
+ * Author: Mandie
+ * 
  */
 public class Robot extends IterativeRobot {
     RobotDrive myRobot;
-    DriveTrain driveTrain;
-    Joystick stick1, stick2, stick3;
+    DriveTrain dT;
+    Joystick left, right, shooter;
 
+    /*
+     * 
+     */
     public Robot() {
-    	driveTrain = new DriveTrain();
-    	stick1 = new Joystick(Map.JOYSTICK_ONE);
-    	stick2 = new Joystick(Map.JOYSTICK_TWO);
-    	stick3 = new Joystick(Map.JOYSTICK_THREE);
+    	dT = new DriveTrain();
+    	left = new Joystick(Map.JOYSTICK_ONE_LEFT);
+    	right = new Joystick(Map.JOYSTICK_TWO_RIGHT);
+    	shooter = new Joystick(Map.JOYSTICK_THREE);
     }
 
     public void autonomousInit() {
@@ -26,13 +36,17 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopPeriodic() {
-        myRobot.setSafetyEnabled(true);
-        	if (stick3.getRawButton(4)) {
-        		driveTrain.driveReversed();
-            }
+//        myRobot.setSafetyEnabled(true);
+        if (shooter.getRawButton(11)) {
+       		dT.driveReversed();
+        }
         	
-            driveTrain.drive(stick1, stick2);
-            
+        dT.drive(left, right);
+        
+        while (shooter.getTrigger()) {
+        	dT.frontMinis();
+        	dT.drive(left, right);
+        }
     }
 
     public void testPeriodic() {
