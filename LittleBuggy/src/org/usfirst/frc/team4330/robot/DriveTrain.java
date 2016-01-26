@@ -12,12 +12,12 @@ public class DriveTrain {
 	public DriveTrain() {
 		reverse = false;
 		
-		rFW = new Talon(Map.RIGHT_FRONT_WHEEL);
-		rBW = new Talon(Map.RIGHT_BACK_WHEEL);
-		lFW = new Talon(Map.LEFT_FRONT_WHEEL);
-		lBW = new Talon(Map.LEFT_BACK_WHEEL);
+		rFW = new Talon(RobotMap.RIGHT_FRONT_WHEEL);
+		rBW = new Talon(RobotMap.RIGHT_BACK_WHEEL);
+		lFW = new Talon(RobotMap.LEFT_FRONT_WHEEL);
+		lBW = new Talon(RobotMap.LEFT_BACK_WHEEL);
 		
-		miniMotor = new Talon(Map.MINI_MOTOR_PORT);
+		miniMotor = new Talon(RobotMap.MINI_MOTOR_PORT);
 		
 //		mRW = new Talon(Map.MINI_RIGHT_WHEEL);
 //		mLW = new Talon(Map.MINI_LEFT_WHEEL);
@@ -52,9 +52,9 @@ public class DriveTrain {
 	
 	public void frontMinis() {
 		if (reverse) {
-			miniMotor.set(-Map.MINI_WHEEL_SPEED);
+			miniMotor.set(-RobotMap.MINI_WHEEL_SPEED);
 		}
 		
-		miniMotor.set(Map.MINI_WHEEL_SPEED);
+		miniMotor.set(RobotMap.MINI_WHEEL_SPEED);
 	}
 }

@@ -1,6 +1,6 @@
 package org.usfirst.frc.team4330.robot;
 
-public class Map {
+public class RobotMap {
 	
 	// TODO get the actual port numbers
 	// TODO build the robot
