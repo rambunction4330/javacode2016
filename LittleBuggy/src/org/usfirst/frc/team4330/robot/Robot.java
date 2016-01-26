@@ -30,6 +30,7 @@ public class Robot extends IterativeRobot {
     }
 
     public void autonomousInit() {
+    	dT.drive(left, right);
     }
     
     public void autonomousPeriodic() {
