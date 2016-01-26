@@ -23,7 +23,7 @@ public class Robot extends IterativeRobot {
      * 
      */
     public Robot() {
-    	dT = new DriveTrain();
+//    	dT = new DriveTrain();
     	left = new Joystick(Map.JOYSTICK_ONE_LEFT);
     	right = new Joystick(Map.JOYSTICK_TWO_RIGHT);
     	shooter = new Joystick(Map.JOYSTICK_THREE);
