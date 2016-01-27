@@ -185,14 +185,14 @@ public class LeddarDistanceSensor extends CanDevice {
 		// 4 MSB of byte 3 is the segment number
 		
 		// always read the first 4 bytes
-		short firstDistance = ByteHelper.readShort(sectorRawData, 0, true);
+		int firstDistance = ByteHelper.readShort(sectorRawData, 0, true);
 		short firstSegmentNumber = ByteHelper.getMSBValue(sectorRawData[3], 4);
 		short firstAmplitude = (short) ((sectorRawData[2] << 8) | ByteHelper.getLSBValue(sectorRawData[3], 4));
 		receivedDistances.add(new LeddarDistanceSensorData(firstSegmentNumber, firstDistance, firstAmplitude));
 			
 		// conditionally read the second 4 bytes
 		if ( receivedDistances.size() < receivedSizeExpected ) {
-			short secondDistance = ByteHelper.readShort(sectorRawData, 4, true);
+			int secondDistance = ByteHelper.readShort(sectorRawData, 4, true);
 			short secondSegmentNumber = ByteHelper.getMSBValue(sectorRawData[7], 4);
 			short secondAmplitude = (short) ((sectorRawData[6] << 8) | ByteHelper.getLSBValue(sectorRawData[7], 4));
 			receivedDistances.add(new LeddarDistanceSensorData(secondSegmentNumber, secondDistance, secondAmplitude));

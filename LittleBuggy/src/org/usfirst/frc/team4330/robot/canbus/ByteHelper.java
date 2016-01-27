@@ -2,7 +2,7 @@ package org.usfirst.frc.team4330.robot.canbus;
 
 public class ByteHelper {
 	
-	public static short readShort(byte[] data, int offset, boolean littleEndianByteOrder) {
+	public static int readShort(byte[] data, int offset, boolean littleEndianByteOrder) {
 		if(data == null) {
 			throw new RuntimeException("readShort bad parameters(null byte array passed)");
 		}
@@ -13,27 +13,29 @@ public class ByteHelper {
 				" offset=" + offset);
 		}
 		
-		byte lo = 0;
-		byte hi = 0;
+		int lo = 0;
+		int hi = 0;
+		int mask = 0xff;
 		if ( littleEndianByteOrder ) {
-			lo = data[offset];
-			hi = data[offset + 1];
+			lo = data[offset] & mask;
+			hi = data[offset + 1] & mask;
 		} else {
-			hi = data[offset];
-			lo = data[offset + 1];
+			hi = data[offset] & mask;
+			lo = data[offset + 1] & mask;
 		}
-		return (short) ((hi << 8) | (lo));
+		return (hi << 8) | lo;
 	}
 	
 	public static byte getMSBValue(byte data, int numberBits) {
+		if ( numberBits < 0 || numberBits > 8 ) 
+			throw new RuntimeException("numberBits parameter should be between 0 and 8 but was " + numberBits);
 		return (byte) ((data & 0xff) >> (8 - numberBits));
 	}
 	
 	public static byte getLSBValue(byte data, int numberBits) {
-		int mask = 0x00;
-		for ( int i = 0; i < numberBits; i++ ) {
-			mask = (mask << 1) | 0x01;
-		}
+		if ( numberBits < 0 || numberBits > 8 ) 
+			throw new RuntimeException("numberBits parameter should be between 0 and 8 but was " + numberBits);
+		int mask = 0xff >> (8 - numberBits);
 		return (byte) (data & mask);
 	}
 

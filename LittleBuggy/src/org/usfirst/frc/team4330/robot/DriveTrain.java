@@ -23,6 +23,12 @@ public class DriveTrain {
 //		mLW = new Talon(Map.MINI_LEFT_WHEEL);
 	}
 	
+	/**
+	 * Drives the robot forward or backwards.
+	 * 
+	 * @param left the left joystick
+	 * @param right the right joystick
+	 */
 	public void drive(Joystick left, Joystick right) {
 		if (reverse) {
 			rFW.set(-right.getY());
@@ -37,6 +43,9 @@ public class DriveTrain {
 		lBW.set(-left.getY());
 	}
 	
+	/**
+	 * Flips the direction of the robot.
+	 */
 	public void driveReversed() {
 		reverse = !reverse;
 	}
@@ -50,6 +59,9 @@ public class DriveTrain {
 	}
 	*/
 	
+	/**
+	 * who even knows
+	 */
 	public void frontMinis() {
 		if (reverse) {
 			miniMotor.set(-RobotMap.MINI_WHEEL_SPEED);

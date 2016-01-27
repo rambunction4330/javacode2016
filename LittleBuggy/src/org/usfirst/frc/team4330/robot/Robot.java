@@ -37,11 +37,10 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopPeriodic() {
-//        myRobot.setSafetyEnabled(true);
         if (shooter.getRawButton(11)) {
        		dT.driveReversed();
         }
-        	
+        
         dT.drive(left, right);
         
         while (shooter.getTrigger()) {

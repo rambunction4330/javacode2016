@@ -21,6 +21,17 @@ public class ByteHelperTest {
 		Assert.assertEquals(toByte(1), ByteHelper.getLSBValue(toByte(0b10101011), 1));
 		Assert.assertEquals(toByte(3), ByteHelper.getLSBValue(toByte(0b10101011), 2));
 		Assert.assertEquals(toByte(43), ByteHelper.getLSBValue(toByte(0b10101011), 7));
+		Assert.assertEquals(toByte(171), ByteHelper.getLSBValue(toByte(0b10101011), 8));
+		Assert.assertEquals(toByte(0), ByteHelper.getLSBValue(toByte(0xff), 0));
+		try {
+			ByteHelper.getLSBValue(toByte(0b10101011), 10);
+			Assert.fail("Should have complained since asked for 10 bits");
+		} catch (RuntimeException e) {
+			// expected
+			Assert.assertEquals("numberBits parameter should be between 0 and 8 but was 10", e.getMessage());
+		}
+
+
 	}
 	
 	@Test
@@ -31,6 +42,20 @@ public class ByteHelperTest {
 		Assert.assertEquals(toByte(1), ByteHelper.getMSBValue(toByte(0b10101011), 1));
 		Assert.assertEquals(toByte(2), ByteHelper.getMSBValue(toByte(0b10101011), 2));
 		Assert.assertEquals(toByte(85), ByteHelper.getMSBValue(toByte(0b10101011), 7));
+	}
+	
+	/**
+	 * You need to up-cast everything.
+	 * So advanced.
+	 * ie byte => short; short => int
+	 */
+	@Test
+	public void readShort() {
+		byte[] stuff = toByteArray(new int[] {0xae, 0x03, 0xf9});
+		Assert.assertEquals( 44547, ByteHelper.readShort(stuff, 0, false));
+		Assert.assertEquals( 942, ByteHelper.readShort(stuff, 0, true));
+		Assert.assertEquals( 63747, ByteHelper.readShort(stuff, 1, true));
+		Assert.assertEquals( 1017, ByteHelper.readShort(stuff, 1, false));
 	}
 	
 	private byte[] toByteArray(int[] intArray) {
