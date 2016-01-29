@@ -6,11 +6,13 @@ import org.junit.Test;
 public class ByteHelperTest {
 	
 	@Test
-	public void bytesToHex() {
+	public void bytesToHex() {		
+		Assert.assertEquals("00", ByteHelper.bytesToHex(new byte[1]));
 		Assert.assertEquals("null", ByteHelper.bytesToHex(null));
 		Assert.assertEquals("", ByteHelper.bytesToHex(new byte[0]));
 		Assert.assertEquals("fe", ByteHelper.bytesToHex(toByteArray(new int[] {0xfe})));
 		Assert.assertEquals("0abe", ByteHelper.bytesToHex(toByteArray(new int[] {0x0a, 0xbe})));
+		Assert.assertEquals("72", ByteHelper.bytesToHex(toByteArray(new int[] {0x72})));
 		Assert.assertEquals("0123456789abcdef", ByteHelper.bytesToHex(toByteArray(new int[] {0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef})));
 	}
 	
@@ -56,6 +58,8 @@ public class ByteHelperTest {
 		Assert.assertEquals( 942, ByteHelper.readShort(stuff, 0, true));
 		Assert.assertEquals( 63747, ByteHelper.readShort(stuff, 1, true));
 		Assert.assertEquals( 1017, ByteHelper.readShort(stuff, 1, false));
+		Assert.assertEquals( 22340, ByteHelper.readShort(toByteArray(new int[] {0x57, 0x44, 0xef}), 0, false));
+
 	}
 	
 	private byte[] toByteArray(int[] intArray) {

@@ -10,8 +10,8 @@ public class LeddarDistanceSensor extends CanDevice {
 	public static final int LEDDAR_RX_BASE_ID_DEFAULT = 1856;
 	public static final int LEDDAR_TX_BASE_ID_DEFAULT = 1872;
 	
-	private static final byte[] COMMAND_START_SENDING_DETECTIONS = new byte[] {2};
-	private static final byte[] COMMAND_STOP_SENDING_DETECTIONS = new byte[] {3};
+	public static final byte[] COMMAND_START_SENDING_DETECTIONS = new byte[] {2};
+	public static final byte[] COMMAND_STOP_SENDING_DETECTIONS = new byte[] {3};
 	
 	private int receiveBaseMessageId = LEDDAR_RX_BASE_ID_DEFAULT;
 	private int transmitBaseMessageId = LEDDAR_TX_BASE_ID_DEFAULT;
@@ -38,8 +38,8 @@ public class LeddarDistanceSensor extends CanDevice {
 	
 	/**
 	 * 
-	 * @param receiveBaseMessageId
-	 * @param transmitBaseMessageId
+	 * @param receiveBaseMessageId message id the sensor uses to receive commands
+	 * @param transmitBaseMessageId message id the sensor uses to transmit distance info
 	 */
 	public LeddarDistanceSensor(int receiveBaseMessageId, int transmitBaseMessageId) {
 		this.receiveBaseMessageId = receiveBaseMessageId;
@@ -81,7 +81,7 @@ public class LeddarDistanceSensor extends CanDevice {
 		updateThread.start();
 		
 		// tell sensor to start sending messages continuously
-		sendData(transmitBaseMessageId, COMMAND_START_SENDING_DETECTIONS);
+		sendData(receiveBaseMessageId, COMMAND_START_SENDING_DETECTIONS);
 	}
 	
 	public void shutDown() {
@@ -92,7 +92,7 @@ public class LeddarDistanceSensor extends CanDevice {
 		}
 		
 		// tell sensor to stop sending messages
-		sendData(transmitBaseMessageId, COMMAND_STOP_SENDING_DETECTIONS);
+		sendData(receiveBaseMessageId, COMMAND_STOP_SENDING_DETECTIONS);
 		
 		// set to inactive and shut down the update thread
 		active = false;
@@ -159,7 +159,7 @@ public class LeddarDistanceSensor extends CanDevice {
 	}
 	
 	private byte[] pullNextSensorMessage() throws CANMessageNotFoundException {
-		return receiveData(new int[] {receiveBaseMessageId, receiveBaseMessageId + 1});
+		return receiveData(new int[] {transmitBaseMessageId, transmitBaseMessageId + 1});
 	}
 	
 	private void handleSizeMessage(int size) {
