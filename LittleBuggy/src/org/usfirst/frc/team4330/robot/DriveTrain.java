@@ -1,6 +1,8 @@
 package org.usfirst.frc.team4330.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Relay.Direction;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 
@@ -57,11 +59,7 @@ public class DriveTrain {
 			mLW.set(Map.MINI_WHEEL_SPEED);
 		}
 	}
-	*/
 	
-	/**
-	 * who even knows
-	 */
 	public void frontMinis() {
 		if (reverse) {
 			miniMotor.set(-RobotMap.MINI_WHEEL_SPEED);
@@ -69,4 +67,5 @@ public class DriveTrain {
 		
 		miniMotor.set(RobotMap.MINI_WHEEL_SPEED);
 	}
+	*/
 }
