@@ -67,6 +67,7 @@ public abstract class CanDevice {
 		}
 
 		CANJNI.FRCNetworkCommunicationCANSessionMuxSendMessage(messageId, buffer, kSendMessagePeriod);
+		System.out.println("method completed");
 	}
 
 }

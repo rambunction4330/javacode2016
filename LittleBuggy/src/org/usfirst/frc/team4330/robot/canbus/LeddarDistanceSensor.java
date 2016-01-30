@@ -154,6 +154,7 @@ public class LeddarDistanceSensor extends CanDevice {
 				}
 			}
 		} catch (CANMessageNotFoundException e) {
+			System.out.println("got to exception" + e.getMessage());
 			// no problem since just means ran out of messages to process
 		}
 	}

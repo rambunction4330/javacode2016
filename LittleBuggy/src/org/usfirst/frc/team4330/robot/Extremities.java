@@ -8,7 +8,7 @@ public class Extremities {
 	private boolean take;
 	
 	public Extremities() {
-		intake = new Relay(RobotMap.INTAKE_PORT);
+//		intake = new Relay(RobotMap.INTAKE_PORT);
 	}
 	
 	public void inOutTake() {

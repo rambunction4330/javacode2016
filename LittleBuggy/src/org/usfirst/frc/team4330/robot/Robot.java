@@ -3,6 +3,8 @@ package org.usfirst.frc.team4330.robot;
 
 
 // ctrl + shift + o to automatically get imports
+import org.usfirst.frc.team4330.robot.canbus.LeddarDistanceSensor;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -20,6 +22,7 @@ public class Robot extends IterativeRobot {
     DriveTrain dT;
     Extremities extr;
     Joystick left, right, shooter;
+    LeddarDistanceSensor leddar;
 
     /*
      * 
@@ -30,13 +33,21 @@ public class Robot extends IterativeRobot {
     	left = new Joystick(RobotMap.JOYSTICK_ONE_LEFT);
     	right = new Joystick(RobotMap.JOYSTICK_TWO_RIGHT);
     	shooter = new Joystick(RobotMap.JOYSTICK_THREE);
+    	leddar = new LeddarDistanceSensor();
+
     }
 
-    public void autonomousInit() {
-    	
+    public void autonomousInit() {    	
+    	leddar.startUp();
     }
     
     public void autonomousPeriodic() {
+    	System.out.println("leddar distances = " + leddar.getDistances());
+    }
+    
+    @Override
+    public void disabledInit() {
+    	leddar.shutDown();
     }
 
     public void teleopPeriodic() {
