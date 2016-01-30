@@ -12,10 +12,10 @@ public class CallServer {
 			SensorDataRetriever r = new SensorDataRetriever();
 			r.startUp();
 			long startTime = System.currentTimeMillis();
-			for ( int i = 0; i < 10000; i++ ) {
+			for ( int i = 0; i < 1000000; i++ ) {
 				Map<String,String> data = r.retrieveData();
-				System.out.println("Received data " + data + " at time " + new Date().toString());
-				Thread.sleep(20);
+				//System.out.println("Received data " + data + " at time " + new Date().toString());
+				//Thread.sleep(20);
 			}
 			long endTime = System.currentTimeMillis();
 			r.shutDown();

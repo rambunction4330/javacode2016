@@ -19,7 +19,7 @@ public class SensorDataRetriever {
 	private InputStream is;
 	private OutputStream os;
 	private boolean active = false;
-	private static final byte[] SEND_DATA_COMMAND = "DATA\n".getBytes();
+	private static final byte[] GET_DATA_COMMAND = "DATA\n".getBytes();
 	private static final byte[] STOP_COMMAND = "STOP\n".getBytes();
 	
 	public SensorDataRetriever() {
@@ -61,7 +61,7 @@ public class SensorDataRetriever {
 		try {
 			
 			// send a request to server for data
-			os.write(SEND_DATA_COMMAND);
+			os.write(GET_DATA_COMMAND);
 			os.flush();
 			
 			// read the response from the server
