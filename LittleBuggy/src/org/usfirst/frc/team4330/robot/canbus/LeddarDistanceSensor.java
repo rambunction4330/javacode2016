@@ -46,6 +46,14 @@ public class LeddarDistanceSensor extends CanDevice {
 		this.transmitBaseMessageId = transmitBaseMessageId;
 	}
 	
+	public int getSizeMessageId() {
+		return transmitBaseMessageId + 1;
+	}
+	
+	public int getDistanceMessageId() {
+		return transmitBaseMessageId;
+	}
+	
 	public void startUp() {
 		
 		if ( active ) {
@@ -66,7 +74,7 @@ public class LeddarDistanceSensor extends CanDevice {
 				while(active) {
 					checkForMessages();
 					try {
-						long sleepTime = kSendMessagePeriod / 4;
+						long sleepTime = 5;
 						if ( sleepTime < 1 ) sleepTime = 1;
 						Thread.sleep(sleepTime);
 					} catch ( InterruptedException e ) {
@@ -81,7 +89,7 @@ public class LeddarDistanceSensor extends CanDevice {
 		updateThread.start();
 		
 		// tell sensor to start sending messages continuously
-		sendData(receiveBaseMessageId, COMMAND_START_SENDING_DETECTIONS);
+		sendData(new CANMessage(receiveBaseMessageId, COMMAND_START_SENDING_DETECTIONS));
 	}
 	
 	public void shutDown() {
@@ -92,7 +100,7 @@ public class LeddarDistanceSensor extends CanDevice {
 		}
 		
 		// tell sensor to stop sending messages
-		sendData(receiveBaseMessageId, COMMAND_STOP_SENDING_DETECTIONS);
+		sendData(new CANMessage(receiveBaseMessageId, COMMAND_STOP_SENDING_DETECTIONS));
 		
 		// set to inactive and shut down the update thread
 		active = false;
@@ -124,14 +132,22 @@ public class LeddarDistanceSensor extends CanDevice {
 	}
 	
 	private void purgeReceivedMessages() {
-		try {
-			while(true) {
-				// loop till a CANMessageNotFoundException occurs which means we have completed
-				// purging the message queue of the received sensor messages
-				pullNextSensorMessage();
+		while(true) {
+			// loop till exhausted all messages from the sensor
+			int[] messageIds = new int[] { getSizeMessageId(), getDistanceMessageId() };
+			boolean wasMessageReceived = false;
+			for ( int i = 0; i < messageIds.length; i++ ) {
+				try {
+					CANMessage message = receiveData(messageIds[i]);
+					System.out.println("Purged " + message);
+					wasMessageReceived = true;
+				} catch ( CANMessageNotFoundException e ) {
+					// do nothing since we want to possibly move on to the next messageId
+				}
 			}
-		} catch ( CANMessageNotFoundException e) {
-			// done clearing the queue of sensor messages
+			if ( !wasMessageReceived ) {
+				break;
+			}
 		}
 	}
 	
@@ -144,13 +160,17 @@ public class LeddarDistanceSensor extends CanDevice {
 			// read as many messages as possible since many may be queued up
 			// by looping until the CANMessageNotFoundException occurs
 			while(true) {
-				byte[] data = pullNextSensorMessage();
-				if ( data.length == 1 ) {
+				CANMessage message = pullNextSensorMessage();
+				int messageId = message.messageId;
+				byte[] data = message.data;
+				if ( messageId == getSizeMessageId() ) {
 					// a size message has 1 byte of data
 					handleSizeMessage(data[0]);
-				} else {
+				} else if ( messageId == getDistanceMessageId() ){
 					// a distance message has 8 bytes of data
 					handleDistanceMessage(data);
+				} else {
+					throw new RuntimeException("Received unexpected " + message);
 				}
 			}
 		} catch (CANMessageNotFoundException e) {
@@ -158,18 +178,20 @@ public class LeddarDistanceSensor extends CanDevice {
 		}
 	}
 	
-	private byte[] pullNextSensorMessage() throws CANMessageNotFoundException {
-		int[] messageIds = new int[] {transmitBaseMessageId, transmitBaseMessageId + 1};
-		for ( int i = 0; i < messageIds.length; i++ ) {
-			try {
-				byte[] data = receiveData(messageIds[i]);
-				System.out.println("Received data for message id " + messageIds[i]);
-				return data;
-			} catch ( CANMessageNotFoundException e ) {
-				// do nothing
-			}
+	private CANMessage pullNextSensorMessage() throws CANMessageNotFoundException {
+		
+		CANMessage message = null;
+		if ( receivedSizeExpected == 0 ) {
+			// only ask for size messages since the size has not been established yet
+			message = receiveData(getSizeMessageId());
+		} else {
+			// we have a size message, so only ask for distance messages
+			message = receiveData(getDistanceMessageId());
 		}
-		throw new CANMessageNotFoundException();
+		
+		System.out.println("Received " + message);
+		
+		return message;
 	}
 	
 	private void handleSizeMessage(int size) {
