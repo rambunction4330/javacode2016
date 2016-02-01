@@ -12,19 +12,16 @@ public abstract class CanDevice {
 	
 	/**
 	 * 
-	 * @param messageIds
+	 * @param messageId
 	 * @return null if the message doesn't have any data, else the data packet received
 	 * @throws CANMessageNotFoundException thrown if there are no CAN messages with any of
 	 * the messageIds of interest in the receive queue
 	 */
-	protected byte[] receiveData(int[] messageIds) throws CANMessageNotFoundException {
+	protected byte[] receiveData(int messageId) throws CANMessageNotFoundException {
 		
-		int numberMessageIds = messageIds.length;
-		ByteBuffer targetedMessageID = ByteBuffer.allocateDirect(4 * numberMessageIds);
+		ByteBuffer targetedMessageID = ByteBuffer.allocateDirect(4);
 	    targetedMessageID.order(ByteOrder.LITTLE_ENDIAN);
-	    for ( int i = 0; i < numberMessageIds; i++ ) {
-	    	targetedMessageID.asIntBuffer().put(i, messageIds[i]);
-	    }
+	    targetedMessageID.asIntBuffer().put(0, messageId);
 
 	    ByteBuffer timeStamp = ByteBuffer.allocateDirect(4);
 

@@ -22,7 +22,7 @@ public class LeddarDistanceSensorTest {
 		testObject = new LeddarDistanceSensor() {
 
 			@Override
-			protected byte[] receiveData(int[] messageIds) throws CANMessageNotFoundException {
+			protected byte[] receiveData(int messageId) throws CANMessageNotFoundException {
 				if ( receiveBuffer.isEmpty() ) throw new CANMessageNotFoundException();
 				List<Byte> message = receiveBuffer.remove(0);
 				byte[] result = new byte[message.size()];

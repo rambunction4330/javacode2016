@@ -154,13 +154,22 @@ public class LeddarDistanceSensor extends CanDevice {
 				}
 			}
 		} catch (CANMessageNotFoundException e) {
-			System.out.println("got to exception" + e.getMessage());
 			// no problem since just means ran out of messages to process
 		}
 	}
 	
 	private byte[] pullNextSensorMessage() throws CANMessageNotFoundException {
-		return receiveData(new int[] {transmitBaseMessageId, transmitBaseMessageId + 1});
+		int[] messageIds = new int[] {transmitBaseMessageId, transmitBaseMessageId + 1};
+		for ( int i = 0; i < messageIds.length; i++ ) {
+			try {
+				byte[] data = receiveData(messageIds[i]);
+				System.out.println("Received data for message id " + messageIds[i]);
+				return data;
+			} catch ( CANMessageNotFoundException e ) {
+				// do nothing
+			}
+		}
+		throw new CANMessageNotFoundException();
 	}
 	
 	private void handleSizeMessage(int size) {
