@@ -88,6 +88,9 @@ public class LeddarDistanceSensor extends CanDevice {
 		updateThread.setDaemon(true);
 		updateThread.start();
 		
+		// purge messages in order to let the CAN system know the message ids which are of interest
+		purgeReceivedMessages();
+		
 		// tell sensor to start sending messages continuously
 		sendData(new CANMessage(receiveBaseMessageId, COMMAND_START_SENDING_DETECTIONS));
 	}
