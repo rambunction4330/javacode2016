@@ -71,7 +71,6 @@ public abstract class CanDevice {
 		}
 
 		CANJNI.FRCNetworkCommunicationCANSessionMuxSendMessage(canMessage.messageId, buffer, CANJNI.CAN_SEND_PERIOD_NO_REPEAT);
-		System.out.println("method completed");
 	}
 	
 	public class CANMessage {

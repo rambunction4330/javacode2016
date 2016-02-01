@@ -192,7 +192,7 @@ public class LeddarDistanceSensor extends CanDevice {
 			message = receiveData(getDistanceMessageId());
 		}
 		
-		System.out.println("Received " + message);
+//		System.out.println("Received " + message);
 		
 		return message;
 	}
@@ -278,6 +278,9 @@ public class LeddarDistanceSensor extends CanDevice {
 			return amplitude;
 		}
 		
+		public String toString() {
+			return segmentNumber + ";" + distanceInCentimeters + ";" + amplitude;
+		}
 		
 	}
 

@@ -1,4 +1,3 @@
-
 package org.usfirst.frc.team4330.robot;
 
 
@@ -14,7 +13,7 @@ import edu.wpi.first.wpilibj.RobotDrive;
 /**
  * 2016 final code!!
  * 
- * Author: Mandie
+ * Author: Banananananananananananananananananananananamanda & sorta Patrick
  * 
  */
 public class Robot extends IterativeRobot {
@@ -37,12 +36,18 @@ public class Robot extends IterativeRobot {
 
     }
 
-    public void autonomousInit() {    	
+    public void autonomousInit() {   
+    	System.out.println("start");
     	leddar.startUp();
     }
     
+	int i = 0;
+
     public void autonomousPeriodic() {
-    	System.out.println("leddar distances = " + leddar.getDistances());
+    	i++;
+    	
+    	if (i%50 == 0)
+    		System.out.println("leddar distances = " + leddar.getDistances());
     }
     
     @Override
