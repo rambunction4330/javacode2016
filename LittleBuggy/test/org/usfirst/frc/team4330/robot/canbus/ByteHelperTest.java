@@ -14,6 +14,8 @@ public class ByteHelperTest {
 		Assert.assertEquals("0abe", ByteHelper.bytesToHex(toByteArray(new int[] {0x0a, 0xbe})));
 		Assert.assertEquals("72", ByteHelper.bytesToHex(toByteArray(new int[] {0x72})));
 		Assert.assertEquals("0123456789abcdef", ByteHelper.bytesToHex(toByteArray(new int[] {0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef})));
+		Assert.assertEquals("ff008280817f", ByteHelper.bytesToHex(new byte[] {-1, 0, -126, -128, -127, 127}));
+		Assert.assertEquals("000102030405060708090a0b0c0d0e0f", ByteHelper.bytesToHex(new byte[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}));
 	}
 	
 	@Test

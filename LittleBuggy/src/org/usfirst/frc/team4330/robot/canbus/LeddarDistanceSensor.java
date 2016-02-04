@@ -3,6 +3,8 @@ package org.usfirst.frc.team4330.robot.canbus;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.usfirst.frc.team4330.robot.canbus.LeddarDistanceSensor.LeddarDistanceSensorData;
+
 import edu.wpi.first.wpilibj.can.CANMessageNotFoundException;
 
 public class LeddarDistanceSensor extends CanDevice {
@@ -15,6 +17,7 @@ public class LeddarDistanceSensor extends CanDevice {
 	
 	private int receiveBaseMessageId = LEDDAR_RX_BASE_ID_DEFAULT;
 	private int transmitBaseMessageId = LEDDAR_TX_BASE_ID_DEFAULT;
+	private int i = 0;
 	
 	// this is accessed by multiple threads and should only be read/modified within the 
 	// synchronized getDistances/updateDistances methods
@@ -187,6 +190,10 @@ public class LeddarDistanceSensor extends CanDevice {
 		if ( receivedSizeExpected == 0 ) {
 			// only ask for size messages since the size has not been established yet
 			message = receiveData(getSizeMessageId());
+			i++;
+			if (i % 50 == 0) {
+				System.out.println("size message : " + i);
+			}
 		} else {
 			// we have a size message, so only ask for distance messages
 			message = receiveData(getDistanceMessageId());
@@ -222,14 +229,14 @@ public class LeddarDistanceSensor extends CanDevice {
 		// always read the first 4 bytes
 		int firstDistance = ByteHelper.readShort(sectorRawData, 0, true);
 		int firstSegmentNumber = ByteHelper.getMSBValue(sectorRawData[3], 4);
-		int firstAmplitude = ((sectorRawData[2] & 0xff) << 2) | ((sectorRawData[3] & 0x0c) >> 2);
+		double firstAmplitude = (((sectorRawData[2] & 0xff) << 4) | ByteHelper.getLSBValue(sectorRawData[3], 4))/4.0; //(((ByteHelper.getLSBValue(sectorRawData[3], 4) & 0x0F) << 8) | sectorRawData[2])/4.0; //((sectorRawData[3] & 0x0c) >> 2);
 		receivedDistances.add(new LeddarDistanceSensorData(firstSegmentNumber, firstDistance, firstAmplitude));
 			
 		// conditionally read the second 4 bytes
 		if ( receivedDistances.size() < receivedSizeExpected ) {
 			int secondDistance = ByteHelper.readShort(sectorRawData, 4, true);
-			int secondSegmentNumber = ByteHelper.getMSBValue(sectorRawData[7], 4);
-			int secondAmplitude = ((sectorRawData[6] & 0xff) << 2) | ((sectorRawData[7] & 0x0c) >> 2);
+			int secondSegmentNumber = ByteHelper.getMSBValue(sectorRawData[7], 4); 
+			double secondAmplitude = (((sectorRawData[6] & 0xff) << 4) | ByteHelper.getLSBValue(sectorRawData[7], 4))/4.0; //(((ByteHelper.getLSBValue(sectorRawData[7], 4) & 0xFF) << 8) | sectorRawData[6])/4.0; //((sectorRawData[7] & 0x0c) >> 2);
 			receivedDistances.add(new LeddarDistanceSensorData(secondSegmentNumber, secondDistance, secondAmplitude));
 		}
 		
@@ -243,12 +250,18 @@ public class LeddarDistanceSensor extends CanDevice {
 		}
 	}
 	
-	public static final class LeddarDistanceSensorData {
+	public static final class LeddarDistanceSensorData implements Comparable<LeddarDistanceSensorData> {
+		
+		@Override
+		public int compareTo(LeddarDistanceSensorData o) {
+			return this.segmentNumber - o.getSegmentNumber();
+		}
+
 		private int segmentNumber;
 		private int distanceInCentimeters;
-		private int amplitude;
+		private double amplitude;
 		
-		public LeddarDistanceSensorData(int segmentNumber, int distanceInCentimeters, int amplitude) {
+		public LeddarDistanceSensorData(int segmentNumber, int distanceInCentimeters, double amplitude) {
 			this.segmentNumber = segmentNumber;
 			this.distanceInCentimeters = distanceInCentimeters;
 			this.amplitude = amplitude;
@@ -274,12 +287,12 @@ public class LeddarDistanceSensor extends CanDevice {
 		 * 
 		 * @return the strength of the signal, max value is 1024
 		 */
-		public int getAmplitude() {
+		public double getAmplitude() {
 			return amplitude;
 		}
 		
 		public String toString() {
-			return segmentNumber + ";" + distanceInCentimeters + ";" + amplitude;
+			return ("Seg: " + segmentNumber + ";" + "Dist: " + distanceInCentimeters + ";" + "amp: " + amplitude);
 		}
 		
 	}

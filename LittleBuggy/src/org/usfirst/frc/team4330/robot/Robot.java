@@ -1,3 +1,5 @@
+// TODO deploy to robot;;
+
 package org.usfirst.frc.team4330.robot;
 
 
@@ -33,6 +35,8 @@ public class Robot extends IterativeRobot {
     	right = new Joystick(RobotMap.JOYSTICK_TWO_RIGHT);
     	shooter = new Joystick(RobotMap.JOYSTICK_THREE);
     	leddar = new LeddarDistanceSensor();
+    	
+    	System.out.println("right joystick goes in " + RobotMap.JOYSTICK_TWO_RIGHT + "; left goes in " + RobotMap.JOYSTICK_ONE_LEFT);
 
     }
 
@@ -46,8 +50,13 @@ public class Robot extends IterativeRobot {
     public void autonomousPeriodic() {
     	i++;
     	
-    	if (i%50 == 0)
-    		System.out.println("leddar distances = " + leddar.getDistances());
+    	for (LeddarDistanceSensor.LeddarDistanceSensorData info : leddar.getDistances()) {
+    		if (info.getSegmentNumber() == 0) {
+    			
+//        		System.out.println("leddar distances = " + info);
+    			
+    		}
+    	}
     }
     
     @Override
@@ -56,21 +65,40 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopPeriodic() {
-        if (shooter.getRawButton(11))
+        if (left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON))
        		dT.driveReversed();
-        if (shooter.getRawButton(12))
+        if (left.getRawButton(RobotMap.REVERSE_INTAKE_BUTTON))
         	extr.inOutTake();
+        // TODO change left to shooter
+        
+        // pushBall() returns it to original state as well(hopefully)
+        if (left.getRawButton(RobotMap.INTAKE_BUTTON)) {
+        	extr.take = false;
+        	extr.pushBall();
+        	extr.takeSystem();
+        }
+        
+        extr.stopTrexArm();
+        
+        while (left.getRawButton(RobotMap.TREXARM_BACKWARDS_BUTTON)) {
+        	extr.runTrexArmReverse();
+        	dT.drive(left, right);
+        }
                 
-        while (shooter.getTrigger()) {
-        	if (shooter.getRawButton(12))
+        while (left.getTrigger()) {
+        	if (left.getRawButton(4))
             	extr.inOutTake();
         	
-        	extr.takeSystem();
+//        	extr.takeSystem();
+        	extr.runTrexArm();
         	dT.drive(left, right);
         }
         
         dT.drive(left, right);
-        
+    }
+    
+    public void testInit() {
+    	
     }
 
     public void testPeriodic() {
