@@ -46,14 +46,14 @@ public class Extremities {
 	}
 	
 	/**
-	 * Runs the Trex Arm down(??)
+	 * Runs the T-rex Arm down(??)
 	 */
 	public void runTrexArm() {
 		m_trexarm.set(RobotMap.ARM_WHEEL_SPEED);
 	}
 	
 	/**
-	 * Runs the Trex Arm up (??)
+	 * Runs the T-rex Arm up (??)
 	 */
 	public void runTrexArmReverse() {
 		m_trexarm.set(-RobotMap.ARM_WHEEL_SPEED);
