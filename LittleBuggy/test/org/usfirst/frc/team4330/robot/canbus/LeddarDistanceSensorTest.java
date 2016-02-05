@@ -96,7 +96,7 @@ public class LeddarDistanceSensorTest {
 		
 		// simulate the device sending the first distance message
 		// distance 30,000 stored little endian in bytes 0 and 1
-		// amplitude 503.25 in byte 2 and 4 LSB in 4 LSB of byte 3 with byte 2 little endian
+		// amplitude 503.25 stored little endian in byte 2 and 4 LSB of byte 3
 		// with the number being stored with 10 bits representing whole number and 2 bits
 		// representing the fractional part
 		// sector 3 stored in 4 MSB of byte 3
