@@ -45,15 +45,13 @@ public class Robot extends IterativeRobot {
     	leddar.startUp();
     }
     
-	int i = 0;
 
     public void autonomousPeriodic() {
-    	i++;
     	
     	for (LeddarDistanceSensor.LeddarDistanceSensorData info : leddar.getDistances()) {
-    		if (info.getSegmentNumber() == 0) {
+    		if (info.getDistanceInCentimeters() < 152) {
     			
-//        		System.out.println("leddar distances = " + info);
+    			System.out.println("leddar distances = " + info.getDistanceInCentimeters());
     			
     		}
     	}
@@ -63,34 +61,39 @@ public class Robot extends IterativeRobot {
     public void disabledInit() {
     	leddar.shutDown();
     }
-
+    
     public void teleopPeriodic() {
-        if (left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON))
+    	
+    	// reverse driveTrain
+        if (left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)) // 4
        		dT.driveReversed();
-        if (left.getRawButton(RobotMap.REVERSE_INTAKE_BUTTON))
+        
+        // nothing yet
+        if (left.getRawButton(RobotMap.REVERSE_INTAKE_BUTTON)) // 3
         	extr.inOutTake();
         // TODO change left to shooter
         
-        // pushBall() returns it to original state as well(hopefully)
-        if (left.getRawButton(RobotMap.INTAKE_BUTTON)) {
+        // pushBall() returns it to original state as well (hopefully)
+        if (left.getRawButton(RobotMap.INTAKE_BUTTON)) { // 5
         	extr.take = false;
         	extr.pushBall();
         	extr.takeSystem();
         }
         
-        extr.stopTrexArm();
-        
-        while (left.getRawButton(RobotMap.TREXARM_BACKWARDS_BUTTON)) {
-        	extr.runTrexArmReverse();
+        extr.stopTrekudesu();
+        // hold 2 for reverse trex
+        while (left.getRawButton(RobotMap.TREXARM_BACKWARDS_BUTTON)) { // 2
+        	extr.runTrekudesuReverse();
         	dT.drive(left, right);
         }
-                
+        
+        // hold trigger for trex
         while (left.getTrigger()) {
         	if (left.getRawButton(4))
             	extr.inOutTake();
         	
 //        	extr.takeSystem();
-        	extr.runTrexArm();
+        	extr.runTrekudesu();
         	dT.drive(left, right);
         }
         

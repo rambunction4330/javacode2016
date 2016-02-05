@@ -10,12 +10,12 @@ import edu.wpi.first.wpilibj.Timer;
 public class Extremities {
 	private Relay m_intake;
 	boolean take;
-	private SpeedController m_trexarm;
+	private SpeedController m_trekudesu;
 	private Relay spoke;
 	
 	public Extremities() {
 		m_intake = new Relay(RobotMap.INTAKE_PORT);
-		m_trexarm = new Talon(RobotMap.TREXARM_PORT);
+		m_trekudesu = new Talon(RobotMap.TREXARM_PORT);
 		spoke = new Relay(RobotMap.SPIKE_PORT);
 	}
 	
@@ -48,21 +48,22 @@ public class Extremities {
 	/**
 	 * Runs the T-rex Arm down(??)
 	 */
-	public void runTrexArm() {
-		m_trexarm.set(RobotMap.ARM_WHEEL_SPEED);
+	public void runTrekudesu() {
+		m_trekudesu.set(RobotMap.ARM_WHEEL_SPEED);
 	}
 	
 	/**
 	 * Runs the T-rex Arm up (??)
 	 */
-	public void runTrexArmReverse() {
-		m_trexarm.set(-RobotMap.ARM_WHEEL_SPEED);
+	public void runTrekudesuReverse() {
+		m_trekudesu.set(-RobotMap.ARM_WHEEL_SPEED);
 	}
 	
 	/**
-	 * Stops the Trex Arm u genius
+	 * Stops the T-rex Arm u genius
+	 * It's pronounced (tee-reh-ku-desu)
 	 */
-	public void stopTrexArm() {
-		m_trexarm.set(0);
+	public void stopTrekudesu() {
+		m_trekudesu.set(0);
 	}
 }
