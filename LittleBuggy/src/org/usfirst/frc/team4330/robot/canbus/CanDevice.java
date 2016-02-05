@@ -2,7 +2,6 @@ package org.usfirst.frc.team4330.robot.canbus;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.Arrays;
 
 import edu.wpi.first.wpilibj.can.CANJNI;
 import edu.wpi.first.wpilibj.can.CANMessageNotFoundException;
@@ -43,7 +42,7 @@ public abstract class CanDevice {
 	    		data[i] = dataBuffer.get(i);
 	    	}
 	    }
-//	    System.out.println("data = " + ByteHelper.bytesToHex(data));
+
 	    return new CANMessage(messageId, data);
 	}
 	

@@ -95,42 +95,46 @@ public class LeddarDistanceSensorTest {
 		Assert.assertEquals(true, testObject.getDistances().isEmpty());
 		
 		// simulate the device sending the first distance message
-		// TODO verify actually little endian for two distance bytes
 		// distance 30,000 stored little endian in bytes 0 and 1
-		// amplitude 503 with 8 MSB in byte 2 and 4 LSB in 4 LSB of byte 3
+		// amplitude 503.25 in byte 2 and 4 LSB in 4 LSB of byte 3 with byte 2 little endian
+		// with the number being stored with 10 bits representing whole number and 2 bits
+		// representing the fractional part
 		// sector 3 stored in 4 MSB of byte 3
-		// first binary: 00110000 01110101 01111101 11000011
-		// distance 65,038 stored little endian in bytes 0 and 1
-		// amplitude 1022 with 8 MSB in byte 2 and 4 LSB in 4 LSB of byte 3
-		// sector 15 stored in 4 MSB of byte 3
-		// first binary: 00001110 11111110 11111111 10111111
-		addToReceiveBuffer(testObject.getDistanceMessageId(), new byte[] {48, 117, 125, -61, 14, -2, -1, -65});
+		// first binary: 00110000 01110101 11011101 00110111
+		// distance 65,038 
+		// amplitude 1022.50
+		// sector 15
+		// second binary: 00001110 11111110 11111010 11111111
+		addToReceiveBuffer(testObject.getDistanceMessageId(), new byte[] {48, 117, -35, 55, 14, -2, -6, -1});
 		
 		Assert.assertEquals(true, testObject.getDistances().isEmpty());
 		
-		// distance 1 stored little endian in bytes 0 and 1
-		// amplitude 1 with 8 MSB in byte 2 and 4 LSB in 4 LSB of byte 3
-		// sector 1 stored in 4 MSB of byte 3
-		// first binary: 00000001 00000000 00000000 01000001
-		addToReceiveBuffer(testObject.getDistanceMessageId(), new byte[] {1, 0, 0, 65, 0, 0, 0, 0});
+		// distance 1
+		// amplitude 1.25
+		// sector 1
+		// first binary: 00000001 00000000 00000101 00010000
+		// second binary: 32 zeros since just padding (no 4th measurement)
+		addToReceiveBuffer(testObject.getDistanceMessageId(), new byte[] {1, 0, 5, 16, 0, 0, 0, 0});
 		Thread.sleep(100);
+		
+		double measurementError = 0.1;
 		
 		list = testObject.getDistances();
 		Assert.assertEquals(3, list.size());
 		LeddarDistanceSensorData measurement = list.get(0);
 		Assert.assertEquals(30000, measurement.getDistanceInCentimeters());
 		Assert.assertEquals(3, measurement.getSegmentNumber());
-		Assert.assertEquals(503, measurement.getAmplitude());
+		Assert.assertEquals(true, Math.abs(503.25 - measurement.getAmplitude()) < measurementError);
 		
 		measurement = list.get(1);
 		Assert.assertEquals(65038, measurement.getDistanceInCentimeters());
 		Assert.assertEquals(15, measurement.getSegmentNumber());
-		Assert.assertEquals(1022, measurement.getAmplitude());
+		Assert.assertEquals(true, Math.abs(1022.5 - measurement.getAmplitude()) < measurementError);
 		
 		measurement = list.get(2);
 		Assert.assertEquals(1, measurement.getDistanceInCentimeters());
 		Assert.assertEquals(1, measurement.getSegmentNumber());
-		Assert.assertEquals(1, measurement.getAmplitude());
+		Assert.assertEquals(true, Math.abs(1.25 - measurement.getAmplitude()) < measurementError);
 		
 		testObject.shutDown();
 		Thread.sleep(100);
