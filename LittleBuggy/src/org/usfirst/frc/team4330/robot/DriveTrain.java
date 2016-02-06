@@ -46,21 +46,5 @@ public class DriveTrain {
 	public void driveReversed() {
 		reverse = !reverse;
 	}
-	
-	/*
-	public void miniWheels(Joystick mini) {
-		while (mini.getTrigger()) {
-			mRW.set(-Map.MINI_WHEEL_SPEED);
-			mLW.set(Map.MINI_WHEEL_SPEED);
-		}
-	}
-	
-	public void frontMinis() {
-		if (reverse) {
-			miniMotor.set(-RobotMap.MINI_WHEEL_SPEED);
-		}
-		
-		miniMotor.set(RobotMap.MINI_WHEEL_SPEED);
-	}
-	*/
+
 }

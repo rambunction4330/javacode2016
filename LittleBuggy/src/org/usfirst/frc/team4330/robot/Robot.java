@@ -62,6 +62,14 @@ public class Robot extends IterativeRobot {
     	leddar.shutDown();
     }
     
+    public void teleopInit() {
+    	System.out.println("\n********** BUTTONS FOR DRIVERS *********");
+    	System.out.println("Reverse the Drive Direction: " + RobotMap.REVERSE_DRIVE_BUTTON);
+    	System.out.println("Suck the Boulder In: " + RobotMap.REVERSE_INTAKE_BUTTON + "; Push Ball Out: " + RobotMap.INTAKE_BUTTON);
+    	System.out.println("Scale Up (Release Scaling): " + RobotMap.SCALING_UPWARDS_BUTTON + "; Real In Scaling: " + RobotMap.SCALING_DOWNWARDS_BUTTON);
+    	System.out.println();
+    }
+    
     public void teleopPeriodic() {
     	
     	// reverse driveTrain
@@ -69,8 +77,10 @@ public class Robot extends IterativeRobot {
        		dT.driveReversed();
         
         // nothing yet
-        if (left.getRawButton(RobotMap.REVERSE_INTAKE_BUTTON)) // 3
-        	extr.inOutTake();
+        if (left.getRawButton(RobotMap.REVERSE_INTAKE_BUTTON)) { // 3
+        	extr.take = true;
+        	extr.takeSystem();
+        }
         // TODO change left to shooter
         
         // pushBall() returns it to original state as well (hopefully)
@@ -101,7 +111,7 @@ public class Robot extends IterativeRobot {
     }
     
     public void testInit() {
-    	
+    	extr.quickTest();
     }
 
     public void testPeriodic() {
