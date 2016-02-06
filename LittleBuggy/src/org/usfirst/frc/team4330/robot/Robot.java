@@ -1,5 +1,3 @@
-// TODO deploy to robot;;
-
 package org.usfirst.frc.team4330.robot;
 
 
@@ -9,8 +7,8 @@ import org.usfirst.frc.team4330.robot.canbus.LeddarDistanceSensor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
-// TODO one button to unwind spool & one to rewind
 // TODO talk to drivers about all buttons needed
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * 2016 final code!!
@@ -24,6 +22,7 @@ public class Robot extends IterativeRobot {
     Extremities extr;
     Joystick left, right, shooter;
     LeddarDistanceSensor leddar;
+    AnonymousJoystick ajoy;
 
     /*
      * 
@@ -34,7 +33,7 @@ public class Robot extends IterativeRobot {
     	left = new Joystick(RobotMap.JOYSTICK_ONE_LEFT);
     	right = new Joystick(RobotMap.JOYSTICK_TWO_RIGHT);
     	shooter = new Joystick(RobotMap.JOYSTICK_THREE);
-    	leddar = new LeddarDistanceSensor();
+    	leddar = new LeddarDistanceSensor();;
     	
     	System.out.println("right joystick goes in " + RobotMap.JOYSTICK_TWO_RIGHT + "; left goes in " + RobotMap.JOYSTICK_ONE_LEFT);
 
@@ -71,24 +70,25 @@ public class Robot extends IterativeRobot {
     }
     
     public void teleopPeriodic() {
+    	extr.stopTake();
     	
     	// reverse driveTrain
         if (left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)) // 4
        		dT.driveReversed();
         
         // nothing yet
-        if (left.getRawButton(RobotMap.REVERSE_INTAKE_BUTTON)) { // 3
-        	extr.take = true;
-        	extr.takeSystem();
+        while (left.getRawButton(RobotMap.REVERSE_INTAKE_BUTTON)) { // 3
+        	extr.outTakeSystem();
         }
         // TODO change left to shooter
         
         // pushBall() returns it to original state as well (hopefully)
-        if (left.getRawButton(RobotMap.INTAKE_BUTTON)) { // 5
-        	extr.take = false;
-        	extr.pushBall();
-        	extr.takeSystem();
+        while (right.getTrigger()) {
+        	extr.inTakeSystem();
+        	if (right.getRawButton(RobotMap.INTAKE_BUTTON)) // 5
+        		extr.pushBall();
         }
+        extr.stopTake();
         
         extr.stopTrekudesu();
         // hold 2 for reverse trex
@@ -100,7 +100,7 @@ public class Robot extends IterativeRobot {
         // hold trigger for trex
         while (left.getTrigger()) {
         	if (left.getRawButton(4))
-            	extr.inOutTake();
+//            	extr.takeSystem();
         	
 //        	extr.takeSystem();
         	extr.runTrekudesu();
@@ -111,11 +111,11 @@ public class Robot extends IterativeRobot {
     }
     
     public void testInit() {
-    	extr.quickTest();
     }
 
     public void testPeriodic() {
-    	
+    	if (left.getRawButton(4))
+    		extr.quickTest();
     }
     
 }

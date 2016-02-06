@@ -9,27 +9,24 @@ import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Victor;
 
 public class Extremities {
-	private Relay m_intake;
+	private Victor m_intake;
 	boolean take;
 	private SpeedController m_trekudesu;
 	private Relay spoke;
 	private SpeedController scalar;
 	private Encoder notHereYet;
-	private PIDController here;
+	private PIDController hereoin;
 	
 	public Extremities() {
-		m_intake = new Relay(RobotMap.INTAKE_PORT);
+		m_intake = new Victor(RobotMap.INTAKE_PORT);
 		m_trekudesu = new Talon(RobotMap.TREXARM_PORT);
 		spoke = new Relay(RobotMap.SPIKE_PORT);
 		scalar = new Talon(RobotMap.SCALAR_PORT);
         notHereYet = new Encoder(RobotMap.ENCODER_PORT_ONE, RobotMap.ENCODER_PORT_TWO, true, CounterBase.EncodingType.k1X);
-        here = new PIDController(.125, .001, .0, notHereYet, scalar);
-	}
-	
-	public void inOutTake() {
-		take = !take;
+        hereoin = new PIDController(.125, .001, .0, notHereYet, scalar);
 	}
 	
 	/**
@@ -37,25 +34,28 @@ public class Extremities {
 	 * then returns to former position.
 	 */
 	public void pushBall() {
-		if (!take) {
-			spoke.set(Value.kForward);
-			Timer.delay(0.2);
-			spoke.set(Value.kReverse);
-			Timer.delay(0.2);
-			spoke.stopMotor();
-		}
-		else return;
+		spoke.set(Value.kForward);
+		Timer.delay(0.2);
+		spoke.set(Value.kReverse);
+		Timer.delay(0.2);
+		spoke.stopMotor();
 	}
 	
 	/**
 	 * This will be the intake system for the robot.
 	 * !take means outtake, so shooting the ball outwards.
 	 */
-	public void takeSystem() {
-		if (!take)
-			m_intake.setDirection(Direction.kReverse);
-		else
-			m_intake.setDirection(Direction.kForward);
+	public void inTakeSystem() {
+		m_intake.set(RobotMap.INTAKE_SPEED*2);
+		}
+	
+	
+	public void outTakeSystem() {
+		m_intake.set(-RobotMap.INTAKE_SPEED);
+	}
+	
+	public void stopTake() {
+		m_intake.set(0);
 	}
 	
 	/**
@@ -81,7 +81,7 @@ public class Extremities {
 	}
 	
 	public void quickTest() {
-		m_intake.setDirection(Direction.kForward);
+//		m_intake.setDirection(Direction.kForward);
 		spoke.setDirection(Direction.kForward);
 		Timer.delay(.5);
 		m_intake.stopMotor();;
