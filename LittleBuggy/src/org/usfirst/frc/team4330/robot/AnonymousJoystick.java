@@ -20,11 +20,12 @@ public abstract class AnonymousJoystick extends GenericHID {
 		// turn about 90ish degrees left or right depending on the direction given.
 		if (direction){// left
 	    	for (LeddarDistanceSensor.LeddarDistanceSensorData info : leddar.getDistances()){
-	    		
+	    		driver.fixedDrive(0.2, 0.2, 0.2, 0.2);
 	    	}
 		}
 		
-		else {
+		else {// reverse direction of true
+			
 			
 		}
 	}
@@ -37,13 +38,15 @@ public abstract class AnonymousJoystick extends GenericHID {
 			
 		}
 	}
-	public void moveToDistance(double distance){
+	public void moveToDistance(int distance){
 		
-		= leddar.getDistances();
-		if (distance > leddar.getDistances())
-			info.getDistances();
-		while ( )
-				Dt.set(0.5);
+//		= leddar.getDistances();
+//		if (distance > leddar.getDistances())
+//			info.getDistances();
+		while (1 == 1 )//implement later
+			//not final
+				driver.fixedDrive(0.5, 0.5, -0.5, -0.5);
+		
 	}
 	public void something(){
 		

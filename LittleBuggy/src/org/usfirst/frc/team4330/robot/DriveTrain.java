@@ -39,7 +39,15 @@ public class DriveTrain {
 		lFW.set(-left.getY());
 		lBW.set(-left.getY());
 	}
-	
+	// all signs align for a single direction
+	public void fixedDrive(double fr, double br, double fl, double bl){
+		
+		rFW.set(fr);
+		rBW.set(br);
+		lFW.set(fl);
+		lBW.set(bl);
+	}
+		
 	/**
 	 * Flips the direction of the robot.
 	 */
