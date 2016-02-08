@@ -1,7 +1,5 @@
 package org.usfirst.frc.team4330.robot;
 
-import edu.wpi.first.wpilibj.CounterBase;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Relay.Direction;
 import edu.wpi.first.wpilibj.Relay.Value;
@@ -15,16 +13,16 @@ public class Extremities {
 	boolean take;
 	private SpeedController m_trekudesu;
 	private Relay spoke;
-	private SpeedController scalar;
-	private Encoder notHereYet;
+//	private SpeedController scalar;
+//	private Encoder notHereYet;
 //	private PIDController hereoin;
 	
 	public Extremities() {
 		m_intake = new Victor(RobotMap.INTAKE_PORT);
 		m_trekudesu = new Talon(RobotMap.TREXARM_PORT);
 		spoke = new Relay(RobotMap.SPIKE_PORT);
-		scalar = new Talon(RobotMap.SCALAR_PORT);
-        notHereYet = new Encoder(RobotMap.ENCODER_PORT_ONE, RobotMap.ENCODER_PORT_TWO, true, CounterBase.EncodingType.k1X);
+//		scalar = new Talon(RobotMap.SCALAR_PORT);
+//        notHereYet = new Encoder(RobotMap.ENCODER_PORT_ONE, RobotMap.ENCODER_PORT_TWO, true, CounterBase.EncodingType.k1X);
 //        hereoin = new PIDController(.125, .001, .0, notHereYet, scalar);
 	}
 	
@@ -35,6 +33,10 @@ public class Extremities {
 	public void pushBall() {
 		spoke.set(Value.kForward);
 		Timer.delay(0.5);
+		spoke.stopMotor();
+	}
+	
+	public void pullButNotActuallyPullBall() {
 		spoke.set(Value.kReverse);
 		Timer.delay(0.5);
 		spoke.stopMotor();
