@@ -63,6 +63,7 @@ public class Robot extends IterativeRobot {
     }
     
     public void teleopPeriodic() {
+    	// left in first, right in second ???
     	
     	// reverse driveTrain
         if (left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)) // 4
