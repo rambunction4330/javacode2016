@@ -122,8 +122,10 @@ public class Robot extends IterativeRobot {
         while (right.getTrigger()) {
         	extr.inTakeSystem();
         	
-        	if (right.getRawButton(RobotMap.INTAKE_BUTTON)) // 5
+        	if (right.getRawButton(RobotMap.INTAKE_BUTTON)) { // 5
         		extr.pushBall();
+        		extr.pullButNotActuallyPullBall();
+        	}
         }
         extr.stopTake();
         
