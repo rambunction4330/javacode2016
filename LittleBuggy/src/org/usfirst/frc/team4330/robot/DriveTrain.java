@@ -39,28 +39,20 @@ public class DriveTrain {
 		lFW.set(-left.getY());
 		lBW.set(-left.getY());
 	}
-	
+	// all signs align for a single direction
+	public void fixedDrive(double fr, double br, double fl, double bl){
+		
+		rFW.set(fr);
+		rBW.set(br);
+		lFW.set(fl);
+		lBW.set(bl);
+	}
+		
 	/**
 	 * Flips the direction of the robot.
 	 */
 	public void driveReversed() {
 		reverse = !reverse;
 	}
-	
-	/*
-	public void miniWheels(Joystick mini) {
-		while (mini.getTrigger()) {
-			mRW.set(-Map.MINI_WHEEL_SPEED);
-			mLW.set(Map.MINI_WHEEL_SPEED);
-		}
-	}
-	
-	public void frontMinis() {
-		if (reverse) {
-			miniMotor.set(-RobotMap.MINI_WHEEL_SPEED);
-		}
-		
-		miniMotor.set(RobotMap.MINI_WHEEL_SPEED);
-	}
-	*/
+
 }

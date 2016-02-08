@@ -1,5 +1,3 @@
-// TODO deploy to robot;;
-
 package org.usfirst.frc.team4330.robot;
 
 
@@ -9,8 +7,8 @@ import org.usfirst.frc.team4330.robot.canbus.LeddarDistanceSensor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
-// TODO one button to unwind spool & one to rewind
 // TODO talk to drivers about all buttons needed
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * 2016 final code!!
@@ -24,6 +22,7 @@ public class Robot extends IterativeRobot {
     Extremities extr;
     Joystick left, right, shooter;
     LeddarDistanceSensor leddar;
+    AnonymousJoystick ajoy;
 
     /*
      * 
@@ -34,7 +33,7 @@ public class Robot extends IterativeRobot {
     	left = new Joystick(RobotMap.JOYSTICK_ONE_LEFT);
     	right = new Joystick(RobotMap.JOYSTICK_TWO_RIGHT);
     	shooter = new Joystick(RobotMap.JOYSTICK_THREE);
-    	leddar = new LeddarDistanceSensor();
+    	leddar = new LeddarDistanceSensor();;
     	
     	System.out.println("right joystick goes in " + RobotMap.JOYSTICK_TWO_RIGHT + "; left goes in " + RobotMap.JOYSTICK_ONE_LEFT);
 
@@ -43,18 +42,54 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {   
     	System.out.println("start");
     	leddar.startUp();
+    	i=0;
+    	j=2;
+    	k=0;
     }
     
-
+    int dist15 = -1;
+    int dist0 = -1;
+    int i = 0;
+    int j = 2;
+    int k = 0;
     public void autonomousPeriodic() {
-    	
+    	if (k == 0) {
     	for (LeddarDistanceSensor.LeddarDistanceSensorData info : leddar.getDistances()) {
-    		if (info.getDistanceInCentimeters() < 152) {
-    			
-    			System.out.println("leddar distances = " + info.getDistanceInCentimeters());
-    			
+    		if (info.getDistanceInCentimeters() < 120) {
+    			if (info.getSegmentNumber() == 15 && i%5 == 0) {
+    				dist15 = info.getDistanceInCentimeters();
+    				System.out.println("Segment 15 = " + info.getDistanceInCentimeters());
+    			}
+    			if (info.getSegmentNumber() == 0 && j%5 == 0) {
+    				dist0 = info.getDistanceInCentimeters();
+    				System.out.println("Segment 0 = " + info.getDistanceInCentimeters());
+    			}
+    			if (Math.abs(dist15 - dist0) > 5 && dist0 != -1) {
+    				System.out.println("90 Degrees baby");
+    				//turn left first (for testing)
+    		    	ajoy.turnToWall(true);
+    			}
+    			else {
+    			dT.stop();
+    			}
+    			i++;
+    			j++;
+    			k = 1;
     		}
+    		
     	}
+    	k = 1;
+    	}
+    	// assume we have successfully turned perpendicular(ish) to the wall
+    	
+    	/** now we move a set distance **/
+    	
+    	/** turn to face forward **/
+    	
+    	/** aim at low goal **/
+    	
+    	/** drive up and shoot **/
+    	
     }
     
     @Override
@@ -62,24 +97,38 @@ public class Robot extends IterativeRobot {
     	leddar.shutDown();
     }
     
+    public void teleopInit() {
+    	System.out.println("\n********** BUTTONS FOR DRIVERS *********");
+    	System.out.println("Reverse the Drive Direction: " + RobotMap.REVERSE_DRIVE_BUTTON);
+    	System.out.println("Suck the Boulder In: " + RobotMap.REVERSE_INTAKE_BUTTON + "; Push Ball Out: " + RobotMap.INTAKE_BUTTON);
+    	System.out.println("Scale Up (Release Scaling): " + RobotMap.SCALING_UPWARDS_BUTTON + "; Real In Scaling: " + RobotMap.SCALING_DOWNWARDS_BUTTON);
+    	System.out.println();
+    }
+    
     public void teleopPeriodic() {
+<<<<<<< HEAD
     	// left in first, right in second ???
+=======
+    	extr.stopTake();
+>>>>>>> 38c25c32ac6e6eeb3fb3df7a3e9ba4e5344964b6
     	
     	// reverse driveTrain
         if (left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)) // 4
        		dT.driveReversed();
         
         // nothing yet
-        if (left.getRawButton(RobotMap.REVERSE_INTAKE_BUTTON)) // 3
-        	extr.inOutTake();
+        while (left.getRawButton(RobotMap.REVERSE_INTAKE_BUTTON)) { // 3
+        	extr.outTakeSystem();
+        }
         // TODO change left to shooter
         
         // pushBall() returns it to original state as well (hopefully)
-        if (left.getRawButton(RobotMap.INTAKE_BUTTON)) { // 5
-        	extr.take = false;
-        	extr.pushBall();
-        	extr.takeSystem();
+        while (right.getTrigger()) {
+        	extr.inTakeSystem();
+        	if (right.getRawButton(RobotMap.INTAKE_BUTTON)) // 5
+        		extr.pushBall();
         }
+        extr.stopTake();
         
         extr.stopTrekudesu();
         // hold 2 for reverse trex
@@ -91,7 +140,7 @@ public class Robot extends IterativeRobot {
         // hold trigger for trex
         while (left.getTrigger()) {
         	if (left.getRawButton(4))
-            	extr.inOutTake();
+//            	extr.takeSystem();
         	
 //        	extr.takeSystem();
         	extr.runTrekudesu();
@@ -102,11 +151,10 @@ public class Robot extends IterativeRobot {
     }
     
     public void testInit() {
-    	
     }
 
     public void testPeriodic() {
-    	
+
     }
     
 }
