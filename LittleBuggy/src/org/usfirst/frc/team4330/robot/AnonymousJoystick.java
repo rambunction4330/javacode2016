@@ -12,9 +12,6 @@ public abstract class AnonymousJoystick extends GenericHID {
 	private LeddarDistanceSensor leddar;
 	private DriveTrain driver;
 	
-	public AnonymousJoystick (boolean direction) {
-		this.direction = direction;
-	}
 	
 	public void turnToWall(){
 		// turn about 90ish degrees left or right depending on the direction given.

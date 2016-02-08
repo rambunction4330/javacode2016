@@ -42,18 +42,54 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {   
     	System.out.println("start");
     	leddar.startUp();
+    	i=0;
+    	j=2;
+    	k=0;
     }
     
-
+    int dist15 = -1;
+    int dist0 = -1;
+    int i = 0;
+    int j = 2;
+    int k = 0;
     public void autonomousPeriodic() {
-    	
+    	if (k == 0) {
     	for (LeddarDistanceSensor.LeddarDistanceSensorData info : leddar.getDistances()) {
-    		if (info.getDistanceInCentimeters() < 152) {
-    			
-    			System.out.println("leddar distances = " + info.getDistanceInCentimeters());
-    			
+    		if (info.getDistanceInCentimeters() < 120) {
+    			if (info.getSegmentNumber() == 15 && i%5 == 0) {
+    				dist15 = info.getDistanceInCentimeters();
+    				System.out.println("Segment 15 = " + info.getDistanceInCentimeters());
+    			}
+    			if (info.getSegmentNumber() == 0 && j%5 == 0) {
+    				dist0 = info.getDistanceInCentimeters();
+    				System.out.println("Segment 0 = " + info.getDistanceInCentimeters());
+    			}
+    			if (Math.abs(dist15 - dist0) > 5 && dist0 != -1) {
+    				System.out.println("90 Degrees baby");
+    				//turn left first (for testing)
+    		    	ajoy.turnToWall(true);
+    			}
+    			else {
+    			dT.stop();
+    			}
+    			i++;
+    			j++;
+    			k = 1;
     		}
+    		
     	}
+    	k = 1;
+    	}
+    	// assume we have successfully turned perpendicular(ish) to the wall
+    	
+    	/** now we move a set distance **/
+    	
+    	/** turn to face forward **/
+    	
+    	/** aim at low goal **/
+    	
+    	/** drive up and shoot **/
+    	
     }
     
     @Override
@@ -114,8 +150,7 @@ public class Robot extends IterativeRobot {
     }
 
     public void testPeriodic() {
-    	if (left.getRawButton(4))
-    		extr.quickTest();
+
     }
     
 }
