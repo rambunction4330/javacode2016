@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 // TODO talk to drivers about all buttons needed
-import edu.wpi.first.wpilibj.Timer;
 
 /**
  * 2016 final code!!
@@ -67,10 +66,10 @@ public class Robot extends IterativeRobot {
     			if (Math.abs(dist15 - dist0) > 5 && dist0 != -1) {
     				System.out.println("90 Degrees baby");
     				//turn left first (for testing)
-    		    	ajoy.turnToWall(true);
+//    		    	ajoy.turnToWall(true);
     			}
     			else {
-    			dT.stop();
+//    			dT.stop();
     			}
     			i++;
     			j++;
@@ -106,11 +105,8 @@ public class Robot extends IterativeRobot {
     }
     
     public void teleopPeriodic() {
-<<<<<<< HEAD
     	// left in first, right in second ???
-=======
     	extr.stopTake();
->>>>>>> 38c25c32ac6e6eeb3fb3df7a3e9ba4e5344964b6
     	
     	// reverse driveTrain
         if (left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)) // 4
@@ -125,6 +121,7 @@ public class Robot extends IterativeRobot {
         // pushBall() returns it to original state as well (hopefully)
         while (right.getTrigger()) {
         	extr.inTakeSystem();
+        	
         	if (right.getRawButton(RobotMap.INTAKE_BUTTON)) // 5
         		extr.pushBall();
         }
