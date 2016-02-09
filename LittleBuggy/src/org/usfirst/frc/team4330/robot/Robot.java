@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.RobotDrive;
 /**
  * 2016 final code!!
  * 
- * Author: Banananananananananananananananananananananamanda & sorta Patrick
+ * Author: Bananananananananananananananananananananamanda & sorta Patrick pandanomium
  * 
  */
 public class Robot extends IterativeRobot {
