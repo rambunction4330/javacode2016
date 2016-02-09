@@ -14,7 +14,7 @@ public class RobotMap {
 //	public static int MINI_RIGHT_WHEEL = 4;
 //	public static int MINI_LEFT_WHEEL = 5;
 	public static final double ARM_WHEEL_SPEED = 0.3;
-	public static final double INTAKE_SPEED = .7;
+	public static final double INTAKE_SPEED = 1;
 	
 	// Buttons
 	public static final int REVERSE_DRIVE_BUTTON = 4;

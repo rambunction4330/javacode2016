@@ -8,7 +8,7 @@ public abstract class AnonymousJoystick extends GenericHID {
 	
 	
 	// left is the true direction
-	private LeddarDistanceSensor leddar;
+	private LeddarDistanceSensor.LeddarDistanceSensorData leddar;
 	private DriveTrain driver;
 	
 	
@@ -23,28 +23,30 @@ public abstract class AnonymousJoystick extends GenericHID {
 		}
 	}
 	
-	
-//	public void aligntoLR(){
+	// checking method
+//	public void aligntoLR(boolean direction){
 //		if (direction) { // left
+//			turnToWall(true);
+//			
+//			driver.stop();
 //			
 //		}
-//		
 //		else {
-//			
+//			turnToWall(false);
 //		}
 //	}
-//	public void moveToDistance(int distance){
-//		
-////		= leddar.getDistances();
-////		if (distance > leddar.getDistances())
-////			info.getDistances();
-//		while (1 == 1 )//implement later
-//			//not final
-//				driver.fixedDrive(0.5, 0.5, -0.5, -0.5);
-//		
-//	}
-//	public void something(){
-//		
-//	}
+	
+	
+	public void moveToDistance(int distance){
+		
+		while (distance > leddar.getDistanceInCentimeters()) {
+			driver.fixedDrive(0.2, 0.2);
+		}
+		driver.stop();
+		
+	}
+	public void something(){
+		
+	}
 	
 }
