@@ -258,13 +258,7 @@ public class LeddarDistanceSensor extends CanDevice {
 			this.distanceInCentimeters = distanceInCentimeters;
 			this.amplitude = amplitude;
 		}
-		// use a while loop while calling this method
-		public int getDistOfSeg(int segmentNumber) {
-			if (this.segmentNumber == segmentNumber) {
-				return distanceInCentimeters;
-			}
-			else return -1;
-		}
+		
 
 		/**
 		 * The Leddar distance sensor has 16 segments

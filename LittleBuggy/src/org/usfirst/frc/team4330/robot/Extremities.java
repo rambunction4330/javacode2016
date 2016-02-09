@@ -32,13 +32,13 @@ public class Extremities {
 	 */
 	public void pushBall() {
 		spoke.set(Value.kForward);
-		Timer.delay(0.5);
+		Timer.delay(0.1);
 		spoke.stopMotor();
 	}
 	
 	public void pullButNotActuallyPullBall() {
 		spoke.set(Value.kReverse);
-		Timer.delay(0.5);
+		Timer.delay(0.1);
 		spoke.stopMotor();
 	}
 	
@@ -46,12 +46,12 @@ public class Extremities {
 	 * This will be the intake system for the robot.
 	 * !take means outtake, so shooting the ball outwards.
 	 */
-	public void inTakeSystem() {
-		m_intake.set(RobotMap.INTAKE_SPEED*2);
+	public void outTakeSystem() {
+		m_intake.set(RobotMap.INTAKE_SPEED*(7/4));
 		}
 	
 	
-	public void outTakeSystem() {
+	public void inTakeSystem() {
 		m_intake.set(-RobotMap.INTAKE_SPEED);
 	}
 	

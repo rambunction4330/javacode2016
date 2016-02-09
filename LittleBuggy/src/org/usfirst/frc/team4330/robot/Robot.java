@@ -7,6 +7,7 @@ import org.usfirst.frc.team4330.robot.canbus.LeddarDistanceSensor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Timer;
 // TODO talk to drivers about all buttons needed
 
 /**
@@ -51,6 +52,7 @@ public class Robot extends IterativeRobot {
     int i = 0;
     int j = 2;
     int k = 0;
+    boolean ninety = false;
     public void autonomousPeriodic() {
     	if (k == 0) {
     	for (LeddarDistanceSensor.LeddarDistanceSensorData info : leddar.getDistances()) {
@@ -65,16 +67,25 @@ public class Robot extends IterativeRobot {
     			}
     			if (Math.abs(dist15 - dist0) > 5 && dist0 != -1) {
     				System.out.println("90 Degrees baby");
-    				//turn left first (for testing)
-//    		    	ajoy.turnToWall(true);
+    				ninety = true;
+
     			}
     			else {
-//    			dT.stop();
+    				ninety = false;
     			}
+    			if (!ninety) {
+    				ajoy.turnToWall(true);
+    			}
+    			else {
+    				dT.stop();
+    			
+    			}
+    			
     			i++;
     			j++;
     			k = 1;
     		}
+    		ajoy.moveToDistance(1); // change later
     		
     	}
     	k = 1;
@@ -98,50 +109,56 @@ public class Robot extends IterativeRobot {
     
     public void teleopInit() {
     	System.out.println("\n********** BUTTONS FOR DRIVERS *********");
-    	System.out.println("Reverse the Drive Direction: " + RobotMap.REVERSE_DRIVE_BUTTON);
-    	System.out.println("Suck the Boulder In: " + RobotMap.REVERSE_INTAKE_BUTTON + "; Push Ball Out: " + RobotMap.INTAKE_BUTTON);
+    	System.out.println("LEFT joystick controls : ");
+    	System.out.println("Reverse the Drive Direction: PRESS Trigger" );
+    	System.out.println(" ");
+    	System.out.println("RIGHT joystick controls : \n" + "PRESS Trigger to suck the ball in; PRESS " + RobotMap.INTAKE_BUTTON + " to push the ball out");
     	System.out.println("Scale Up (Release Scaling): " + RobotMap.SCALING_UPWARDS_BUTTON + "; Real In Scaling: " + RobotMap.SCALING_DOWNWARDS_BUTTON);
-    	System.out.println();
+    	
     }
-    
+    int dmu = 0;
     public void teleopPeriodic() {
+    	if (dmu % 3 == 2) {
+    		System.out.println("No pressure dude");
+    	}
+    	else {System.out.println("Don't mess up");}
+    	dmu++;
     	// left in first, right in second ???
     	extr.stopTake();
     	
     	// reverse driveTrain
-        if (left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)) // 4
+        if (left.getTrigger())
        		dT.driveReversed();
         
-        // nothing yet
-        while (left.getRawButton(RobotMap.REVERSE_INTAKE_BUTTON)) { // 3
-        	extr.outTakeSystem();
+        // press trigger
+        if (right.getTrigger()) {
+        	extr.inTakeSystem();
+        	Timer.delay(0.5);
+        	extr.stopTake();
         }
         // TODO change left to shooter
         
-        // pushBall() returns it to original state as well (hopefully)
-        while (right.getTrigger()) {
-        	extr.inTakeSystem();
-        	
-        	if (right.getRawButton(RobotMap.INTAKE_BUTTON)) { // 5
-        		extr.pushBall();
-        		extr.pullButNotActuallyPullBall();
-        	}
+        // working as of Feb 8th
+        if (right.getRawButton(RobotMap.INTAKE_BUTTON)) { // 5
+        	extr.outTakeSystem();
+        	Timer.delay(.2);
+    		extr.pushBall();
+    		Timer.delay(.2);
+        	extr.stopTake();
+        	// testing 
+        	extr.pullButNotActuallyPullBall();
         }
-        extr.stopTake();
-        
+        // fail-safe stoppers
         extr.stopTrekudesu();
-        // hold 2 for reverse trex
-        while (left.getRawButton(RobotMap.TREXARM_BACKWARDS_BUTTON)) { // 2
+        
+        // hold 4 for reverse trex
+        while (left.getRawButton(RobotMap.TREXARM_BACKWARDS_BUTTON)) { // 4
         	extr.runTrekudesuReverse();
         	dT.drive(left, right);
         }
         
-        // hold trigger for trex
-        while (left.getTrigger()) {
-        	if (left.getRawButton(4))
-//            	extr.takeSystem();
-        	
-//        	extr.takeSystem();
+        // hold 3 for trex
+        while (left.getRawButton(RobotMap.TREXARM_FORWARDS_BUTTON)) { // 3
         	extr.runTrekudesu();
         	dT.drive(left, right);
         }
