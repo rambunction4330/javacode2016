@@ -47,7 +47,7 @@ public class Extremities {
 	 * !take means outtake, so shooting the ball outwards.
 	 */
 	public void outTakeSystem() {
-		m_intake.set(RobotMap.INTAKE_SPEED*(7/4));
+		m_intake.set(RobotMap.INTAKE_SPEED);
 		}
 	
 	
