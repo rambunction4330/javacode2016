@@ -46,6 +46,7 @@ public class Robot extends IterativeRobot {
     	j=2;
     	k=0;
     }
+    
     //Distance Comparator Variables
     int dist15 = -1;
     int dist0 = -1;
@@ -69,12 +70,12 @@ public class Robot extends IterativeRobot {
     			if (info.getSegmentNumber() == seg2 && j%5 == 0) {
     				dist0 = info.getDistanceInCentimeters();
     				System.out.println("Segment " + seg2 + " = " + info.getDistanceInCentimeters());
-    			}
+    			}	
+    		
     			if (Math.abs(dist15 - dist0) < 5 && dist0 != -1) {
     				System.out.println("90 Degrees baby");
     				ninety = true;
     			}
-    			
     			
     			
     			/** Shooting Process Starts Here (May wish to move to Autonomous Init() to clear space/processes for distance comparing. **/
