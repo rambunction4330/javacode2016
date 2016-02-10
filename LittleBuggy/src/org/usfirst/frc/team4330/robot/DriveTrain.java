@@ -39,13 +39,33 @@ public class DriveTrain {
 		lFW.set(-left.getY());
 		lBW.set(-left.getY());
 	}
+	
+	public void stop() {
+		rFW.set(0);
+		rBW.set(0);
+		lFW.set(0);
+		lBW.set(0);
+	}
 	// all signs align for a single direction
-	public void fixedDrive(double fr, double br, double fl, double bl){
-		
-		rFW.set(fr);
-		rBW.set(br);
-		lFW.set(fl);
-		lBW.set(bl);
+//	public void fixedDrive(double fr, double br, double fl, double bl){
+//		rFW.set(fr);
+//		rBW.set(br);
+//		lFW.set(fl);
+//		lBW.set(bl);
+//	}
+	
+	public void turnCounter(double speed) {
+		rFW.set(speed);
+		rBW.set(speed);
+		lFW.set(speed);
+		lBW.set(speed);
+	}
+	
+	public void turnClock(double speed) {
+		rFW.set(-speed);
+		rBW.set(-speed);
+		lFW.set(-speed);
+		lBW.set(-speed);
 	}
 		
 	/**
