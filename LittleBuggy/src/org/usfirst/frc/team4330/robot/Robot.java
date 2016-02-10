@@ -23,7 +23,6 @@ public class Robot extends IterativeRobot {
     Joystick left, right, shooter;
     LeddarDistanceSensor leddar;
     AnonymousJoystick ajoy;
-
     /*
      * 
      */
@@ -35,8 +34,6 @@ public class Robot extends IterativeRobot {
     	shooter = new Joystick(RobotMap.JOYSTICK_THREE);
     	leddar = new LeddarDistanceSensor();;
     	
-    	System.out.println("right joystick goes in " + RobotMap.JOYSTICK_TWO_RIGHT + "; left goes in " + RobotMap.JOYSTICK_ONE_LEFT);
-
     }
 
     public void autonomousInit() {   
@@ -137,19 +134,18 @@ public class Robot extends IterativeRobot {
     public void teleopInit() {
     	System.out.println("\n********** BUTTONS FOR DRIVERS *********");
     	System.out.println("LEFT joystick controls : ");
-    	System.out.println("Reverse the Drive Direction: PRESS Trigger" );
-    	System.out.println(" ");
+    	System.out.println("Reverse the Drive Direction: PRESS " + RobotMap.REVERSE_DRIVE_BUTTON + "\n");
     	System.out.println("RIGHT joystick controls : \n" + "PRESS Trigger to suck the ball in; PRESS " + RobotMap.INTAKE_BUTTON + " to push the ball out");
     	System.out.println("Scale Up (Release Scaling): " + RobotMap.SCALING_UPWARDS_BUTTON + "; Reel In Scaling: " + RobotMap.SCALING_DOWNWARDS_BUTTON);
     	
     }
-    int dmu = 0;
+   // int dmu = 0;
     public void teleopPeriodic() {
 //    	if (dmu % 3 == 2) {
 //    		System.out.println("No pressure dude");
 //    	}
 //    	else {System.out.println("Don't mess up");}
-    	dmu++;
+    	//dmu++;
     	// left in first, right in second ???
     	extr.stopTake();
     	
