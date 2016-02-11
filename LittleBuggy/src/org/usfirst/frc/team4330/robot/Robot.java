@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.Timer;
 /**
  * 2016 final code!!
  * 
- * Author: Banananananananananananananananananananananamanda & sorta Patrick
+ * Author: Bananananananananananananananananananananamanda & sorta Patrick pandanomium
  * 
  */
 public class Robot extends IterativeRobot {
@@ -151,13 +151,13 @@ public class Robot extends IterativeRobot {
     	extr.stopTake();
     	
     	// reverse driveTrain
-        if (left.getTrigger()) {
+        if (left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)) { // 8
        		dT.driveReversed();
        		System.out.println("Drive train reversed.");
         }
         
         // press trigger
-        if (right.getTrigger()) {
+        if (right.getRawButton(RobotMap.INTAKE_BUTTON)) { // 3
         	System.out.println("Intake commence!");
         	extr.inTakeSystem();
         	Timer.delay(0.5);
@@ -166,7 +166,7 @@ public class Robot extends IterativeRobot {
         // TODO change left to shooter
         
         // working as of Feb 8th
-        if (right.getRawButton(RobotMap.INTAKE_BUTTON)) { // 5
+        if (right.getRawButton(RobotMap.REVERSE_INTAKE_BUTTON)) { // 4
         	System.out.println("Bye bye bally");
         	extr.outTakeSystem();
         	Timer.delay(.2);

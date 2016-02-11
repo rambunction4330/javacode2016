@@ -17,9 +17,9 @@ public class RobotMap {
 	public static final double INTAKE_SPEED = 1;
 	
 	// Buttons
-	public static final int REVERSE_DRIVE_BUTTON = 4;
-	public static final int INTAKE_BUTTON = 5;
-	public static final int REVERSE_INTAKE_BUTTON = 3;
+	public static final int REVERSE_DRIVE_BUTTON = 2;
+	public static final int INTAKE_BUTTON = 3;
+	public static final int REVERSE_INTAKE_BUTTON = 4;
 	public static final int TREXARM_FORWARDS_BUTTON = 3;
 	public static final int TREXARM_BACKWARDS_BUTTON = 4;
 	public static final int SCALING_UPWARDS_BUTTON = 11;
