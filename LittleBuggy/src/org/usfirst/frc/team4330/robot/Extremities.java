@@ -60,22 +60,22 @@ public class Extremities {
 	}
 	
 	/**
-	 * Runs the T-rex Arm down(??)
+	 * Runs the T-rex Arm down
 	 */
 	public void runTrekudesu() {
 		m_trekudesu.set(RobotMap.ARM_WHEEL_SPEED);
 	}
 	
 	/**
-	 * Runs the T-rex Arm up (??)
+	 * Runs the T-rex Arm up
 	 */
 	public void runTrekudesuReverse() {
 		m_trekudesu.set(-RobotMap.ARM_WHEEL_SPEED);
 	}
 	
 	/**
-	 * Stops the T-rex Arm u genius
-	 * It's pronounced (tee-reh-ku-desu)
+	 * Stops the T-rex Arm 
+	 * It's pronounced (tee-recks)
 	 */
 	public void stopTrekudesu() {
 		m_trekudesu.set(0);

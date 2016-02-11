@@ -140,6 +140,7 @@ public class Robot extends IterativeRobot {
     	
     }
    // int dmu = 0;
+    //might be a problem
     public void teleopPeriodic() {
 //    	if (dmu % 3 == 2) {
 //    		System.out.println("No pressure dude");
