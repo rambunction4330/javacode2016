@@ -1,8 +1,10 @@
 package org.usfirst.frc.team4330.robot;
 
 // ctrl + shift + o to automatically get imports
+
 import org.usfirst.frc.team4330.robot.canbus.LeddarDistanceSensor;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Relay;
@@ -35,7 +37,7 @@ public class Robot extends IterativeRobot {
 		right = new Joystick(RobotMap.JOYSTICK_TWO_RIGHT);
 		shooter = new Joystick(RobotMap.JOYSTICK_THREE);
 		leddar = new LeddarDistanceSensor();
-		arm = new Arm(new Talon(RobotMap.TREXARM_PORT));
+		arm = new Arm(new Talon(RobotMap.TREXARM_PORT), new Encoder(RobotMap.ENCODER_PORT_ONE, RobotMap.ENCODER_PORT_TWO));
 		ballControl = new BallControl(new Victor(RobotMap.INTAKE_PORT),
 				new Relay(RobotMap.SPIKE_PORT));
 	}
