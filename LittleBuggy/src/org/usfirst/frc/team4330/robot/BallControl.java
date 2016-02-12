@@ -1,16 +1,17 @@
 package org.usfirst.frc.team4330.robot;
 
-import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.SpeedController;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Relay.Value;
+import edu.wpi.first.wpilibj.SpeedController;
+
 public class BallControl {
 	
-	// the time that the blue wheels will spin in during the intake process
-	private static int SPIN_IN_DELAY = 500;
-	
 	private boolean isPerformingIntake;
+	
+	private boolean isPerformingShoot;
 	
 	private SpeedController blueWheels;
 	
@@ -19,35 +20,40 @@ public class BallControl {
 	private Timer timer = new Timer();
 	
 	public BallControl ( SpeedController blueWheelsController, Relay kickerRelay ) {
-		blueWheels = blueWheelsController;
-		kicker = kickerRelay;
+		this.blueWheels = blueWheelsController;
+		this.kicker = kickerRelay;
 		isPerformingIntake = false;
+		isPerformingShoot = false;
 	}
 	
 	public void performIntake() {
-		if ( isPerformingIntake ) {
+		if ( isPerformingIntake || isPerformingShoot ) {
 			return;
 		}
 		initiateIntakeProcess();
 	}
 	
 	public void shoot() {
-//		System.out.println("Bye bye bally");
-//		extr.outTakeSystem();
-//		Timer.delay(.2);
-//		extr.pushBall();
-//		Timer.delay(.2);
-//		extr.stopTake();
-//		// testing 
-//		extr.pullButNotActuallyPullBall();
-//		System.out.println("\nGoal!!");
+		if ( isPerformingIntake || isPerformingShoot ) {
+			return;
+		}
+		initiateShootProcess();
 	}
 	
 	private void initiateIntakeProcess() {
 		isPerformingIntake = true;
 		System.out.println("\nIntake commence!");
 		spinIn();
-		timer.schedule(new CompleteIntakeProcess(), SPIN_IN_DELAY);
+		timer.schedule(new IntakeProcessComplete(), 500);
+	}
+	
+	private void initiateShootProcess() {
+		isPerformingShoot = true;
+		System.out.println("Bye bye bally");
+		spinOut();
+		timer.schedule(new ShootProcessKickBall(), 200);
+		timer.schedule(new ShootProcessReturnKicker(), 300); 
+		timer.schedule(new ShootProcessComplete(), 400);
 	}
 	
 	// spin the blue wheels so the ball is pulled in
@@ -60,16 +66,47 @@ public class BallControl {
 		blueWheels.set(RobotMap.INTAKE_SPEED);
 	}
 	
-	private class CompleteIntakeProcess extends TimerTask {
+	private class IntakeProcessComplete extends TimerTask {
 
 		@Override
 		public void run() {
 			System.out.println("Stopping blue wheels");
 			blueWheels.set(0);
 			isPerformingIntake = false;
-		}
-		
+		}	
 	}
+	
+	private class ShootProcessKickBall extends TimerTask {
+		@Override
+		public void run() {
+			System.out.println("Kicking ball forward");
+			kicker.set(Value.kForward);
+		}
+	}
+	
+	private class ShootProcessReturnKicker extends TimerTask {
+		@Override
+		public void run() {
+			System.out.println("Deenergize kicker");
+			kicker.stopMotor();
+			System.out.println("Returning kicker");
+			kicker.set(Value.kReverse);
+		}
+	}
+	
+	private class ShootProcessComplete extends TimerTask {
+
+		@Override
+		public void run() {
+			System.out.println("Stopping blue wheels");
+			blueWheels.set(0);
+			
+			System.out.println("Deenergizing kicker");
+			kicker.stopMotor();
+			isPerformingShoot = false;
+		}	
+	}
+	
 	
 
 }

@@ -30,7 +30,13 @@ public class DriveTrain {
 		
 		if ( !lastPressed && currentlyPressed ) {
 			reverse = !reverse;
+			if ( reverse ) {
+				System.out.println("Robot is in reverse");
+			} else {
+				System.out.println("Rebot is in drive");
+			}
 		}
+		
 		lastPressed = currentlyPressed;
 		
 		if (reverse) {

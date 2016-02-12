@@ -9,8 +9,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.Timer;
-// TODO talk to drivers about all buttons needed
 import edu.wpi.first.wpilibj.Victor;
 
 /**
@@ -27,6 +25,7 @@ public class Robot extends IterativeRobot {
     Joystick left, right, shooter;
     LeddarDistanceSensor leddar;
     AnonymousJoystick ajoy;
+    
     /*
      * 
      */
@@ -140,7 +139,7 @@ public class Robot extends IterativeRobot {
     	System.out.println("\n********** BUTTONS FOR DRIVERS *********");
     	System.out.println("LEFT joystick controls : ");
     	System.out.println("Reverse the Drive Direction: PRESS " + RobotMap.REVERSE_DRIVE_BUTTON + "\n");
-    	System.out.println("SHOOTER joystick controls : \n" + "PRESS Trigger to suck the ball in; PRESS " + RobotMap.INTAKE_BUTTON + " to push the ball out");
+    	System.out.println("SHOOTER joystick controls : \n" + "PRESS Trigger to suck the ball in; PRESS " + RobotMap.BALL_CONTROL_INTAKE_BUTTON + " to push the ball out");
     	System.out.println("Scale Up (Release Scaling): " + RobotMap.SCALING_UPWARDS_BUTTON + "; Reel In Scaling: " + RobotMap.SCALING_DOWNWARDS_BUTTON);
     	System.out.println("");
     	
@@ -148,12 +147,12 @@ public class Robot extends IterativeRobot {
 
     public void teleopPeriodic() {
         
-        if (shooter.getRawButton(RobotMap.INTAKE_BUTTON)) { // 3
+        if (shooter.getRawButton(RobotMap.BALL_CONTROL_INTAKE_BUTTON)) { // 3
         	ballControl.performIntake();
         }
         
         // working as of Feb 8th
-        if (shooter.getRawButton(RobotMap.REVERSE_INTAKE_BUTTON)) { // 4
+        if (shooter.getRawButton(RobotMap.BALL_CONTROL_SHOOT_BUTTON)) { // 4
         	ballControl.shoot();
         }
         
