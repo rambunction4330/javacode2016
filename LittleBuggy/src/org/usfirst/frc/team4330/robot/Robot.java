@@ -132,15 +132,18 @@ public class Robot extends IterativeRobot {
     }
     
     public void teleopInit() {
+    	count = true;
     	System.out.println("\n********** BUTTONS FOR DRIVERS *********");
     	System.out.println("LEFT joystick controls : ");
     	System.out.println("Reverse the Drive Direction: PRESS " + RobotMap.REVERSE_DRIVE_BUTTON + "\n");
-    	System.out.println("RIGHT joystick controls : \n" + "PRESS Trigger to suck the ball in; PRESS " + RobotMap.INTAKE_BUTTON + " to push the ball out");
+    	System.out.println("SHOOTER joystick controls : \n" + "PRESS Trigger to suck the ball in; PRESS " + RobotMap.INTAKE_BUTTON + " to push the ball out");
     	System.out.println("Scale Up (Release Scaling): " + RobotMap.SCALING_UPWARDS_BUTTON + "; Reel In Scaling: " + RobotMap.SCALING_DOWNWARDS_BUTTON);
+    	System.out.println("");
     	
     }
    // int dmu = 0;
     //might be a problem
+    boolean count = true;
     public void teleopPeriodic() {
 //    	if (dmu % 3 == 2) {
 //    		System.out.println("No pressure dude");
@@ -149,16 +152,17 @@ public class Robot extends IterativeRobot {
     	//dmu++;
     	// left in first, right in second ???
     	extr.stopTake();
-    	
-    	// reverse driveTrain
+    	// reverse driveTrain (not working)
         if (left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)) { // 8
        		dT.driveReversed();
-       		System.out.println("Drive train reversed.");
+       		Timer.delay(0.2);
+       		System.out.println("\nDrive train reversed. Is it going forward?  " + count);
+       		count = !count;
         }
         
-        // press trigger
-        if (right.getRawButton(RobotMap.INTAKE_BUTTON)) { // 3
-        	System.out.println("Intake commence!");
+        
+        if (shooter.getRawButton(RobotMap.INTAKE_BUTTON)) { // 3
+        	System.out.println("\nIntake commence!");
         	extr.inTakeSystem();
         	Timer.delay(0.5);
         	extr.stopTake();
@@ -166,7 +170,7 @@ public class Robot extends IterativeRobot {
         // TODO change left to shooter
         
         // working as of Feb 8th
-        if (right.getRawButton(RobotMap.REVERSE_INTAKE_BUTTON)) { // 4
+        if (shooter.getRawButton(RobotMap.REVERSE_INTAKE_BUTTON)) { // 4
         	System.out.println("Bye bye bally");
         	extr.outTakeSystem();
         	Timer.delay(.2);
@@ -179,15 +183,17 @@ public class Robot extends IterativeRobot {
         }
         // fail-safe stoppers
         extr.stopTrekudesu();
-        
         // hold 4 for reverse trex
-        while (left.getRawButton(RobotMap.TREXARM_BACKWARDS_BUTTON)) { // 4
+        while (shooter.getRawButton(RobotMap.TREXARM_BACKWARDS_BUTTON)) { // 4
         	extr.runTrekudesuReverse();
+        	//if (dT.reverse) {
         	dT.drive(left, right);
+//        	}
+//        	else dT.drive(-left, -right);
         }
         
         // hold 3 for trex
-        while (left.getRawButton(RobotMap.TREXARM_FORWARDS_BUTTON)) { // 3
+        while (shooter.getRawButton(RobotMap.TREXARM_FORWARDS_BUTTON)) { // 3
         	extr.runTrekudesu();
         	dT.drive(left, right);
         }

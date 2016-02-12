@@ -6,10 +6,10 @@ import edu.wpi.first.wpilibj.Talon;
 
 public class DriveTrain {
 	private SpeedController rFW, lFW, rBW, lBW;
-	private boolean reverse;
+	boolean reverse;
 	
 	public DriveTrain() {
-		reverse = false;
+		//reverse = false;
 		
 		rFW = new Talon(RobotMap.RIGHT_FRONT_WHEEL);
 		rBW = new Talon(RobotMap.RIGHT_BACK_WHEEL);
@@ -33,11 +33,12 @@ public class DriveTrain {
 			lFW.set(left.getY());
 			lBW.set(left.getY());	
 		}
-		
+		else {
 		rFW.set(right.getY());
 		rBW.set(right.getY());
 		lFW.set(-left.getY());
 		lBW.set(-left.getY());
+		}
 	}
 	
 	public void stop() {
@@ -76,5 +77,6 @@ public class DriveTrain {
 	public void driveReversed() {
 		reverse = !reverse;
 	}
+	
 
 }
