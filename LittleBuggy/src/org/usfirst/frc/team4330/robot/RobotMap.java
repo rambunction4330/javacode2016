@@ -20,8 +20,8 @@ public class RobotMap {
 	public static final int REVERSE_DRIVE_BUTTON = 8;
 	public static final int INTAKE_BUTTON = 6;
 	public static final int REVERSE_INTAKE_BUTTON = 4;
-	public static final int TREXARM_FORWARDS_BUTTON = 3;
-	public static final int TREXARM_BACKWARDS_BUTTON = 5;
+	public static final int TREXARM_LOWER_BUTTON = 3;
+	public static final int TREXARM_RAISE_BUTTON = 5;
 	public static final int SCALING_UPWARDS_BUTTON = 11;
 	public static final int SCALING_DOWNWARDS_BUTTON = 12;
 		

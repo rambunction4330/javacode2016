@@ -7,17 +7,16 @@ import edu.wpi.first.wpilibj.Talon;
 public class DriveTrain {
 	private SpeedController rFW, lFW, rBW, lBW;
 	boolean reverse;
+	boolean lastPressed;
 	
 	public DriveTrain() {
-		//reverse = false;
+		reverse = false;
+		lastPressed = false;
 		
 		rFW = new Talon(RobotMap.RIGHT_FRONT_WHEEL);
 		rBW = new Talon(RobotMap.RIGHT_BACK_WHEEL);
 		lFW = new Talon(RobotMap.LEFT_FRONT_WHEEL);
 		lBW = new Talon(RobotMap.LEFT_BACK_WHEEL);
-				
-//		mRW = new Talon(Map.MINI_RIGHT_WHEEL);
-//		mLW = new Talon(Map.MINI_LEFT_WHEEL);
 	}
 	
 	/**
@@ -25,19 +24,25 @@ public class DriveTrain {
 	 * 
 	 * @param left the left joystick
 	 * @param right the right joystick
+	 * @param currentlyPressed true if reverse button is currently pressed, false otherwise
 	 */
-	public void drive(Joystick left, Joystick right) {
+	public void drive(Joystick left, Joystick right, boolean currentlyPressed) {
+		
+		if ( !lastPressed && currentlyPressed ) {
+			reverse = !reverse;
+		}
+		lastPressed = currentlyPressed;
+		
 		if (reverse) {
 			rFW.set(-right.getY());
 			rBW.set(-right.getY());
 			lFW.set(left.getY());
 			lBW.set(left.getY());	
-		}
-		else {
-		rFW.set(right.getY());
-		rBW.set(right.getY());
-		lFW.set(-left.getY());
-		lBW.set(-left.getY());
+		} else {
+			rFW.set(right.getY());
+			rBW.set(right.getY());
+			lFW.set(-left.getY());
+			lBW.set(-left.getY());
 		}
 	}
 	

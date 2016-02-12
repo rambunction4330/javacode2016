@@ -1,17 +1,13 @@
 package org.usfirst.frc.team4330.robot;
 
 import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.Relay.Direction;
 import edu.wpi.first.wpilibj.Relay.Value;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 
 public class Extremities {
 	private Victor m_intake;
 	boolean take;
-	private SpeedController m_trekudesu;
 	private Relay spoke;
 //	private SpeedController scalar;
 //	private Encoder notHereYet;
@@ -19,7 +15,6 @@ public class Extremities {
 	
 	public Extremities() {
 		m_intake = new Victor(RobotMap.INTAKE_PORT);
-		m_trekudesu = new Talon(RobotMap.TREXARM_PORT);
 		spoke = new Relay(RobotMap.SPIKE_PORT);
 //		scalar = new Talon(RobotMap.SCALAR_PORT);
 //        notHereYet = new Encoder(RobotMap.ENCODER_PORT_ONE, RobotMap.ENCODER_PORT_TWO, true, CounterBase.EncodingType.k1X);
@@ -59,33 +54,4 @@ public class Extremities {
 		m_intake.set(0);
 	}
 	
-	/**
-	 * Runs the T-rex Arm down
-	 */
-	public void runTrekudesu() {
-		m_trekudesu.set(RobotMap.ARM_WHEEL_SPEED);
-	}
-	
-	/**
-	 * Runs the T-rex Arm up
-	 */
-	public void runTrekudesuReverse() {
-		m_trekudesu.set(-RobotMap.ARM_WHEEL_SPEED);
-	}
-	
-	/**
-	 * Stops the T-rex Arm 
-	 * It's pronounced (tee-recks)
-	 */
-	public void stopTrekudesu() {
-		m_trekudesu.set(0);
-	}
-	
-	public void quickTest() {
-//		m_intake.setDirection(Direction.kForward);
-		spoke.setDirection(Direction.kForward);
-		Timer.delay(.5);
-		m_intake.stopMotor();;
-		spoke.stopMotor();;
-	}
 }

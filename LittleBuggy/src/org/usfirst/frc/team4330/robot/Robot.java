@@ -6,9 +6,12 @@ import org.usfirst.frc.team4330.robot.canbus.LeddarDistanceSensor;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Timer;
 // TODO talk to drivers about all buttons needed
+import edu.wpi.first.wpilibj.Victor;
 
 /**
  * 2016 final code!!
@@ -19,7 +22,8 @@ import edu.wpi.first.wpilibj.Timer;
 public class Robot extends IterativeRobot {
     RobotDrive myRobot;
     DriveTrain dT;
-    Extremities extr;
+    Arm arm;
+    BallControl ballControl;
     Joystick left, right, shooter;
     LeddarDistanceSensor leddar;
     AnonymousJoystick ajoy;
@@ -28,12 +32,13 @@ public class Robot extends IterativeRobot {
      */
     public Robot() {
     	dT = new DriveTrain();
-    	extr = new Extremities();
     	left = new Joystick(RobotMap.JOYSTICK_ONE_LEFT);
     	right = new Joystick(RobotMap.JOYSTICK_TWO_RIGHT);
     	shooter = new Joystick(RobotMap.JOYSTICK_THREE);
-    	leddar = new LeddarDistanceSensor();;
-    	
+    	leddar = new LeddarDistanceSensor();
+    	arm = new Arm(new Talon(RobotMap.TREXARM_PORT));
+    	ballControl = new BallControl(new Victor(RobotMap.INTAKE_PORT), 
+    			new Relay(RobotMap.SPIKE_PORT));
     }
 
     public void autonomousInit() {   
@@ -132,7 +137,6 @@ public class Robot extends IterativeRobot {
     }
     
     public void teleopInit() {
-    	count = true;
     	System.out.println("\n********** BUTTONS FOR DRIVERS *********");
     	System.out.println("LEFT joystick controls : ");
     	System.out.println("Reverse the Drive Direction: PRESS " + RobotMap.REVERSE_DRIVE_BUTTON + "\n");
@@ -141,64 +145,24 @@ public class Robot extends IterativeRobot {
     	System.out.println("");
     	
     }
-   // int dmu = 0;
-    //might be a problem
-    boolean count = true;
+
     public void teleopPeriodic() {
-//    	if (dmu % 3 == 2) {
-//    		System.out.println("No pressure dude");
-//    	}
-//    	else {System.out.println("Don't mess up");}
-    	//dmu++;
-    	// left in first, right in second ???
-    	extr.stopTake();
-    	// reverse driveTrain (not working)
-        if (left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)) { // 8
-       		dT.driveReversed();
-       		Timer.delay(0.2);
-       		System.out.println("\nDrive train reversed. Is it going forward?  " + count);
-       		count = !count;
-        }
-        
         
         if (shooter.getRawButton(RobotMap.INTAKE_BUTTON)) { // 3
-        	System.out.println("\nIntake commence!");
-        	extr.inTakeSystem();
-        	Timer.delay(0.5);
-        	extr.stopTake();
+        	ballControl.performIntake();
         }
-        // TODO change left to shooter
         
         // working as of Feb 8th
         if (shooter.getRawButton(RobotMap.REVERSE_INTAKE_BUTTON)) { // 4
-        	System.out.println("Bye bye bally");
-        	extr.outTakeSystem();
-        	Timer.delay(.2);
-    		extr.pushBall();
-    		Timer.delay(.2);
-        	extr.stopTake();
-        	// testing 
-        	extr.pullButNotActuallyPullBall();
-        	System.out.println("\nGoal!!");
-        }
-        // fail-safe stoppers
-        extr.stopTrekudesu();
-        // hold 4 for reverse trex
-        while (shooter.getRawButton(RobotMap.TREXARM_BACKWARDS_BUTTON)) { // 4
-        	extr.runTrekudesuReverse();
-        	//if (dT.reverse) {
-        	dT.drive(left, right);
-//        	}
-//        	else dT.drive(-left, -right);
+        	ballControl.shoot();
         }
         
-        // hold 3 for trex
-        while (shooter.getRawButton(RobotMap.TREXARM_FORWARDS_BUTTON)) { // 3
-        	extr.runTrekudesu();
-        	dT.drive(left, right);
-        }
+        arm.handleButtons(
+        		shooter.getRawButton(RobotMap.TREXARM_RAISE_BUTTON),
+        		shooter.getRawButton(RobotMap.TREXARM_LOWER_BUTTON)
+        );
         
-        dT.drive(left, right);
+        dT.drive(left, right, left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON));
     }
     
     public void testInit() {
