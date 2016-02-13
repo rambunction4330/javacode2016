@@ -20,6 +20,40 @@ public class DriveTrain {
 	}
 
 	/**
+	 * Drives the robot forward or backwards if controller is xbox.
+	 * 
+	 * @param xboxdrive
+	 *            the xbox controller
+	 * @param currentlyPressed
+	 *            true if reverse button is currently pressed, false otherwise
+	 */
+	public void xboxDrive(Joystick left, boolean currentlyPressed) {
+
+		if (!lastPressed && currentlyPressed) {
+			reverse = !reverse;
+			if (reverse) {
+				System.out.println("Robot is in reverse");
+			} else {
+				System.out.println("Rebot is in drive");
+			}
+		}
+
+		lastPressed = currentlyPressed;
+
+		if (reverse) {
+			rFW.set(left.getRawAxis(5));
+			rBW.set(left.getRawAxis(5));
+			lFW.set(left.getRawAxis(1));
+			lBW.set(left.getRawAxis(1));
+		} else {
+			rFW.set(-left.getRawAxis(5));
+			rBW.set(-left.getRawAxis(5));
+			lFW.set(-left.getRawAxis(1));
+			lBW.set(-left.getRawAxis(1));
+		}
+	}
+
+	/**
 	 * Drives the robot forward or backwards.
 	 * 
 	 * @param left
@@ -34,9 +68,9 @@ public class DriveTrain {
 		if (!lastPressed && currentlyPressed) {
 			reverse = !reverse;
 			if (reverse) {
-				System.out.println("Robot is in reverse");
+				System.out.println("Robot is in reverse.");
 			} else {
-				System.out.println("Rebot is in drive");
+				System.out.println("Robot is in drive.");
 			}
 		}
 
