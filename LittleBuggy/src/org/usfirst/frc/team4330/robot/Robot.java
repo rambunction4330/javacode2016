@@ -4,12 +4,10 @@ package org.usfirst.frc.team4330.robot;
 
 import org.usfirst.frc.team4330.robot.canbus.LeddarDistanceSensor;
 
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
 
 /**
