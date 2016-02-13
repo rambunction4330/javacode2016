@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.Victor;
 public class Robot extends IterativeRobot {
 	RobotDrive myRobot;
 	DriveTrain dT;
-	Arm arm;
+	ArmWithEncoder arm;
 	BallControl ballControl;
 	Joystick left, right, shooter;
 	LeddarDistanceSensor leddar;
@@ -35,7 +35,7 @@ public class Robot extends IterativeRobot {
 		right = new Joystick(RobotMap.JOYSTICK_TWO_RIGHT);
 		shooter = new Joystick(RobotMap.JOYSTICK_THREE);
 		leddar = new LeddarDistanceSensor();
-		arm = new Arm(new Talon(RobotMap.TREXARM_PORT));
+		arm = new ArmWithEncoder();
 		ballControl = new BallControl(new Victor(RobotMap.INTAKE_PORT),
 				new Relay(RobotMap.SPIKE_PORT));
 	}
@@ -169,6 +169,8 @@ public class Robot extends IterativeRobot {
 				+ "to reel in the scaling mechanicism." + "\n");
 		System.out.println("****************************************");
 		System.out.println("****************************************" + "\n");
+		
+		arm.initialize();
 
 	}
 
