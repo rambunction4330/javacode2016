@@ -14,10 +14,17 @@ public class ArmWithEncoder {
 	private static final double I = 0;
 	private static final double D = 0;
 	private boolean isInitialzied;
+<<<<<<< HEAD
 
 	private static final double RAISE_POSITION = 3;
 	private static final double LOWER_POSITION = 20;
 
+=======
+	
+	private static final double RAISE_POSITION = 20;
+	private static final double LOWER_POSITION = 3;
+	
+>>>>>>> c4c0f39c7da7d562a3d701b3b9170c9514c9d773
 	private Encoder encoder;
 
 	private SpeedController speedController;
@@ -48,9 +55,16 @@ public class ArmWithEncoder {
 		}
 
 	}
+<<<<<<< HEAD
 
 	public void initialize() {
 		double speed = -1 * RobotMap.ARM_WHEEL_SPEED;
+=======
+	
+	
+	public void initialize () {
+		double speed = RobotMap.ARM_WHEEL_SPEED;
+>>>>>>> c4c0f39c7da7d562a3d701b3b9170c9514c9d773
 		speedController.set(speed);
 		timer.schedule(new DetermineIfCalibrationComplete(), 0, 100);
 	}
