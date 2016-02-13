@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.Victor;
 public class Robot extends IterativeRobot {
 	RobotDrive myRobot;
 	DriveTrain dT;
-	ArmWithEncoder arm;
+	SmartArm arm;
 	BallControl ballControl;
 	Joystick left, right, shooter, xboxdrive;
 	LeddarDistanceSensor leddar;
@@ -36,7 +36,7 @@ public class Robot extends IterativeRobot {
 		right = new Joystick(RobotMap.JOYSTICK_THREE);
 		shooter = new Joystick(RobotMap.JOYSTICK_TWO);
 		leddar = new LeddarDistanceSensor();
-		arm = new ArmWithEncoder();
+		arm = new SmartArm();
 		ballControl = new BallControl(new Victor(RobotMap.INTAKE_PORT),
 				new Relay(RobotMap.SPIKE_PORT));
 	}

@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 
-public class ArmWithEncoder {
+public class SmartArm {
 
 	private static final double P = 0.5;
 	private static final double I = 0;
@@ -26,7 +26,7 @@ public class ArmWithEncoder {
 
 	private Timer timer = new Timer();
 
-	public ArmWithEncoder() {
+	public SmartArm() {
 		speedController = new Talon(RobotMap.TREXARM_PORT);
 		encoder = new Encoder(RobotMap.ARM_ENCODER_PORT_ONE,
 				RobotMap.ARM_ENCODER_PORT_TWO);
