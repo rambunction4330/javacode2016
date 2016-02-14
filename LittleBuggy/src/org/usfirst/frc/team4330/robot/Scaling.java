@@ -28,7 +28,7 @@ public class Scaling {
 				RobotMap.ENCODER_PORT_TWO);
 		encode.setPIDSourceType(PIDSourceType.kDisplacement);
 		
-		// TODO determine linear distance in inches per angle of rotation
+		// TODO determine linear distance in inches per degree of rotation
 		final double inchesMovementPerDegree = 0.025;
 		encode.setDistancePerPulse(inchesMovementPerDegree * 360.0 / 250);
 		
