@@ -2,6 +2,7 @@ package org.usfirst.frc.team4330.robot;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Victor;
 
@@ -25,6 +26,12 @@ public class Scaling {
 	public Scaling(Victor moor) {
 		encode = new Encoder(RobotMap.ENCODER_PORT_ONE,
 				RobotMap.ENCODER_PORT_TWO);
+		encode.setPIDSourceType(PIDSourceType.kDisplacement);
+		
+		// TODO determine linear distance in inches per angle of rotation
+		final double inchesMovementPerDegree = 0.25;
+		encode.setDistancePerPulse(inchesMovementPerDegree * 360.0 / 250);
+		
 		this.moor = moor;
 		pid = new PIDController(P, I, D, 0, encode, moor);
 
