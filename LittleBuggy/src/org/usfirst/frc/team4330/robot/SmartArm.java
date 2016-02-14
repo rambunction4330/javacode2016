@@ -11,7 +11,9 @@ import edu.wpi.first.wpilibj.Talon;
 
 public class SmartArm {
 
-	private static final double P = 0.5;
+	// TODO tune the arm PID constants input is angular position in degrees and  
+	// output is motor speed between -1 and 1
+	private static final double P = 0.1;
 	private static final double I = 0;
 	private static final double D = 0;
 	private boolean isInitialzied;
