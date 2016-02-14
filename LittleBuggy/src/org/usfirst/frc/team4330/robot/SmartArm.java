@@ -35,8 +35,8 @@ public class SmartArm {
 				RobotMap.ARM_ENCODER_PORT_TWO);
 		// want the encoder to report in angular position in degrees ( 360 degrees per revolution )
 		// and the encoder being used has 250 cycles (1000 ticks) per revolution
-		encoder.setDistancePerPulse(360.0 / 250);
 		encoder.setPIDSourceType(PIDSourceType.kDisplacement);
+		encoder.setDistancePerPulse(360.0 / 250);
 		
 		// don't enable the PID controller until the encoder has been calibrated
 		positionController = new PIDController(P, I, D, 0, encoder,
