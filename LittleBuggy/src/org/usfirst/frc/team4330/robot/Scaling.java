@@ -29,7 +29,7 @@ public class Scaling {
 		encode.setPIDSourceType(PIDSourceType.kDisplacement);
 		
 		// TODO determine linear distance in inches per angle of rotation
-		final double inchesMovementPerDegree = 0.25;
+		final double inchesMovementPerDegree = 0.025;
 		encode.setDistancePerPulse(inchesMovementPerDegree * 360.0 / 250);
 		
 		this.moor = moor;
