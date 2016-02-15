@@ -174,11 +174,11 @@ public class Robot extends IterativeRobot {
 		System.out.println("****************************************" + "\n");
 	}
 	
-	int miliseconds = 0;
+	int milliseconds = 0;
 
 	public void teleopPeriodic() {
 		
-		if (miliseconds == 10000)
+		if (milliseconds == 10000)
 			shooter.setRumble(RumbleType.kLeftRumble, 1);
 
 		ballControl.performIntake(left
@@ -190,17 +190,12 @@ public class Robot extends IterativeRobot {
 		arm.handleButtons(shooter.getRawButton(RobotMap.TREXARM_RAISE_BUTTON), //
 				shooter.getRawButton(RobotMap.TREXARM_LOWER_BUTTON)); //
 
-<<<<<<< HEAD
-		
-		dT.drive(left, right, left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON));
-=======
 		if (left.getIsXbox())
 			dT.xboxDrive(left, left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON));
 		else 
 			dT.drive(left, right, left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)); // 8
 		
-		miliseconds += 20;
->>>>>>> fc067ba84e7a657d968185434a4c06effddda927
+		milliseconds += 20;	
 	}
 
 	public void testInit() {
