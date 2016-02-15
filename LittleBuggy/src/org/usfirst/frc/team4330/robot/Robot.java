@@ -31,9 +31,9 @@ public class Robot extends IterativeRobot {
      */
 	public Robot() {
 		dT = new DriveTrain();
-		left = new Joystick(RobotMap.JOYSTICK_ONE_LEFT);
-		right = new Joystick(RobotMap.JOYSTICK_TWO_RIGHT);
-		shooter = new Joystick(RobotMap.JOYSTICK_THREE);
+		left = new Joystick(RobotMap.JOYSTICK_ONE);
+		right = new Joystick(RobotMap.JOYSTICK_THREE);
+		shooter = new Joystick(RobotMap.JOYSTICK_TWO);
 		leddar = new LeddarDistanceSensor();
 		arm = new ArmWithEncoder();
 		ballControl = new BallControl(new Victor(RobotMap.INTAKE_PORT),
@@ -185,6 +185,7 @@ public class Robot extends IterativeRobot {
 		arm.handleButtons(shooter.getRawButton(RobotMap.TREXARM_RAISE_BUTTON), //
 				shooter.getRawButton(RobotMap.TREXARM_LOWER_BUTTON));
 
+		
 		dT.drive(left, right, left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON));
 	}
 

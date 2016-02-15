@@ -29,8 +29,8 @@ public class RobotMap {
 	public static final int INTAKE_PORT = 6; // confirmed
 	
 	// Joysticks
-	public static final int JOYSTICK_ONE_LEFT = 1;
-	public static final int JOYSTICK_TWO_RIGHT = 0;
+	public static final int JOYSTICK_ONE = 1;
+	public static final int JOYSTICK_TWO = 0;
 	public static final int JOYSTICK_THREE = 2;
 	
 	// Encoders

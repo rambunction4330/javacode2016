@@ -32,9 +32,9 @@ public class BallControl {
 
 	public void shoot(boolean buttonPressed) {
 		if (buttonPressed) {
-			if (isPerformingIntake || isPerformingShoot) {
+			if (isPerformingIntake || isPerformingShoot)
 				return;
-			}
+			
 			initiateShootProcess();
 		}
 	}

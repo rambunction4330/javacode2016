@@ -33,11 +33,10 @@ public class DriveTrain {
 
 		if (!lastPressed && currentlyPressed) {
 			reverse = !reverse;
-			if (reverse) {
+			if (reverse)
 				System.out.println("Robot is in reverse");
-			} else {
+			else
 				System.out.println("Rebot is in drive");
-			}
 		}
 
 		lastPressed = currentlyPressed;
@@ -82,13 +81,6 @@ public class DriveTrain {
 		rBW.set(-speed);
 		lFW.set(-speed);
 		lBW.set(-speed);
-	}
-
-	/**
-	 * Flips the direction of the robot.
-	 */
-	public void driveReversed() {
-		reverse = !reverse;
 	}
 
 }
