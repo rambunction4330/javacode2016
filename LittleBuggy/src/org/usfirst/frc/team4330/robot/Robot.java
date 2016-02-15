@@ -6,6 +6,7 @@ import org.usfirst.frc.team4330.robot.canbus.LeddarDistanceSensor;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Joystick.RumbleType;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Victor;
@@ -20,9 +21,9 @@ import edu.wpi.first.wpilibj.Victor;
 public class Robot extends IterativeRobot {
 	RobotDrive myRobot;
 	DriveTrain dT;
-	ArmWithEncoder arm;
+	SmartArm arm;
 	BallControl ballControl;
-	Joystick left, right, shooter;
+	Joystick left, right, shooter, xboxdrive;
 	LeddarDistanceSensor leddar;
 	AnonymousJoystick ajoy;
 
@@ -35,7 +36,7 @@ public class Robot extends IterativeRobot {
 		right = new Joystick(RobotMap.JOYSTICK_THREE);
 		shooter = new Joystick(RobotMap.JOYSTICK_TWO);
 		leddar = new LeddarDistanceSensor();
-		arm = new ArmWithEncoder();
+		arm = new SmartArm();
 		ballControl = new BallControl(new Victor(RobotMap.INTAKE_PORT),
 				new Relay(RobotMap.SPIKE_PORT));
 	}
@@ -150,6 +151,8 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void teleopInit() {
+		arm.initialize();
+		
 		System.out.println("\n****************************************");
 		System.out.println("********** BUTTONS FOR DRIVERS *********");
 		System.out.println("\nLEFT joystick controls :" + "\nPRESS "
@@ -169,12 +172,14 @@ public class Robot extends IterativeRobot {
 				+ "to reel in the scaling mechanicism." + "\n");
 		System.out.println("****************************************");
 		System.out.println("****************************************" + "\n");
-		
-		arm.initialize();
-
 	}
+	
+	int miliseconds = 0;
 
 	public void teleopPeriodic() {
+		
+		if (miliseconds == 10000)
+			shooter.setRumble(RumbleType.kLeftRumble, 1);
 
 		ballControl.performIntake(left
 				.getRawButton(RobotMap.BALL_CONTROL_INTAKE_BUTTON)); // 3
@@ -183,10 +188,19 @@ public class Robot extends IterativeRobot {
 				.getRawButton(RobotMap.BALL_CONTROL_SHOOT_BUTTON)); // 4
 
 		arm.handleButtons(shooter.getRawButton(RobotMap.TREXARM_RAISE_BUTTON), //
-				shooter.getRawButton(RobotMap.TREXARM_LOWER_BUTTON));
+				shooter.getRawButton(RobotMap.TREXARM_LOWER_BUTTON)); //
 
+<<<<<<< HEAD
 		
 		dT.drive(left, right, left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON));
+=======
+		if (left.getIsXbox())
+			dT.xboxDrive(left, left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON));
+		else 
+			dT.drive(left, right, left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)); // 8
+		
+		miliseconds += 20;
+>>>>>>> fc067ba84e7a657d968185434a4c06effddda927
 	}
 
 	public void testInit() {
