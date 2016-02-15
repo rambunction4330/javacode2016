@@ -103,7 +103,5 @@ public class SmartArm {
 				lastPositionRead = currentPositionRead;
 			}
 		}
-
 	}
-
 }

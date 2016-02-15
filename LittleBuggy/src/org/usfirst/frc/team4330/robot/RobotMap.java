@@ -11,6 +11,8 @@ public class RobotMap {
 	public static final int RIGHT_FRONT_WHEEL = 2;
 	public static final int LEFT_FRONT_WHEEL = 0;
 	public static final int SCALAR_PORT = 5;
+	
+	public static final double SCALING_MAXIMUM = .75;
 	public static final double ARM_WHEEL_SPEED = 0.3;
 	public static final double INTAKE_SPEED = 1;
 	

@@ -26,6 +26,7 @@ public class Robot extends IterativeRobot {
 	Joystick left, right, shooter, xboxdrive;
 	LeddarDistanceSensor leddar;
 	AnonymousJoystick ajoy;
+	Scaling scaling;
 
 	/*
      * 
@@ -39,6 +40,7 @@ public class Robot extends IterativeRobot {
 		arm = new SmartArm();
 		ballControl = new BallControl(new Victor(RobotMap.INTAKE_PORT),
 				new Relay(RobotMap.SPIKE_PORT));
+		scaling = new Scaling(new Victor(RobotMap.SCALAR_PORT), shooter.getRawAxis(3));
 	}
 
 	public void autonomousInit() {
@@ -178,8 +180,12 @@ public class Robot extends IterativeRobot {
 
 	public void teleopPeriodic() {
 		
-		if (milliseconds == 10000)
+		// Amanda's work
+		
+		if (milliseconds % 10000 == 0)
 			shooter.setRumble(RumbleType.kLeftRumble, 1);
+		if (milliseconds % 10000 == 2000)
+			shooter.setRumble(RumbleType.kLeftRumble, 0);
 
 		ballControl.performIntake(left
 				.getRawButton(RobotMap.BALL_CONTROL_INTAKE_BUTTON)); // 3
@@ -189,6 +195,8 @@ public class Robot extends IterativeRobot {
 
 		arm.handleButtons(shooter.getRawButton(RobotMap.TREXARM_RAISE_BUTTON), //
 				shooter.getRawButton(RobotMap.TREXARM_LOWER_BUTTON)); //
+		
+		scaling.setSpeedSensitivity(shooter.getRawAxis(3));
 
 		if (left.getIsXbox())
 			dT.xboxDrive(left, left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON));
@@ -202,7 +210,6 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void testPeriodic() {
-
 	}
 
 }

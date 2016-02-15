@@ -22,8 +22,9 @@ public class Scaling {
 	private final static double goalHeight = 10;
 
 	private boolean lastPressed = false;
+	private double speedsensitivity;
 
-	public Scaling(Victor moor) {
+	public Scaling(Victor moo, double speedsensitivity) {
 		encode = new Encoder(RobotMap.ENCODER_PORT_ONE,
 				RobotMap.ENCODER_PORT_TWO);
 		encode.setPIDSourceType(PIDSourceType.kDisplacement);
@@ -32,8 +33,10 @@ public class Scaling {
 		final double inchesMovementPerDegree = 0.025;
 		encode.setDistancePerPulse(inchesMovementPerDegree * 360.0 / 250);
 		
-		this.moor = moor;
-		pid = new PIDController(P, I, D, 0, encode, moor);
+		this.moor = moo;
+		this.speedsensitivity = speedsensitivity * RobotMap.SCALING_MAXIMUM;
+		pid = new PIDController(P, I, D, 0, encode, moo);
+		pid.setOutputRange(0, speedsensitivity);
 
 		isUp = false;
 		hasPulled = false;
@@ -42,6 +45,10 @@ public class Scaling {
 		pid.enable();
 	}
 
+	public void setSpeedSensitivity(double speedsenstivity) {
+		this.speedsensitivity = speedsenstivity * RobotMap.SCALING_MAXIMUM;
+		pid.setOutputRange(0, speedsensitivity);
+	}
 	public void restart(boolean buttonPressed) {
 		if ((!lastPressed && buttonPressed) && (hasPulled || isUp)) {
 			// pid.enable();
