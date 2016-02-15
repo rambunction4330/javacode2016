@@ -34,9 +34,9 @@ public class Scaling {
 		encode.setDistancePerPulse(inchesMovementPerDegree * 360.0 / 250);
 		
 		this.moor = moo;
-		this.speedsensitivity = speedsensitivity * RobotMap.SCALING_MAXIMUM;
+		this.speedsensitivity = -speedsensitivity * RobotMap.SCALING_MAXIMUM;
 		pid = new PIDController(P, I, D, 0, encode, moo);
-		pid.setOutputRange(0, speedsensitivity);
+		pid.setOutputRange(0, this.speedsensitivity);
 
 		isUp = false;
 		hasPulled = false;
@@ -46,7 +46,7 @@ public class Scaling {
 	}
 
 	public void setSpeedSensitivity(double speedsenstivity) {
-		this.speedsensitivity = speedsenstivity * RobotMap.SCALING_MAXIMUM;
+		this.speedsensitivity = -speedsenstivity * RobotMap.SCALING_MAXIMUM;
 		pid.setOutputRange(0, speedsensitivity);
 	}
 	public void restart(boolean buttonPressed) {
