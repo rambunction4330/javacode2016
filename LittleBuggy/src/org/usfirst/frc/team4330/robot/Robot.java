@@ -154,6 +154,7 @@ public class Robot extends IterativeRobot {
 
 	public void teleopInit() {
 		arm.initialize();
+		scaling.initialize();
 		
 		System.out.println("\n****************************************");
 		System.out.println("********** BUTTONS FOR DRIVERS *********");
@@ -197,6 +198,8 @@ public class Robot extends IterativeRobot {
 				shooter.getRawButton(RobotMap.TREXARM_LOWER_BUTTON)); //
 		
 		scaling.setSpeedSensitivity(shooter.getRawAxis(3));
+		
+		// TODO add handle buttons method call on the scaler
 
 		if (left.getIsXbox())
 			dT.xboxDrive(left, left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON));

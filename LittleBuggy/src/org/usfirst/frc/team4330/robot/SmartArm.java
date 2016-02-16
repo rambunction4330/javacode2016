@@ -66,6 +66,10 @@ public class SmartArm {
 		speedController.set(speed);
 		timer.schedule(new DetermineIfCalibrationComplete(), 0, 100);
 	}
+	
+	public double getPosition() {
+		return encoder.pidGet();
+	}
 
 	private void raise() {
 		positionController.setSetpoint(RAISE_POSITION);
@@ -74,6 +78,7 @@ public class SmartArm {
 	private void lower() {
 		positionController.setSetpoint(LOWER_POSITION);
 	}
+	
 
 	private class DetermineIfCalibrationComplete extends TimerTask {
 
