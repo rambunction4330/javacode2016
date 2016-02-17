@@ -210,9 +210,11 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void testInit() {
+		arm.initialize();
 	}
 
 	public void testPeriodic() {
+		System.out.println("Smart Arm position is " + arm.getPosition());
 	}
 
 }
