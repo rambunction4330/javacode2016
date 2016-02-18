@@ -60,7 +60,7 @@ public class Scaling {
 	}
 
 	public void setSpeedSensitivity(double speedsenstivity) {
-		this.speedsensitivity = -speedsenstivity * RobotMap.SCALING_MAXIMUM;
+		this.speedsensitivity = speedsenstivity * RobotMap.SCALING_MAXIMUM;
 		pid.setOutputRange(0, speedsensitivity);
 	}
 	

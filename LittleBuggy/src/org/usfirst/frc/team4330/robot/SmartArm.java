@@ -19,8 +19,8 @@ public class SmartArm {
 	private boolean isInitialzied;
 
 	// degrees with 0 at the raised hard stop and positive direction towards lowering
-	private static final double RAISE_POSITION = 20;
-	private static final double LOWER_POSITION = 3;
+	private static final double RAISE_POSITION = 3;
+	private static final double LOWER_POSITION = 20;
 
 	private Encoder encoder;
 
@@ -45,6 +45,7 @@ public class SmartArm {
 		positionController = new PIDController(P, I, D, 0, encoder,
 				speedController);
 		positionController.disable();
+//		encoder.free();
 		
 		isInitialzied = false;
 	}
@@ -90,7 +91,7 @@ public class SmartArm {
 			double currentPositionRead = encoder.pidGet();
 			System.out.println("Arm position last=" + lastPositionRead
 					+ " current=" + currentPositionRead);
-			final double angleTolerance = 1;
+			final double angleTolerance = 50;
 			if (Math.abs(lastPositionRead - currentPositionRead) < angleTolerance) {
 				// we have reached the up position, so set the encoder position
 				// to 0 degrees, deenergize the motor,
@@ -99,10 +100,11 @@ public class SmartArm {
 				speedController.set(0);
 				isInitialzied = true;
 				positionController.enable();
-				raise();
+//				raise();
 				// cancel this timer task since calibration has been completed
 				cancel();
 				System.out.println("Arm calibration complete");
+
 			} else {
 				// keep going
 				lastPositionRead = currentPositionRead;

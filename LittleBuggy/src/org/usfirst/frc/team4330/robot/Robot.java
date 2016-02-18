@@ -40,7 +40,8 @@ public class Robot extends IterativeRobot {
 		arm = new SmartArm();
 		ballControl = new BallControl(new Victor(RobotMap.INTAKE_PORT),
 				new Relay(RobotMap.SPIKE_PORT));
-		scaling = new Scaling(new Victor(RobotMap.SCALAR_PORT), shooter.getRawAxis(3));
+		scaling = new Scaling(new Victor(RobotMap.SCALAR_PORT),
+				shooter.getRawAxis(3));
 	}
 
 	public void autonomousInit() {
@@ -155,7 +156,7 @@ public class Robot extends IterativeRobot {
 	public void teleopInit() {
 		arm.initialize();
 		scaling.initialize();
-		
+
 		System.out.println("\n****************************************");
 		System.out.println("********** BUTTONS FOR DRIVERS *********");
 		System.out.println("\nLEFT joystick controls :" + "\nPRESS "
@@ -175,38 +176,41 @@ public class Robot extends IterativeRobot {
 				+ "to reel in the scaling mechanicism." + "\n");
 		System.out.println("****************************************");
 		System.out.println("****************************************" + "\n");
+
+		milliseconds = 0;
 	}
-	
-	int milliseconds = 0;
+
+	int milliseconds;
 
 	public void teleopPeriodic() {
-		
+
 		// Amanda's work
-		
+
 		if (milliseconds % 10000 == 0)
 			shooter.setRumble(RumbleType.kLeftRumble, 1);
 		if (milliseconds % 10000 == 2000)
 			shooter.setRumble(RumbleType.kLeftRumble, 0);
 
-		ballControl.performIntake(left
-				.getRawButton(RobotMap.BALL_CONTROL_INTAKE_BUTTON)); // 3
+		ballControl.performIntake(right
+				.getRawButton(RobotMap.BALL_CONTROL_INTAKE_BUTTON)); // 6
 
-		ballControl.shoot(shooter
+		ballControl.shoot(right
 				.getRawButton(RobotMap.BALL_CONTROL_SHOOT_BUTTON)); // 4
 
 		arm.handleButtons(shooter.getRawButton(RobotMap.TREXARM_RAISE_BUTTON), //
 				shooter.getRawButton(RobotMap.TREXARM_LOWER_BUTTON)); //
-		
+
 		scaling.setSpeedSensitivity(shooter.getRawAxis(3));
-		
+
 		// TODO add handle buttons method call on the scaler
 
 		if (left.getIsXbox())
 			dT.xboxDrive(left, left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON));
-		else 
-			dT.drive(left, right, left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)); // 8
-		
-		milliseconds += 20;	
+		else
+			dT.drive(left, right,
+					left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)); // 8
+
+		milliseconds += 20;
 	}
 
 	public void testInit() {
@@ -214,7 +218,11 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void testPeriodic() {
-		System.out.println("Smart Arm position is " + arm.getPosition());
+		// do not tuch except 4 year veterans
+//		if (arm.getPosition() != 0)
+//			System.out.println("Smart Arm position is " + arm.getPosition());
+		
+		ballControl.test();
 	}
 
 }

@@ -1,21 +1,24 @@
 package org.usfirst.frc.team4330.robot;
 
-
 public class RobotMap {
-	
-	// TODO get the actual port numbers
-	
+
 	// SpeedControllers
-	public static final int RIGHT_BACK_WHEEL = 3; // 4
-	public static final int LEFT_BACK_WHEEL = 1;
-	public static final int RIGHT_FRONT_WHEEL = 2;
-	public static final int LEFT_FRONT_WHEEL = 0;
-	public static final int SCALAR_PORT = 5;
-	
+	public static final int RIGHT_BACK_WHEEL = 2;
+	public static final int LEFT_BACK_WHEEL = 5;
+	public static final int RIGHT_FRONT_WHEEL = 6;
+	public static final int LEFT_FRONT_WHEEL = 3;
+	public static final int SCALAR_PORT = 1; // wench
+	public static final int TREXARM_PORT = 7;
+	public static final int INTAKE_PORT = 4;
+
+	// Relays
+	public static final int SPIKE_PORT = 2;
+
+	// Speeds
 	public static final double SCALING_MAXIMUM = .75;
-	public static final double ARM_WHEEL_SPEED = 0.3;
-	public static final double INTAKE_SPEED = 1;
-	
+	public static final double ARM_WHEEL_SPEED = 0.1;
+	public static final double INTAKE_SPEED = .5;
+
 	// Buttons
 	public static final int REVERSE_DRIVE_BUTTON = 8;
 	public static final int BALL_CONTROL_INTAKE_BUTTON = 6;
@@ -24,17 +27,12 @@ public class RobotMap {
 	public static final int TREXARM_RAISE_BUTTON = 5;
 	public static final int SCALING_UPWARDS_BUTTON = 11;
 	public static final int SCALING_DOWNWARDS_BUTTON = 12;
-		
-	// Relays
-	public static final int TREXARM_PORT = 4; // confirmed 4
-	public static final int SPIKE_PORT = 1; // confirmed
-	public static final int INTAKE_PORT = 6; // confirmed
-	
+
 	// Joysticks
 	public static final int JOYSTICK_ONE = 1;
 	public static final int JOYSTICK_TWO = 0;
 	public static final int JOYSTICK_THREE = 2;
-	
+
 	// Encoders
 	public static final int ENCODER_PORT_ONE = 0;
 	public static final int ENCODER_PORT_TWO = 1;

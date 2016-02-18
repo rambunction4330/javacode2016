@@ -4,6 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Relay.Direction;
 import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.SpeedController;
 
@@ -29,6 +30,10 @@ public class BallControl {
 			initiateIntakeProcess();
 		}
 	}
+	
+	public void test() {
+		kicker.set(Value.kForward);
+	}
 
 	public void shoot(boolean buttonPressed) {
 		if (buttonPressed) {
@@ -50,9 +55,11 @@ public class BallControl {
 		isPerformingShoot = true;
 		System.out.println("Bye bye bally");
 		spinOut();
-		timer.schedule(new ShootProcessKickBall(), 200);
-		timer.schedule(new ShootProcessReturnKicker(), 300);
+		kicker.setDirection(Direction.kBoth);
+		timer.schedule(new ShootProcessKickBall(), 300);
 		timer.schedule(new ShootProcessComplete(), 400);
+		timer.schedule(new ShootProcessReturnKicker(), 500);
+		timer.schedule(new ShootProcessComplete(), 600);
 	}
 
 	// spin the blue wheels so the ball is pulled in
@@ -78,6 +85,7 @@ public class BallControl {
 	private class ShootProcessKickBall extends TimerTask {
 		@Override
 		public void run() {
+//			kicker.setDirection(Direction.kForward);
 			System.out.println("Kicking ball forward");
 			kicker.set(Value.kForward);
 		}
@@ -86,8 +94,10 @@ public class BallControl {
 	private class ShootProcessReturnKicker extends TimerTask {
 		@Override
 		public void run() {
-			System.out.println("Deenergize kicker");
-			kicker.stopMotor();
+//			System.out.println("Deenergize kicker");
+//			kicker.set(Value.kOff);
+////			kicker.stopMotor();
+//			kicker.setDirection(Direction.kReverse);
 			System.out.println("Returning kicker");
 			kicker.set(Value.kReverse);
 		}
@@ -101,7 +111,7 @@ public class BallControl {
 			blueWheels.set(0);
 
 			System.out.println("Deenergizing kicker");
-			kicker.stopMotor();
+			kicker.set(Value.kOff);
 			isPerformingShoot = false;
 		}
 	}
