@@ -59,7 +59,7 @@ public class BallControl {
 		timer.schedule(new ShootProcessKickBall(), 300);
 //		timer.schedule(new ShootProcessComplete(), 400);
 		timer.schedule(new ShootProcessReturnKicker(), 500);
-		timer.schedule(new ShootProcessComplete(), 700);
+		timer.schedule(new ShootProcessComplete(), 900);
 	}
 
 	// spin the blue wheels so the ball is pulled in
@@ -111,7 +111,8 @@ public class BallControl {
 			blueWheels.set(0);
 
 			System.out.println("Deenergizing kicker");
-			kicker.set(Value.kOff);
+//			kicker.set(Value.kOff);
+			kicker.stopMotor();
 			isPerformingShoot = false;
 		}
 	}

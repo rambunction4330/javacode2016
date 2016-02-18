@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.RumbleType;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Victor;
 
 /**
@@ -21,7 +22,7 @@ import edu.wpi.first.wpilibj.Victor;
 public class Robot extends IterativeRobot {
 	RobotDrive myRobot;
 	DriveTrain herby;
-	SmartArm trekudesu;
+	Arm trekudesu;
 	BallControl ballControl;
 	Joystick left, right, shooter;
 	LeddarDistanceSensor leddar;
@@ -37,7 +38,7 @@ public class Robot extends IterativeRobot {
 		right = new Joystick(RobotMap.JOYSTICK_THREE);
 		shooter = new Joystick(RobotMap.JOYSTICK_ONE);
 		leddar = new LeddarDistanceSensor();
-		trekudesu = new SmartArm();
+		trekudesu = new Arm(new Victor(RobotMap.TREXARM_PORT));
 		ballControl = new BallControl(new Victor(RobotMap.INTAKE_PORT),
 				new Relay(RobotMap.SPIKE_PORT));
 		scaleraptor = new Scaling(new Victor(RobotMap.SCALAR_PORT),
@@ -153,7 +154,7 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void teleopInit() {
-		trekudesu.initialize();
+//		trekudesu.initialize();
 		scaleraptor.initialize();
 
 		System.out.println("\n****************************************");
@@ -213,13 +214,13 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void testInit() {
-		trekudesu.initialize();
+//		trekudesu.initialize();
 	}
 
 	public void testPeriodic() {
 		// do not tuch except 4 year veterans
-		if (trekudesu.getPosition() != 0)
-			System.out.println("Smart Arm position is " + trekudesu.getPosition());
+//		if (trekudesu.getPosition() != 0)
+//			System.out.println("Smart Arm position is " + trekudesu.getPosition());
 		
 		ballControl.test();
 	}

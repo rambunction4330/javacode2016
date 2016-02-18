@@ -34,8 +34,8 @@ public class RobotMap {
 	public static final int JOYSTICK_THREE = 2;
 
 	// Encoders
-	public static final int ENCODER_PORT_ONE = 0;
-	public static final int ENCODER_PORT_TWO = 1;
-	public static final int ARM_ENCODER_PORT_ONE = 2;
-	public static final int ARM_ENCODER_PORT_TWO = 3;
+	public static final int ENCODER_PORT_ONE = 2;
+	public static final int ENCODER_PORT_TWO = 3;
+	public static final int ARM_ENCODER_PORT_ONE = 0;
+	public static final int ARM_ENCODER_PORT_TWO = 1;
 }
