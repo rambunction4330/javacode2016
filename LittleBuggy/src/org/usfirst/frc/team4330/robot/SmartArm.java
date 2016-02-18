@@ -104,7 +104,6 @@ public class SmartArm {
 				// cancel this timer task since calibration has been completed
 				cancel();
 				System.out.println("Arm calibration complete");
-
 			} else {
 				// keep going
 				lastPositionRead = currentPositionRead;

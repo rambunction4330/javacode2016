@@ -21,6 +21,7 @@ public class BallControl {
 		this.kicker = kickerRelay;
 		isPerformingIntake = false;
 		isPerformingShoot = false;
+		kicker.setDirection(Direction.kBoth);
 	}
 
 	public void performIntake(boolean buttonPressed) {
@@ -55,11 +56,10 @@ public class BallControl {
 		isPerformingShoot = true;
 		System.out.println("Bye bye bally");
 		spinOut();
-		kicker.setDirection(Direction.kBoth);
 		timer.schedule(new ShootProcessKickBall(), 300);
-		timer.schedule(new ShootProcessComplete(), 400);
+//		timer.schedule(new ShootProcessComplete(), 400);
 		timer.schedule(new ShootProcessReturnKicker(), 500);
-		timer.schedule(new ShootProcessComplete(), 600);
+		timer.schedule(new ShootProcessComplete(), 700);
 	}
 
 	// spin the blue wheels so the ball is pulled in

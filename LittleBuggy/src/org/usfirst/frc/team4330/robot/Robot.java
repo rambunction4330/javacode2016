@@ -20,27 +20,27 @@ import edu.wpi.first.wpilibj.Victor;
  */
 public class Robot extends IterativeRobot {
 	RobotDrive myRobot;
-	DriveTrain dT;
-	SmartArm arm;
+	DriveTrain herby;
+	SmartArm trekudesu;
 	BallControl ballControl;
-	Joystick left, right, shooter, xboxdrive;
+	Joystick left, right, shooter;
 	LeddarDistanceSensor leddar;
 	AnonymousJoystick ajoy;
-	Scaling scaling;
+	Scaling scaleraptor;
 
 	/*
      * 
      */
 	public Robot() {
-		dT = new DriveTrain();
-		left = new Joystick(RobotMap.JOYSTICK_ONE);
+		herby = new DriveTrain();
+		left = new Joystick(RobotMap.JOYSTICK_TWO);
 		right = new Joystick(RobotMap.JOYSTICK_THREE);
-		shooter = new Joystick(RobotMap.JOYSTICK_TWO);
+		shooter = new Joystick(RobotMap.JOYSTICK_ONE);
 		leddar = new LeddarDistanceSensor();
-		arm = new SmartArm();
+		trekudesu = new SmartArm();
 		ballControl = new BallControl(new Victor(RobotMap.INTAKE_PORT),
 				new Relay(RobotMap.SPIKE_PORT));
-		scaling = new Scaling(new Victor(RobotMap.SCALAR_PORT),
+		scaleraptor = new Scaling(new Victor(RobotMap.SCALAR_PORT),
 				shooter.getRawAxis(3));
 	}
 
@@ -105,7 +105,7 @@ public class Robot extends IterativeRobot {
 					if (!ninety) {
 						ajoy.turnToWall(true);
 					} else {
-						dT.stop();
+						herby.stop();
 						k = 1;
 					}
 					;
@@ -149,13 +149,12 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void disabledInit() {
-
 		leddar.shutDown();
 	}
 
 	public void teleopInit() {
-		arm.initialize();
-		scaling.initialize();
+		trekudesu.initialize();
+		scaleraptor.initialize();
 
 		System.out.println("\n****************************************");
 		System.out.println("********** BUTTONS FOR DRIVERS *********");
@@ -197,30 +196,30 @@ public class Robot extends IterativeRobot {
 		ballControl.shoot(right
 				.getRawButton(RobotMap.BALL_CONTROL_SHOOT_BUTTON)); // 4
 
-		arm.handleButtons(shooter.getRawButton(RobotMap.TREXARM_RAISE_BUTTON), //
+		trekudesu.handleButtons(shooter.getRawButton(RobotMap.TREXARM_RAISE_BUTTON), //
 				shooter.getRawButton(RobotMap.TREXARM_LOWER_BUTTON)); //
 
-		scaling.setSpeedSensitivity(shooter.getRawAxis(3));
+		scaleraptor.setSpeedSensitivity(shooter.getRawAxis(3));
 
 		// TODO add handle buttons method call on the scaler
 
 		if (left.getIsXbox())
-			dT.xboxDrive(left, left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON));
+			herby.xboxDrive(left, left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON));
 		else
-			dT.drive(left, right,
+			herby.drive(left, right,
 					left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)); // 8
 
 		milliseconds += 20;
 	}
 
 	public void testInit() {
-		arm.initialize();
+		trekudesu.initialize();
 	}
 
 	public void testPeriodic() {
 		// do not tuch except 4 year veterans
-//		if (arm.getPosition() != 0)
-//			System.out.println("Smart Arm position is " + arm.getPosition());
+		if (trekudesu.getPosition() != 0)
+			System.out.println("Smart Arm position is " + trekudesu.getPosition());
 		
 		ballControl.test();
 	}
