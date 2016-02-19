@@ -33,7 +33,7 @@ public class BallControl {
 	}
 	
 	public void test() {
-		kicker.set(Value.kForward);
+		kicker.set(Value.kReverse);
 	}
 
 	public void shoot(boolean buttonPressed) {
@@ -53,13 +53,49 @@ public class BallControl {
 	}
 
 	private void initiateShootProcess() {
-		isPerformingShoot = true;
-		System.out.println("Bye bye bally");
-		spinOut();
-		timer.schedule(new ShootProcessKickBall(), 300);
-//		timer.schedule(new ShootProcessComplete(), 400);
-		timer.schedule(new ShootProcessReturnKicker(), 500);
-		timer.schedule(new ShootProcessComplete(), 900);
+		
+		Thread shootThread = new Thread() {
+
+			@Override
+			public void run() {
+				try {
+					isPerformingShoot = true;
+					
+					// let blue wheels spin up
+					System.out.println("Bye bye bally " + System.currentTimeMillis());
+					spinOut();
+					Thread.sleep(300);
+					
+					// kick ball
+					System.out.println("Kicking ball forward " + System.currentTimeMillis());
+					kicker.set(Value.kForward);
+					
+					Thread.sleep(100);
+					// deenergize the relay
+					kicker.stopMotor();
+					
+					
+					Thread.sleep(400);
+					System.out.println("Stopping blue wheels" + System.currentTimeMillis());
+					blueWheels.set(0);
+					
+					kicker.set(Value.kReverse);
+					Thread.sleep(100);
+					
+					// denergize the relay
+					kicker.stopMotor();
+					
+					isPerformingShoot = false;
+					
+					
+				} catch ( Exception e ) {
+					System.err.println("Exception " + e.getMessage());
+				}
+			}
+			
+		};
+		shootThread.start();
+		
 	}
 
 	// spin the blue wheels so the ball is pulled in
@@ -81,40 +117,5 @@ public class BallControl {
 			isPerformingIntake = false;
 		}
 	}
-
-	private class ShootProcessKickBall extends TimerTask {
-		@Override
-		public void run() {
-//			kicker.setDirection(Direction.kForward);
-			System.out.println("Kicking ball forward");
-			kicker.set(Value.kForward);
-		}
-	}
-
-	private class ShootProcessReturnKicker extends TimerTask {
-		@Override
-		public void run() {
-//			System.out.println("Deenergize kicker");
-//			kicker.set(Value.kOff);
-////			kicker.stopMotor();
-//			kicker.setDirection(Direction.kReverse);
-			System.out.println("Returning kicker");
-			kicker.set(Value.kReverse);
-		}
-	}
-
-	private class ShootProcessComplete extends TimerTask {
-
-		@Override
-		public void run() {
-			System.out.println("Stopping blue wheels");
-			blueWheels.set(0);
-
-			System.out.println("Deenergizing kicker");
-//			kicker.set(Value.kOff);
-			kicker.stopMotor();
-			isPerformingShoot = false;
-		}
-	}
-
+	
 }

@@ -38,7 +38,7 @@ public class Robot extends IterativeRobot {
 		right = new Joystick(RobotMap.JOYSTICK_THREE);
 		shooter = new Joystick(RobotMap.JOYSTICK_ONE);
 		leddar = new LeddarDistanceSensor();
-		trekudesu = new Arm(new Victor(RobotMap.TREXARM_PORT));
+		trekudesu = new Arm(new Victor(RobotMap.TREXARM_PORT)); //new Victor(RobotMap.TREXARM_PORT)
 		ballControl = new BallControl(new Victor(RobotMap.INTAKE_PORT),
 				new Relay(RobotMap.SPIKE_PORT));
 		scaleraptor = new Scaling(new Victor(RobotMap.SCALAR_PORT),
@@ -222,7 +222,7 @@ public class Robot extends IterativeRobot {
 //		if (trekudesu.getPosition() != 0)
 //			System.out.println("Smart Arm position is " + trekudesu.getPosition());
 		
-		ballControl.test();
+//		ballControl.test();
 	}
 
 }

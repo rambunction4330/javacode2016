@@ -12,11 +12,11 @@ public class RobotMap {
 	public static final int INTAKE_PORT = 4;
 
 	// Relays
-	public static final int SPIKE_PORT = 2;
+	public static final int SPIKE_PORT = 3;
 
 	// Speeds
 	public static final double SCALING_MAXIMUM = .75;
-	public static final double ARM_WHEEL_SPEED = 0.1;
+	public static final double ARM_WHEEL_SPEED = 0.05;
 	public static final double INTAKE_SPEED = .5;
 
 	// Buttons
@@ -29,13 +29,13 @@ public class RobotMap {
 	public static final int SCALING_DOWNWARDS_BUTTON = 12;
 
 	// Joysticks
-	public static final int JOYSTICK_ONE = 1;
-	public static final int JOYSTICK_TWO = 0;
+	public static final int JOYSTICK_ONE = 0;
+	public static final int JOYSTICK_TWO = 1;
 	public static final int JOYSTICK_THREE = 2;
 
 	// Encoders
 	public static final int ENCODER_PORT_ONE = 2;
 	public static final int ENCODER_PORT_TWO = 3;
-	public static final int ARM_ENCODER_PORT_ONE = 0;
-	public static final int ARM_ENCODER_PORT_TWO = 1;
+	public static final int ARM_ENCODER_PORT_ONE = 1; // confirmed goes forward
+	public static final int ARM_ENCODER_PORT_TWO = 0;
 }

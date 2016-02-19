@@ -21,7 +21,7 @@ public class SmartArm {
 	// degrees with 0 at the raised hard stop and positive direction towards lowering
 	private static final double RAISE_POSITION = 3;
 	private static final double LOWER_POSITION = 20;
-
+	
 	private Encoder encoder;
 
 	private SpeedController speedController;
@@ -33,6 +33,7 @@ public class SmartArm {
 
 	public SmartArm() {
 		speedController = new Talon(RobotMap.TREXARM_PORT);
+		speedController.setInverted(false);
 		
 		encoder = new Encoder(RobotMap.ARM_ENCODER_PORT_ONE,
 				RobotMap.ARM_ENCODER_PORT_TWO);
@@ -99,7 +100,7 @@ public class SmartArm {
 				encoder.reset();
 				speedController.set(0);
 				isInitialzied = true;
-				positionController.enable();
+//				positionController.enable();
 //				raise();
 				// cancel this timer task since calibration has been completed
 				cancel();
