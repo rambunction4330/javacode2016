@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj.Relay.Direction;
 import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.SpeedController;
 
+/*
+ * confirmed working as of 2/18
+ */
 public class BallControl {
 
 	private boolean isPerformingIntake;
@@ -15,13 +18,15 @@ public class BallControl {
 	private SpeedController blueWheels;
 	private Relay kicker;
 	private Timer timer = new Timer();
+	
+	private static final double inSpeed = -1;
+	private static final double outSpeed = .5;
 
 	public BallControl(SpeedController blueWheelsController, Relay kickerRelay) {
 		this.blueWheels = blueWheelsController;
 		this.kicker = kickerRelay;
 		isPerformingIntake = false;
 		isPerformingShoot = false;
-		kicker.setDirection(Direction.kBoth);
 	}
 
 	public void performIntake(boolean buttonPressed) {
@@ -31,7 +36,7 @@ public class BallControl {
 			initiateIntakeProcess();
 		}
 	}
-	
+
 	public void test() {
 		kicker.set(Value.kReverse);
 	}
@@ -40,7 +45,7 @@ public class BallControl {
 		if (buttonPressed) {
 			if (isPerformingIntake || isPerformingShoot)
 				return;
-			
+
 			initiateShootProcess();
 		}
 	}
@@ -49,63 +54,65 @@ public class BallControl {
 		isPerformingIntake = true;
 		System.out.println("\nIntake commence!");
 		spinIn();
-		timer.schedule(new IntakeProcessComplete(), 500);
+		timer.schedule(new IntakeProcessComplete(), 2000);
 	}
 
 	private void initiateShootProcess() {
-		
+
 		Thread shootThread = new Thread() {
 
 			@Override
 			public void run() {
 				try {
 					isPerformingShoot = true;
-					
+
 					// let blue wheels spin up
-					System.out.println("Bye bye bally " + System.currentTimeMillis());
+					System.out.println("Bye bye bally "
+							+ System.currentTimeMillis());
 					spinOut();
-					Thread.sleep(300);
-					
+					Thread.sleep(600);
+
 					// kick ball
-					System.out.println("Kicking ball forward " + System.currentTimeMillis());
+					System.out.println("Kicking ball forward "
+							+ System.currentTimeMillis());
 					kicker.set(Value.kForward);
-					
-					Thread.sleep(100);
+
+					Thread.sleep(120);
 					// deenergize the relay
 					kicker.stopMotor();
-					
-					
-					Thread.sleep(400);
-					System.out.println("Stopping blue wheels" + System.currentTimeMillis());
-					blueWheels.set(0);
-					
-					kicker.set(Value.kReverse);
+
 					Thread.sleep(100);
-					
+
+					kicker.set(Value.kReverse);
+
+					Thread.sleep(20);
+
 					// denergize the relay
 					kicker.stopMotor();
-					
+					System.out.println("Stopping blue wheels"
+							+ System.currentTimeMillis());
+					blueWheels.set(0);
+
 					isPerformingShoot = false;
-					
-					
-				} catch ( Exception e ) {
+
+				} catch (Exception e) {
 					System.err.println("Exception " + e.getMessage());
 				}
 			}
-			
+
 		};
 		shootThread.start();
-		
+
 	}
 
 	// spin the blue wheels so the ball is pulled in
 	private void spinIn() {
-		blueWheels.set(-RobotMap.INTAKE_SPEED);
+		blueWheels.set(inSpeed);
 	}
 
 	// spin the blue wheels so the ball is pushed out
 	private void spinOut() {
-		blueWheels.set(RobotMap.INTAKE_SPEED);
+		blueWheels.set(outSpeed);
 	}
 
 	private class IntakeProcessComplete extends TimerTask {
@@ -117,5 +124,5 @@ public class BallControl {
 			isPerformingIntake = false;
 		}
 	}
-	
+
 }

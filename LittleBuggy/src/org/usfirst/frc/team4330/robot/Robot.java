@@ -7,6 +7,7 @@ import org.usfirst.frc.team4330.robot.canbus.LeddarDistanceSensor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.RumbleType;
+import edu.wpi.first.wpilibj.Relay.Direction;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -40,7 +41,7 @@ public class Robot extends IterativeRobot {
 		leddar = new LeddarDistanceSensor();
 		trekudesu = new Arm(new Victor(RobotMap.TREXARM_PORT)); //new Victor(RobotMap.TREXARM_PORT)
 		ballControl = new BallControl(new Victor(RobotMap.INTAKE_PORT),
-				new Relay(RobotMap.SPIKE_PORT));
+				new Relay(RobotMap.SPIKE_PORT, Direction.kBoth));
 		scaleraptor = new Scaling(new Victor(RobotMap.SCALAR_PORT),
 				shooter.getRawAxis(3));
 	}
