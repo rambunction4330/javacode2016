@@ -7,11 +7,11 @@ import org.usfirst.frc.team4330.robot.canbus.LeddarDistanceSensor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.RumbleType;
-import edu.wpi.first.wpilibj.Relay.Direction;
 import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Relay.Direction;
 import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * 2016 final code!!
@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.Victor;
 public class Robot extends IterativeRobot {
 	RobotDrive myRobot;
 	DriveTrain herby;
-	Arm trekudesu;
+	SmartArm trekudesu;
 	BallControl ballControl;
 	Joystick left, right, shooter;
 	LeddarDistanceSensor leddar;
@@ -39,7 +39,7 @@ public class Robot extends IterativeRobot {
 		right = new Joystick(RobotMap.JOYSTICK_THREE);
 		shooter = new Joystick(RobotMap.JOYSTICK_ONE);
 		leddar = new LeddarDistanceSensor();
-		trekudesu = new Arm(new Victor(RobotMap.TREXARM_PORT)); //new Victor(RobotMap.TREXARM_PORT)
+		trekudesu = new SmartArm(); // new Victor(RobotMap.TREXARM_PORT)
 		ballControl = new BallControl(new Victor(RobotMap.INTAKE_PORT),
 				new Relay(RobotMap.SPIKE_PORT, Direction.kBoth));
 		scaleraptor = new Scaling(new Victor(RobotMap.SCALAR_PORT),
@@ -155,7 +155,7 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void teleopInit() {
-//		trekudesu.initialize();
+		trekudesu.initialize();
 		scaleraptor.initialize();
 
 		System.out.println("\n****************************************");
@@ -198,7 +198,8 @@ public class Robot extends IterativeRobot {
 		ballControl.shoot(right
 				.getRawButton(RobotMap.BALL_CONTROL_SHOOT_BUTTON)); // 4
 
-		trekudesu.handleButtons(shooter.getRawButton(RobotMap.TREXARM_RAISE_BUTTON), //
+		trekudesu.handleButtons(
+				shooter.getRawButton(RobotMap.TREXARM_RAISE_BUTTON), //
 				shooter.getRawButton(RobotMap.TREXARM_LOWER_BUTTON)); //
 
 		scaleraptor.setSpeedSensitivity(shooter.getRawAxis(3));
@@ -206,7 +207,8 @@ public class Robot extends IterativeRobot {
 		// TODO add handle buttons method call on the scaler
 
 		if (left.getIsXbox())
-			herby.xboxDrive(left, left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON));
+			herby.xboxDrive(left,
+					left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON));
 		else
 			herby.drive(left, right,
 					left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)); // 8
@@ -215,15 +217,16 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void testInit() {
-//		trekudesu.initialize();
+		trekudesu.initialize();
 	}
 
 	public void testPeriodic() {
 		// do not tuch except 4 year veterans
-//		if (trekudesu.getPosition() != 0)
-//			System.out.println("Smart Arm position is " + trekudesu.getPosition());
-		
-//		ballControl.test();
+		// if (trekudesu.getPosition() != 0)
+		// System.out.println("Smart Arm position is "
+		// + trekudesu.getPosition());
+
+		// ballControl.test();
 	}
 
 }

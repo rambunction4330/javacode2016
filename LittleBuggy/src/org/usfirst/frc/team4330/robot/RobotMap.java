@@ -16,7 +16,7 @@ public class RobotMap {
 
 	// Speeds
 	public static final double SCALING_MAXIMUM = .75;
-	public static final double ARM_WHEEL_SPEED = 0.05;
+	public static final double ARM_WHEEL_SPEED = .75;
 	public static final double INTAKE_SPEED = .5;
 
 	// Buttons

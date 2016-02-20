@@ -18,7 +18,7 @@ public class BallControl {
 	private SpeedController blueWheels;
 	private Relay kicker;
 	private Timer timer = new Timer();
-	
+
 	private static final double inSpeed = -1;
 	private static final double outSpeed = .5;
 

@@ -1,9 +1,14 @@
 package org.usfirst.frc.team4330.robot;
 
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.Victor;
 
 public class Arm {
 	private SpeedController motorController;
+
+	public Arm() {
+		motorController = new Victor(RobotMap.TREXARM_PORT);
+	}
 
 	public Arm(SpeedController motorController) {
 		this.motorController = motorController;
@@ -20,7 +25,6 @@ public class Arm {
 			speed = -1 * RobotMap.ARM_WHEEL_SPEED;
 		}
 		motorController.set(speed);
-	
+
 	}
 }
-    
