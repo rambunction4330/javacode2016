@@ -20,7 +20,7 @@ public class Arm {
 			System.out.println("TREKUDESU");
 		// HI
 		if (lowerButton) {
-			speed = RobotMap.ARM_WHEEL_SPEED;
+			speed = RobotMap.ARM_WHEEL_SPEED / 3;
 		} else if (raiseButton) {
 			speed = -1 * RobotMap.ARM_WHEEL_SPEED;
 		}

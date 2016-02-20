@@ -4,7 +4,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.Relay.Direction;
 import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.SpeedController;
 
@@ -24,6 +23,8 @@ public class BallControl {
 
 	public BallControl(SpeedController blueWheelsController, Relay kickerRelay) {
 		this.blueWheels = blueWheelsController;
+		blueWheels.setInverted(true);
+		
 		this.kicker = kickerRelay;
 		isPerformingIntake = false;
 		isPerformingShoot = false;
@@ -77,7 +78,7 @@ public class BallControl {
 							+ System.currentTimeMillis());
 					kicker.set(Value.kForward);
 
-					Thread.sleep(120);
+					Thread.sleep(150);
 					// deenergize the relay
 					kicker.stopMotor();
 

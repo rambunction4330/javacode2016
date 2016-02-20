@@ -50,7 +50,7 @@ public class Scaling {
 		this.motor = motor;
 		this.speedsensitivity = Math.abs(speedsensitivity * RobotMap.SCALING_MAXIMUM);
 		pid = new PIDController(P, I, D, 0, encoder, motor);
-		pid.setOutputRange(0, this.speedsensitivity);
+//		pid.setOutputRange(0, this.speedsensitivity);
 
 		pid.disable();
 	}
@@ -59,10 +59,10 @@ public class Scaling {
 		return encoder.pidGet();
 	}
 
-	public void setSpeedSensitivity(double speedsenstivity) {
-		this.speedsensitivity = speedsenstivity * RobotMap.SCALING_MAXIMUM;
-		pid.setOutputRange(0, speedsensitivity);
-	}
+//	public void setSpeedSensitivity(double speedsenstivity) {
+//		this.speedsensitivity = speedsenstivity * RobotMap.SCALING_MAXIMUM;
+//		pid.setOutputRange(0, speedsensitivity);
+//	}
 	
 	public void handleButtons(boolean hookButton, boolean robotRaisedButton, boolean stowButton) {
 		if ( !isInitialized ) {

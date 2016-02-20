@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Relay.Direction;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Victor;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * 2016 final code!!
@@ -151,11 +150,12 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void disabledInit() {
+		trekudesu.disable();
 		leddar.shutDown();
 	}
 
 	public void teleopInit() {
-		trekudesu.initialize();
+		trekudesu.initialize(true);
 		scaleraptor.initialize();
 
 		System.out.println("\n****************************************");
@@ -199,10 +199,10 @@ public class Robot extends IterativeRobot {
 				.getRawButton(RobotMap.BALL_CONTROL_SHOOT_BUTTON)); // 4
 
 		trekudesu.handleButtons(
-				shooter.getRawButton(RobotMap.TREXARM_RAISE_BUTTON), //
-				shooter.getRawButton(RobotMap.TREXARM_LOWER_BUTTON)); //
+				shooter.getRawButton(RobotMap.TREXARM_RAISE_BUTTON), // 5
+				shooter.getRawButton(RobotMap.TREXARM_LOWER_BUTTON)); // 3
 
-		scaleraptor.setSpeedSensitivity(shooter.getRawAxis(3));
+//		scaleraptor.setSpeedSensitivity(shooter.getRawAxis(3));
 
 		// TODO add handle buttons method call on the scaler
 
@@ -217,14 +217,14 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void testInit() {
-		trekudesu.initialize();
+//		trekudesu.initialize(true);
 	}
 
 	public void testPeriodic() {
 		// do not tuch except 4 year veterans
 		// if (trekudesu.getPosition() != 0)
-		// System.out.println("Smart Arm position is "
-		// + trekudesu.getPosition());
+//		 System.out.println("Smart Arm position is "
+//		 + trekudesu.getPosition());
 
 		// ballControl.test();
 	}
