@@ -6,11 +6,12 @@ import org.usfirst.frc.team4330.robot.canbus.LeddarDistanceSensor;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Joystick.RumbleType;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Relay.Direction;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * 2016 final code!!
@@ -22,13 +23,28 @@ import edu.wpi.first.wpilibj.Victor;
 public class Robot extends IterativeRobot {
 	RobotDrive myRobot;
 	DriveTrain herby;
-	SmartArm trekudesu;
+	Arm trekudesu;
 	BallControl ballControl;
 	Joystick left, right, shooter;
 	LeddarDistanceSensor leddar;
 	AnonymousJoystick ajoy;
 	Scaling scaleraptor;
-
+	
+	SendableChooser defenseChooser;
+	SendableChooser positionChooser;
+	
+	private int autoPosition;
+	private String autoDefense;
+	
+	private String portcullis = "portcullis";
+	private String chivalDeFrise = "chivalDeFrise";
+	private String roughTerrain = "roughTerrain";
+	private String moat = "moat";
+	private int one = 1;
+	private int two = 2;
+	private int three = 3;
+	private int four = 4;
+	
 	/*
      * 
      */
@@ -38,14 +54,32 @@ public class Robot extends IterativeRobot {
 		right = new Joystick(RobotMap.JOYSTICK_THREE);
 		shooter = new Joystick(RobotMap.JOYSTICK_ONE);
 		leddar = new LeddarDistanceSensor();
-		trekudesu = new SmartArm(); // new Victor(RobotMap.TREXARM_PORT)
+		trekudesu = new Arm(); // new Victor(RobotMap.TREXARM_PORT)
 		ballControl = new BallControl(new Victor(RobotMap.INTAKE_PORT),
 				new Relay(RobotMap.SPIKE_PORT, Direction.kBoth));
-		scaleraptor = new Scaling(new Victor(RobotMap.SCALAR_PORT),
-				shooter.getRawAxis(3));
+//		scaleraptor = new Scaling(new Victor(RobotMap.SCALAR_PORT),
+//				shooter.getRawAxis(3));
+		
+		
+		defenseChooser = new SendableChooser();
+		defenseChooser.addDefault("Portcullis", portcullis);
+		defenseChooser.addObject("Chival de Frise (four moving planes)", chivalDeFrise);
+		defenseChooser.addObject("Rough Terrain", roughTerrain);		
+		defenseChooser.addObject("Moat", moat);
+		SmartDashboard.putData("Autonomous Defense", defenseChooser);
+		
+		positionChooser = new SendableChooser();
+		positionChooser.addDefault("One", one);
+		positionChooser.addObject("Two", two);
+		positionChooser.addObject("Three", three);		
+		positionChooser.addObject("Four", four);
+		SmartDashboard.putData("Autonomous Position", positionChooser);
 	}
 
 	public void autonomousInit() {
+		autoDefense = (String) defenseChooser.getSelected();
+		System.out.println("Defense choice is " + autoDefense);
+		
 		System.out.println("*********************************");
 		System.out.println("*********************************");
 		System.out.println("******** May the odds be ********");
@@ -72,7 +106,7 @@ public class Robot extends IterativeRobot {
 	int seg2 = 2;
 
 	public void autonomousPeriodic() {
-		// Distance Comparator
+		/*// Distance Comparator
 		for (LeddarDistanceSensor.LeddarDistanceSensorData info : leddar
 				.getDistances()) {
 			if (info.getDistanceInCentimeters() < range) {
@@ -92,10 +126,10 @@ public class Robot extends IterativeRobot {
 					ninety = true;
 				}
 
-				/**
+				*//**
 				 * Shooting Process Starts Here (May wish to move to Autonomous
 				 * Init() to clear space/processes for distance comparing.
-				 **/
+				 **//*
 
 				else {
 					ninety = false;
@@ -131,12 +165,12 @@ public class Robot extends IterativeRobot {
 					// turn 45 or whatever to goal
 
 					// shoot
-					/** aim at low goal **/
+					*//** aim at low goal **//*
 
-					/** drive up and shoot **/
+					*//** drive up and shoot **//*
 
 				}
-				/** Shooting Process Ends Here **/
+				*//** Shooting Process Ends Here **//*
 				// Reverse the physical order (not the chronology) of the code
 				// (put the if statements in order 2,1,0, so that it refreshes
 				// sensor data for each step
@@ -146,17 +180,17 @@ public class Robot extends IterativeRobot {
 
 			} // End of data in range check
 		} // End of for loop
-	}// End of Method
+*/	}// End of Method
 
 	@Override
 	public void disabledInit() {
-		trekudesu.disable();
+//		trekudesu.disable();
 		leddar.shutDown();
 	}
 
 	public void teleopInit() {
-		trekudesu.initialize(true);
-		scaleraptor.initialize();
+//		trekudesu.initialize(false);
+//		scaleraptor.initialize();
 
 		System.out.println("\n****************************************");
 		System.out.println("********** BUTTONS FOR DRIVERS *********");
@@ -169,7 +203,8 @@ public class Robot extends IterativeRobot {
 		System.out.println("SHOOTER joystick controls : " + "\nPRESS "
 				+ RobotMap.TREXARM_LOWER_BUTTON + " to lower Trekudesu."
 				+ "\nPRESS " + RobotMap.TREXARM_RAISE_BUTTON
-				+ " to raise Trekudesu." + "\nPRESS "
+				+ " to raise Trekudesu."
+				+ "\nPRESS Trigger to power Trekudesu." + "\nPRESS "
 				+ RobotMap.BALL_CONTROL_SHOOT_BUTTON + " to push the ball out."
 				+ "\nPRESS " + RobotMap.SCALING_UPWARDS_BUTTON
 				+ " to release scaling mechanicism." + "\nPRESS "
@@ -178,19 +213,9 @@ public class Robot extends IterativeRobot {
 		System.out.println("****************************************");
 		System.out.println("****************************************" + "\n");
 
-		milliseconds = 0;
 	}
 
-	int milliseconds;
-
 	public void teleopPeriodic() {
-
-		// Amanda's work
-
-		if (milliseconds % 10000 == 0)
-			shooter.setRumble(RumbleType.kLeftRumble, 1);
-		if (milliseconds % 10000 == 2000)
-			shooter.setRumble(RumbleType.kLeftRumble, 0);
 
 		ballControl.performIntake(right
 				.getRawButton(RobotMap.BALL_CONTROL_INTAKE_BUTTON)); // 6
@@ -200,9 +225,10 @@ public class Robot extends IterativeRobot {
 
 		trekudesu.handleButtons(
 				shooter.getRawButton(RobotMap.TREXARM_RAISE_BUTTON), // 5
-				shooter.getRawButton(RobotMap.TREXARM_LOWER_BUTTON)); // 3
+				shooter.getRawButton(RobotMap.TREXARM_LOWER_BUTTON), // 3
+				shooter.getTrigger());
 
-//		scaleraptor.setSpeedSensitivity(shooter.getRawAxis(3));
+		// scaleraptor.setSpeedSensitivity(shooter.getRawAxis(3));
 
 		// TODO add handle buttons method call on the scaler
 
@@ -213,7 +239,6 @@ public class Robot extends IterativeRobot {
 			herby.drive(left, right,
 					left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)); // 8
 
-		milliseconds += 20;
 	}
 
 	public void testInit() {

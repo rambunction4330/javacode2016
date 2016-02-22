@@ -1,8 +1,9 @@
 package org.usfirst.frc.team4330.robot;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Victor;
 
 public class DriveTrain {
 	private SpeedController rFW, lFW, rBW, lBW;
@@ -13,10 +14,10 @@ public class DriveTrain {
 		reverse = false;
 		lastPressed = false;
 
-		rFW = new Talon(RobotMap.RIGHT_FRONT_WHEEL);
-		rBW = new Talon(RobotMap.RIGHT_BACK_WHEEL);
-		lFW = new Talon(RobotMap.LEFT_FRONT_WHEEL);
-		lBW = new Talon(RobotMap.LEFT_BACK_WHEEL);
+		rFW = new Victor(RobotMap.RIGHT_FRONT_WHEEL);
+		rBW = new Victor(RobotMap.RIGHT_BACK_WHEEL);
+		lFW = new Victor(RobotMap.LEFT_FRONT_WHEEL);
+		lBW = new Victor(RobotMap.LEFT_BACK_WHEEL);
 	}
 
 	/**
@@ -63,7 +64,7 @@ public class DriveTrain {
 	 * @param currentlyPressed
 	 *            true if reverse button is currently pressed, false otherwise
 	 */
-	public void drive(Joystick left, Joystick right, boolean currentlyPressed) {
+	public void drive(GenericHID left, GenericHID right, boolean currentlyPressed) {
 
 		if (!lastPressed && currentlyPressed) {
 			reverse = !reverse;
