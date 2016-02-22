@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 	RobotDrive myRobot;
-	DriveTrain herby;
+	DriveTrain dorito;
 	Arm trekudesu;
 	BallControl ballControl;
 	Joystick left, right, shooter;
@@ -40,6 +40,7 @@ public class Robot extends IterativeRobot {
 	private String chivalDeFrise = "chivalDeFrise";
 	private String roughTerrain = "roughTerrain";
 	private String moat = "moat";
+	private String rampart = "rampart";
 	private int one = 1;
 	private int two = 2;
 	private int three = 3;
@@ -49,7 +50,7 @@ public class Robot extends IterativeRobot {
      * 
      */
 	public Robot() {
-		herby = new DriveTrain();
+		dorito = new DriveTrain();
 		left = new Joystick(RobotMap.JOYSTICK_TWO);
 		right = new Joystick(RobotMap.JOYSTICK_THREE);
 		shooter = new Joystick(RobotMap.JOYSTICK_ONE);
@@ -63,9 +64,10 @@ public class Robot extends IterativeRobot {
 		
 		defenseChooser = new SendableChooser();
 		defenseChooser.addDefault("Portcullis", portcullis);
-		defenseChooser.addObject("Chival de Frise (four moving planes)", chivalDeFrise);
+		defenseChooser.addObject("Chival de Frise (four moving trains)", chivalDeFrise);
 		defenseChooser.addObject("Rough Terrain", roughTerrain);		
 		defenseChooser.addObject("Moat", moat);
+		defenseChooser.addObject("Rampart (two non-moving trains)", rampart);
 		SmartDashboard.putData("Autonomous Defense", defenseChooser);
 		
 		positionChooser = new SendableChooser();
@@ -88,22 +90,11 @@ public class Robot extends IterativeRobot {
 		System.out.println("*********************************");
 
 		leddar.startUp();
-		i = 0;
-		j = 2;
-		k = 0;
+		
 	}
 
 	// Distance Comparator Variables
-	int dist15 = -1;
-	int dist0 = -1;
-	int i = 0;
-	int j = 2;
-	// Autonomous Process Variables
-	int k = 0; // Sequencer, what step the autonomous process is currently at.
-	boolean ninety = false;
-	int range = 270;
-	int seg1 = 13;
-	int seg2 = 2;
+	
 
 	public void autonomousPeriodic() {
 		/*// Distance Comparator
@@ -233,10 +224,10 @@ public class Robot extends IterativeRobot {
 		// TODO add handle buttons method call on the scaler
 
 		if (left.getIsXbox())
-			herby.xboxDrive(left,
+			dorito.xboxDrive(left,
 					left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON));
 		else
-			herby.drive(left, right,
+			dorito.drive(left, right,
 					left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)); // 8
 
 	}

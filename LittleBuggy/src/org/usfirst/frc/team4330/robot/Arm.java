@@ -24,12 +24,14 @@ public class Arm {
 		double speed = 0;
 		
 		if (lowerButton && raiseButton)
-			System.out.println("TREKUDESU");
+			System.out.println("CALM DOWN");
 
 		if (lowerButton) {
 			speed = ARM_WHEEL_SPEED;
-			if (powerButton)
+			if (powerButton) {
 				speed = POWER_SPEED;
+				System.out.println("BOOOOOSTO!");
+			}
 		} else if (raiseButton) {
 			speed = -1 * RobotMap.ARM_WHEEL_SPEED;
 			if (powerButton)
