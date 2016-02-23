@@ -41,12 +41,24 @@ public class Robot extends IterativeRobot {
 	private String roughTerrain = "roughTerrain";
 	private String moat = "moat";
 	private String rampart = "rampart";
+	private String rockWall = "rockWall";
+	private String lowBar = "lowBar";
 	private int one = 1;
 	private int two = 2;
 	private int three = 3;
 	private int four = 4;
+	private int five = 5;
 	private int once;
+	private int angle = 0;
+	// private thread flag;
+	private thread flag = thread.OFF;
 
+	
+	private enum thread {
+		ARM, INTAKE, DRIVE, OFF;
+	}
+
+	
 	/*
      * 
      */
@@ -70,6 +82,8 @@ public class Robot extends IterativeRobot {
 		defenseChooser.addObject("Rough Terrain", roughTerrain);
 		defenseChooser.addObject("Moat", moat);
 		defenseChooser.addObject("Rampart (two non-moving trains)", rampart);
+		defenseChooser.addObject("Rock Wall", rockWall);
+		defenseChooser.addObject("Low Bar", lowBar);
 		SmartDashboard.putData("Autonomous Defense", defenseChooser);
 
 		positionChooser = new SendableChooser();
@@ -77,8 +91,13 @@ public class Robot extends IterativeRobot {
 		positionChooser.addObject("Two", two);
 		positionChooser.addObject("Three", three);
 		positionChooser.addObject("Four", four);
+		positionChooser.addObject("Five", five);
 		SmartDashboard.putData("Autonomous Position", positionChooser);
 	}
+	
+//	public void changeState(thread change) {
+//		justAName = change;
+//	}
 
 	public void autonomousInit() {
 		autoPosition = (int) positionChooser.getSelected();
@@ -98,27 +117,53 @@ public class Robot extends IterativeRobot {
 
 	}
 
-	// 
+	//
 
 	public void autonomousPeriodic() {
-		/*step one: move forward*/
-		if (once == 0) {
-		hotbod.forward(1000);
+		/* step one: move forward */
+		if (once == 0 && flag != thread.OFF) {
+			/* step two: get over obstacle */
+			if (autoDefense.equals(portcullis)) {
+				flag = thread.ARM;
+				trekudesu.autonomousArm(false, true, false);
+				hotbod.forward(1000);
+				trekudesu.autonomousArm(true, false, true);
+				flag = thread.OFF;
+				
+			}
+//			if (autoDefense.equals(chivalDeFrise)) {
+//				// trex then ram
+//			}
+			// drivers have trouble
+			if (autoDefense.equals(rampart)) {
+				hotbod.forward(1000);				
+				// ram 1 gb
+			}
+			if (autoDefense.equals(moat)) {
+				hotbod.forward(1000);
+				// ram 2.5 gb
+			}
+			if (autoDefense.equals(roughTerrain)) {
+				hotbod.forward(1000);
+				// ram 4 gb
+			}
+			if (autoDefense.equals(rockWall)) {
+				hotbod.forward(1000);
+				// ram 6 gb
+			}
 		}
-		driver.findAngle();
+		// threads so you don't keep doing other stuff while something is active
+		// THIS IS AFTER YOU GET OVER THE F**KING OBSTACLE
 		
-		/*step two: get over obstacle*/
-		if (autoDefense.equals(portcullis)) {
-			trekudesu.autonomousArm(false, true, false);			
-		}
-		
-//		if (autoDefense.equals(portcullis)) {
-//			
-//		} else if (autoDefense.equals(moat)) {
-//			
-//		}
+		driver.findAngle(angle);
+
+		// if (autoDefense.equals(portcullis)) {
+		//
+		// } else if (autoDefense.equals(moat)) {
+		//
+		// }
 		once = 1;
-		
+
 	}
 
 	/*
@@ -195,8 +240,8 @@ public class Robot extends IterativeRobot {
 				+ RobotMap.BALL_CONTROL_SHOOT_BUTTON + " to push the ball out."
 				+ "\nPRESS " + RobotMap.SCALING_UPWARDS_BUTTON
 				+ " to release scaling mechanicism." + "\nPRESS "
-				+ RobotMap.SCALING_DOWNWARDS_BUTTON
-				+ "to lift the robot up." + "\n");
+				+ RobotMap.SCALING_DOWNWARDS_BUTTON + "to lift the robot up."
+				+ "\n");
 		System.out.println("****************************************");
 		System.out.println("****************************************" + "\n");
 
@@ -211,14 +256,18 @@ public class Robot extends IterativeRobot {
 				.getRawButton(RobotMap.BALL_CONTROL_SHOOT_BUTTON)); // 4
 
 		trekudesu.handleButtons(
-				shooter.getRawButton(RobotMap.TREXARM_RAISE_BUTTON), // 5
-				shooter.getRawButton(RobotMap.TREXARM_LOWER_BUTTON), // 3
-				shooter.getTrigger());
+				left.getRawButton(RobotMap.TREXARM_RAISE_BUTTON), // 5
+				left.getRawButton(RobotMap.TREXARM_LOWER_BUTTON), // 3
+				left.getTrigger());
 
-		scaleraptor.handleButtons(
-				shooter.getRawButton(RobotMap.SCALING_UPWARDS_BUTTON), // 6
-				shooter.getRawButton(RobotMap.SCALING_DOWNWARDS_BUTTON), // 4
-				shooter.getTrigger(), 20);
+		// RIP HER DREAMS, NOBODY WANTED THEM ANYWAYS
+
+		// RIP weiner dog sometime - 2/22/16
+
+		// scaleraptor.handleButtons(
+		// shooter.getRawButton(RobotMap.SCALING_UPWARDS_BUTTON), // 6
+		// shooter.getRawButton(RobotMap.SCALING_DOWNWARDS_BUTTON), // 4
+		// shooter.getTrigger(), 20);
 
 		if (left.getIsXbox())
 			hotbod.xboxDrive(left,

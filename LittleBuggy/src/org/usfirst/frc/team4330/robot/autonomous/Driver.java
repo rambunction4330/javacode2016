@@ -12,7 +12,8 @@ public class Driver {
 	private static enum State {
 		Initial, DrivenOverTheDefense, DrivingToMidPosition, MidPosition, Turning, DrivingToGoal, Shooting;
 	}
-
+	
+	
 	AnalogGyro gyro;
 
 	public Driver() {
@@ -38,10 +39,10 @@ public class Driver {
 	}
 	
 //	WE'RE NOT SHOOTING IF WE CAN'T EVEN GO OVER THE F***ING DEFENCES IN THE FU**ING TELEOP MODE BECAUSE NONE OF OUR "DRIVERS" HAVE ACTUALLY DRIVEN MORE THAN A COUPLE OF HOURS :<
-	public void findAngle() {
+	public void findAngle(int angle) {
 		System.out.println("Gyro angle is " + gyro.getAngle());
 		
-		if (gyro.getAngle() > -61 && gyro.getAngle() < -59) {
+		if (gyro.getAngle() > angle-1 && gyro.getAngle() < angle+1) {
 			dt.fixedDrive(0, 0);
 			autonomousSteps = State.DrivingToMidPosition;
 		} else if (gyro.getAngle() < -61) {
