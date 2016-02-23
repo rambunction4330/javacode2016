@@ -14,11 +14,11 @@ public abstract class AnonymousJoystick extends GenericHID {
 		// turn about 90ish degrees left or right depending on the direction
 		// given.
 		if (direction) {// left
-			driver.turnCounter(0.2);
+//			driver.turnCounter(0.2);
 		}
 
 		else {// reverse direction of true
-			driver.turnClock(0.2);
+//			driver.turnClock(0.2);
 		}
 	}
 

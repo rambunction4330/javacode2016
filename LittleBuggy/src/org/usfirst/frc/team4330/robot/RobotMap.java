@@ -26,8 +26,8 @@ public class RobotMap {
 	public static final int BALL_CONTROL_SHOOT_BUTTON = 4;
 	public static final int TREXARM_LOWER_BUTTON = 3;
 	public static final int TREXARM_RAISE_BUTTON = 5;
-	public static final int SCALING_UPWARDS_BUTTON = 11;
-	public static final int SCALING_DOWNWARDS_BUTTON = 12;
+	public static final int SCALING_UPWARDS_BUTTON = 6;
+	public static final int SCALING_DOWNWARDS_BUTTON = 4;
 
 	// Joysticks
 	public static final int JOYSTICK_ONE = 0;

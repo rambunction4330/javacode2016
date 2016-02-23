@@ -1,5 +1,9 @@
 package org.usfirst.frc.team4330.robot;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -9,6 +13,7 @@ public class DriveTrain {
 	private SpeedController rFW, lFW, rBW, lBW;
 	boolean reverse;
 	boolean lastPressed;
+	Timer timer = new Timer();
 
 	public DriveTrain() {
 		reverse = false;
@@ -89,6 +94,40 @@ public class DriveTrain {
 			lBW.set(-left.getY());
 		}
 	}
+	
+	private class timedDrive extends TimerTask {
+		@Override
+		public void run() {
+			rFW.set(-.2);
+			rBW.set(-.2);
+			lFW.set(.2);
+			lBW.set(.2);
+		}
+	}
+	
+	private class stopDrive extends TimerTask {
+		@Override
+		public void run() {
+			rFW.set(0);
+			rBW.set(0);
+			lFW.set(0);
+			lBW.set(0);
+		}
+	}
+		
+	public void driveToPosition(int x, int y) {
+		
+	}
+
+	public void spin180() {
+		
+	}
+	
+	// try 2000 first
+	public void forward(int milliseconds) {
+		timer.schedule(new timedDrive(), 0);
+		timer.schedule(new stopDrive(), milliseconds);
+	}
 
 	public void stop() {
 		rFW.set(0);
@@ -104,19 +143,19 @@ public class DriveTrain {
 		lFW.set(l);
 		lBW.set(l);
 	}
-
-	public void turnCounter(double speed) {
+	// positive is counterclockwise, negative is clockwise
+	private class turn extends TimerTask {
+		double speed;
+		private turn(double speed) {
+			this.speed = speed;
+		}
+		@Override
+		public void run() {
 		rFW.set(speed);
 		rBW.set(speed);
 		lFW.set(speed);
 		lBW.set(speed);
-	}
-
-	public void turnClock(double speed) {
-		rFW.set(-speed);
-		rBW.set(-speed);
-		lFW.set(-speed);
-		lBW.set(-speed);
+		}
 	}
 
 }
