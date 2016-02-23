@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class SensorDataRetriever {
 	
-	private String host = "localhost";
+	private String host = "raspberrypi.local";
 	private int port = 9001;
 	
 	private Socket socket;
