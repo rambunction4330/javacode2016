@@ -14,8 +14,8 @@ public class Scaling {
 	}
 	
 	public void handleButtons(boolean springUpButton, boolean liftRobotButton,
-			boolean powerButton) {
-		if (Timer.getMatchTime() > 131)
+			boolean powerButton, int matchlimit) {
+		if (Timer.getMatchTime() > (150 - matchlimit))
 			return;
 		
 		double speed = 0;

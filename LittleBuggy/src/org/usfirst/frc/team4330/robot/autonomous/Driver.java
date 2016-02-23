@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 
 public class Driver {
 	private State autonomousSteps;
-	private double currentAngle;
+//	private double currentAngle;
 	DriveTrain dt;
 
 	private static enum State {
@@ -36,6 +36,7 @@ public class Driver {
 		dt.fixedDrive(1, -1);
 		autonomousSteps = State.DrivingToMidPosition;
 	}
+	
 //	WE'RE NOT SHOOTING IF WE CAN'T EVEN GO OVER THE F***ING DEFENCES IN THE FU**ING TELEOP MODE BECAUSE NONE OF OUR "DRIVERS" HAVE ACTUALLY DRIVEN MORE THAN A COUPLE OF HOURS :<
 	public void findAngle() {
 		System.out.println("Gyro angle is " + gyro.getAngle());

@@ -218,7 +218,7 @@ public class Robot extends IterativeRobot {
 		scaleraptor.handleButtons(
 				shooter.getRawButton(RobotMap.SCALING_UPWARDS_BUTTON), // 6
 				shooter.getRawButton(RobotMap.SCALING_DOWNWARDS_BUTTON), // 4
-				shooter.getTrigger());
+				shooter.getTrigger(), 20);
 
 		if (left.getIsXbox())
 			hotbod.xboxDrive(left,
