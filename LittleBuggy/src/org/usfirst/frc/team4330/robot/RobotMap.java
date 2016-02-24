@@ -32,7 +32,7 @@ public class RobotMap {
 	// Joysticks
 	public static final int JOYSTICK_ONE = 0;
 	public static final int JOYSTICK_TWO = 1;
-	public static final int JOYSTICK_THREE = 5;
+	public static final int JOYSTICK_THREE = 2;
 
 	// Encoders
 	public static final int ENCODER_PORT_ONE = 2;
