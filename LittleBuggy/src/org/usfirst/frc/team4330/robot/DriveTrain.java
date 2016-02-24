@@ -69,7 +69,8 @@ public class DriveTrain {
 	 * @param currentlyPressed
 	 *            true if reverse button is currently pressed, false otherwise
 	 */
-	public void drive(GenericHID left, GenericHID right, boolean currentlyPressed) {
+	public void drive(GenericHID left, GenericHID right,
+			boolean currentlyPressed) {
 
 		if (!lastPressed && currentlyPressed) {
 			reverse = !reverse;
@@ -94,7 +95,7 @@ public class DriveTrain {
 			lBW.set(-left.getY());
 		}
 	}
-	
+
 	private class timedDrive extends TimerTask {
 		@Override
 		public void run() {
@@ -104,7 +105,18 @@ public class DriveTrain {
 			lBW.set(.2);
 		}
 	}
-	
+
+	private class timedBoost extends TimerTask {
+
+		@Override
+		public void run() {
+			rFW.set(-.6);
+			rBW.set(-.6);
+			lFW.set(.6);
+			lBW.set(.6);
+		}
+	}
+
 	private class stopDrive extends TimerTask {
 		@Override
 		public void run() {
@@ -114,18 +126,22 @@ public class DriveTrain {
 			lBW.set(0);
 		}
 	}
-		
+
 	public void driveToPosition(int x, int y) {
-		
+
 	}
 
 	public void spin180() {
-		
+
 	}
-	
+
 	// try 2000 first
-	public void forward(int milliseconds) {
-		timer.schedule(new timedDrive(), 0);
+	public void forward(int milliseconds, boolean boost) {
+		if (!boost)
+			timer.schedule(new timedDrive(), 0);
+		else {
+			timer.schedule(new timedBoost(), 0);
+		}
 		timer.schedule(new stopDrive(), milliseconds);
 	}
 
@@ -143,18 +159,21 @@ public class DriveTrain {
 		lFW.set(l);
 		lBW.set(l);
 	}
+
 	// positive is counterclockwise, negative is clockwise
 	private class turn extends TimerTask {
 		double speed;
+
 		private turn(double speed) {
 			this.speed = speed;
 		}
+
 		@Override
 		public void run() {
-		rFW.set(speed);
-		rBW.set(speed);
-		lFW.set(speed);
-		lBW.set(speed);
+			rFW.set(speed);
+			rBW.set(speed);
+			lFW.set(speed);
+			lBW.set(speed);
 		}
 	}
 

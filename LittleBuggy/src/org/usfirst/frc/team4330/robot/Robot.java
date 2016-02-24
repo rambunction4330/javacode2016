@@ -53,12 +53,10 @@ public class Robot extends IterativeRobot {
 	// private thread flag;
 	private thread flag = thread.OFF;
 
-	
 	private enum thread {
 		ARM, INTAKE, DRIVE, OFF;
 	}
 
-	
 	/*
      * 
      */
@@ -94,10 +92,10 @@ public class Robot extends IterativeRobot {
 		positionChooser.addObject("Five", five);
 		SmartDashboard.putData("Autonomous Position", positionChooser);
 	}
-	
-//	public void changeState(thread change) {
-//		justAName = change;
-//	}
+
+	// public void changeState(thread change) {
+	// justAName = change;
+	// }
 
 	public void autonomousInit() {
 		autoPosition = (int) positionChooser.getSelected();
@@ -121,48 +119,47 @@ public class Robot extends IterativeRobot {
 
 	public void autonomousPeriodic() {
 		/* step one: move forward */
-		if (once == 0 && flag != thread.OFF) {
+		if (once == 0) {
 			/* step two: get over obstacle */
 			if (autoDefense.equals(portcullis)) {
 				flag = thread.ARM;
 				trekudesu.autonomousArm(false, true, false);
-				hotbod.forward(1000);
+				hotbod.forward(1000, false);
 				trekudesu.autonomousArm(true, false, true);
 				flag = thread.OFF;
-				
 			}
-//			if (autoDefense.equals(chivalDeFrise)) {
-//				// trex then ram
-//			}
+			// if (autoDefense.equals(chivalDeFrise)) {
+			// // trex then ram
+			// }
 			// drivers have trouble
 			if (autoDefense.equals(rampart)) {
-				hotbod.forward(1000);				
+				//hotbod.forward(1000);
 				// ram 1 gb
 			}
 			if (autoDefense.equals(moat)) {
-				hotbod.forward(1000);
+				//hotbod.forward(1000);
 				// ram 2.5 gb
 			}
 			if (autoDefense.equals(roughTerrain)) {
-				hotbod.forward(1000);
+				//hotbod.forward(1000);
 				// ram 4 gb
 			}
 			if (autoDefense.equals(rockWall)) {
-				hotbod.forward(1000);
+				//hotbod.forward(1000);
 				// ram 6 gb
 			}
 		}
-		// threads so you don't keep doing other stuff while something is active
-		// THIS IS AFTER YOU GET OVER THE F**KING OBSTACLE
-		
-		driver.findAngle(angle);
+		if (flag == thread.OFF) {
+			// threads so you don't keep doing other stuff while something is
+			// active
+			
+			
+			// THIS IS AFTER YOU GET OVER THE OBSTACLE
 
-		// if (autoDefense.equals(portcullis)) {
-		//
-		// } else if (autoDefense.equals(moat)) {
-		//
-		// }
-		once = 1;
+			driver.findAngle(angle);
+
+			once = 1;
+		}
 
 	}
 

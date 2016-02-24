@@ -106,7 +106,7 @@ public class SmartArm {
 
 		// positionController.setAbsoluteTolerance(5);
 	}
-
+	
 	public void disable() {
 		if (outputs != null) {
 			outputs.pidWrite(0);
