@@ -19,7 +19,7 @@ public class BallControl {
 	private Timer timer = new Timer();
 
 	private static final double inSpeed = -1;
-	private static final double outSpeed = .5;
+	private static final double outSpeed = 1;
 
 	public BallControl(SpeedController blueWheelsController, Relay kickerRelay) {
 		this.blueWheels = blueWheelsController;
@@ -71,14 +71,14 @@ public class BallControl {
 					System.out.println("Bye bye bally "
 							+ System.currentTimeMillis());
 					spinOut();
-					Thread.sleep(600);
+					Thread.sleep(2000);
 
 					// kick ball
 					System.out.println("Kicking ball forward "
 							+ System.currentTimeMillis());
 					kicker.set(Value.kForward);
 
-					Thread.sleep(150);
+					Thread.sleep(200);
 					// deenergize the relay
 					kicker.stopMotor();
 
