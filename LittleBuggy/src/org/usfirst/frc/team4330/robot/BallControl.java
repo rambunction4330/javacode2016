@@ -78,7 +78,7 @@ public class BallControl {
 							+ System.currentTimeMillis());
 					kicker.set(Value.kForward);
 
-					Thread.sleep(200);
+					Thread.sleep(1000);
 					// deenergize the relay
 					kicker.stopMotor();
 
@@ -86,7 +86,7 @@ public class BallControl {
 
 					kicker.set(Value.kReverse);
 
-					Thread.sleep(20);
+					Thread.sleep(200);
 
 					// denergize the relay
 					kicker.stopMotor();

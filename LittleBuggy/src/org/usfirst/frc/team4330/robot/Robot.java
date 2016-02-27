@@ -24,13 +24,13 @@ public class Robot extends IterativeRobot {
 	DriveTrain hotbod;
 	Arm trekudesu;
 	BallControl ballControl;
-	Joystick left, right, shooter;
+	Joystick left, right;
 	LeddarDistanceSensor leddar;
 	AnonymousJoystick ajoy;
 	Driver driver;
 
-//	SendableChooser defenseChooser;
-//	SendableChooser positionChooser;
+	SendableChooser defenseChooser;
+	SendableChooser positionChooser;
 
 	private int autoPosition;
 	private String autoDefense;
@@ -49,26 +49,21 @@ public class Robot extends IterativeRobot {
 	private int five = 5;
 	private int once;
 	private int angle = 0;
-	// private thread flag;
-//	private thread flag = thread.OFF;
-//
-//	
-//	private enum thread {
-//		ARM, INTAKE, DRIVE, OFF;
-//	}
 
-	
+	private thread flag = thread.OFF;
+
+	private enum thread {
+		ARM, INTAKE, DRIVE, OFF;
+	}
+
 	/*
      * 
      */
 	public Robot() {
-		System.out.println("has it failed yet??");
-		
 		driver = new Driver();
 		hotbod = new DriveTrain();
-		left = new Joystick(RobotMap.JOYSTICK_TWO);
-		right = new Joystick(RobotMap.JOYSTICK_THREE);
-		shooter = new Joystick(RobotMap.JOYSTICK_ONE);
+		left = new Joystick(RobotMap.JOYSTICK_ONE);
+		right = new Joystick(RobotMap.JOYSTICK_TWO);
 		leddar = new LeddarDistanceSensor();
 		trekudesu = new Arm(); // new Victor(RobotMap.TREXARM_PORT)
 		ballControl = new BallControl(new Victor(RobotMap.INTAKE_PORT),
@@ -76,33 +71,33 @@ public class Robot extends IterativeRobot {
 		// scaleraptor = new Scaling(new Victor(RobotMap.SCALAR_PORT),
 		// shooter.getRawAxis(3));
 
-//		defenseChooser = new SendableChooser();
-//		defenseChooser.addDefault("Portcullis", portcullis);
-//		defenseChooser.addObject("Chival de Frise (four moving trains)",
-//				chivalDeFrise);
-//		defenseChooser.addObject("Rough Terrain", roughTerrain);
-//		defenseChooser.addObject("Moat", moat);
-//		defenseChooser.addObject("Rampart (two non-moving trains)", rampart);
-//		defenseChooser.addObject("Rock Wall", rockWall);
-//		defenseChooser.addObject("Low Bar", lowBar);
-//		SmartDashboard.putData("Autonomous Defense", defenseChooser);
-//
-//		positionChooser = new SendableChooser();
-//		positionChooser.addDefault("One", one);
-//		positionChooser.addObject("Two", two);
-//		positionChooser.addObject("Three", three);
-//		positionChooser.addObject("Four", four);
-//		positionChooser.addObject("Five", five);
-//		SmartDashboard.putData("Autonomous Position", positionChooser);
+		defenseChooser = new SendableChooser();
+		defenseChooser.addDefault("Portcullis", portcullis);
+		defenseChooser.addObject("Chival de Frise (four moving trains)",
+				chivalDeFrise);
+		defenseChooser.addObject("Rough Terrain", roughTerrain);
+		defenseChooser.addObject("Moat", moat);
+		defenseChooser.addObject("Rampart (two non-moving trains)", rampart);
+		defenseChooser.addObject("Rock Wall", rockWall);
+		defenseChooser.addObject("Low Bar", lowBar);
+		SmartDashboard.putData("Autonomous Defense", defenseChooser);
+
+		positionChooser = new SendableChooser();
+		positionChooser.addDefault("One", one);
+		positionChooser.addObject("Two", two);
+		positionChooser.addObject("Three", three);
+		positionChooser.addObject("Four", four);
+		positionChooser.addObject("Five", five);
+		SmartDashboard.putData("Autonomous Position", positionChooser);
 	}
-	
-//	public void changeState(thread change) {
-//		justAName = change;
-//	}
+
+	// public void changeState(thread change) {
+	// justAName = change;
+	// }
 
 	public void autonomousInit() {
-//		autoPosition = (int) positionChooser.getSelected();
-//		autoDefense = (String) defenseChooser.getSelected();
+		// autoPosition = (int) positionChooser.getSelected();
+		// autoDefense = (String) defenseChooser.getSelected();
 		System.out.println("Position choice is " + autoPosition);
 		System.out.println("Defense choice is " + autoDefense);
 
@@ -113,7 +108,7 @@ public class Robot extends IterativeRobot {
 		System.out.println("*********************************");
 		System.out.println("*********************************");
 
-//		leddar.startUp();
+		// leddar.startUp();
 		once = 0;
 
 	}
@@ -121,42 +116,42 @@ public class Robot extends IterativeRobot {
 	//
 
 	public void autonomousPeriodic() {
-//		/* step one: move forward */
-//		if (once == 0 && flag != thread.OFF) {
-//			/* step two: get over obstacle */
-//			if (autoDefense.equals(portcullis)) {
-//				flag = thread.ARM;
-//				trekudesu.autonomousArm(false, true, false);
-//				hotbod.forward(1000);
-//				trekudesu.autonomousArm(true, false, true);
-//				flag = thread.OFF;
-//				
-//			}
-////			if (autoDefense.equals(chivalDeFrise)) {
-////				// trex then ram
-////			}
-//			// drivers have trouble
-//			if (autoDefense.equals(rampart)) {
-//				hotbod.forward(1000);				
-//				// ram 1 gb
-//			}
-//			if (autoDefense.equals(moat)) {
-//				hotbod.forward(1000);
-//				// ram 2.5 gb
-//			}
-//			if (autoDefense.equals(roughTerrain)) {
-//				hotbod.forward(1000);
-//				// ram 4 gb
-//			}
-//			if (autoDefense.equals(rockWall)) {
-//				hotbod.forward(1000);
-//				// ram 6 gb
-//			}
-//		}
+		// /* step one: move forward */
+		// if (once == 0 && flag != thread.OFF) {
+		// /* step two: get over obstacle */
+		// if (autoDefense.equals(portcullis)) {
+		// flag = thread.ARM;
+		// trekudesu.autonomousArm(false, true, false);
+		// hotbod.forward(1000);
+		// trekudesu.autonomousArm(true, false, true);
+		// flag = thread.OFF;
+		//
+		// }
+		// // if (autoDefense.equals(chivalDeFrise)) {
+		// // // trex then ram
+		// // }
+		// // drivers have trouble
+		// if (autoDefense.equals(rampart)) {
+		// hotbod.forward(1000);
+		// // ram 1 gb
+		// }
+		// if (autoDefense.equals(moat)) {
+		// hotbod.forward(1000);
+		// // ram 2.5 gb
+		// }
+		// if (autoDefense.equals(roughTerrain)) {
+		// hotbod.forward(1000);
+		// // ram 4 gb
+		// }
+		// if (autoDefense.equals(rockWall)) {
+		// hotbod.forward(1000);
+		// // ram 6 gb
+		// }
+		// }
 		// threads so you don't keep doing other stuff while something is active
 		// THIS IS AFTER YOU GET OVER THE F**KING OBSTACLE
-		
-//		driver.findAnfgle(angle);
+
+		// driver.findAnfgle(angle);
 
 		// if (autoDefense.equals(portcullis)) {
 		//
@@ -218,8 +213,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledInit() {
 		// trekudesu.disable();
-//		leddar.shutDown();
-		
+		// leddar.shutDown();
+
 		System.out.println("help");
 	}
 
@@ -233,18 +228,14 @@ public class Robot extends IterativeRobot {
 				+ RobotMap.REVERSE_DRIVE_BUTTON
 				+ "to reverse the direction of the robot." + "\nPRESS "
 				+ RobotMap.BALL_CONTROL_INTAKE_BUTTON + "to suck the ball in"
-				+ "\n");
+				+ "\nPRESS " + RobotMap.BALL_CONTROL_SHOOT_BUTTON
+				+ " to push the ball out." + "\n");
 
-		System.out.println("SHOOTER joystick controls : " + "\nPRESS "
+		System.out.println("RIGHT joystick controls : " + "\nPRESS "
 				+ RobotMap.TREXARM_LOWER_BUTTON + " to lower Trekudesu."
 				+ "\nPRESS " + RobotMap.TREXARM_RAISE_BUTTON
 				+ " to raise Trekudesu."
-				+ "\nPRESS Trigger to power Trekudesu." + "\nPRESS "
-				+ RobotMap.BALL_CONTROL_SHOOT_BUTTON + " to push the ball out."
-				+ "\nPRESS " + RobotMap.SCALING_UPWARDS_BUTTON
-				+ " to release scaling mechanicism." + "\nPRESS "
-				+ RobotMap.SCALING_DOWNWARDS_BUTTON + "to lift the robot up."
-				+ "\n");
+				+ "\nPRESS Trigger to power Trekudesu." + "\n");
 		System.out.println("****************************************");
 		System.out.println("****************************************" + "\n");
 

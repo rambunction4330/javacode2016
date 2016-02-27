@@ -3,7 +3,6 @@ package org.usfirst.frc.team4330.robot;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -13,14 +12,14 @@ public class Arm {
 	private SpeedController motorController1;
 	private SpeedController motorController2;
 
-//	private State armState;
-//
-//	private static enum State {
-//		Ready, Initial, Calibrating;
-//	}
-//
-//	private Encoder encoder;
-//
+	private State armState;
+
+	private static enum State {
+		Ready, Initial, Calibrating;
+	}
+
+	private Encoder encoder;
+
 	Timer timer = new Timer();
 
 	private static final double ARM_WHEEL_SPEED = .2;
@@ -29,32 +28,32 @@ public class Arm {
 	public Arm() {
 		motorController1 = new Victor(RobotMap.TREXARM_PORT_ONE);
 		motorController2 = new Victor(RobotMap.TREXARM_PORT_TWO);
-//		encoder = new Encoder(RobotMap.ENCODER_PORT_ONE,
-//				RobotMap.ENCODER_PORT_TWO);
-//
-//		armState = State.Initial;
+		encoder = new Encoder(RobotMap.ENCODER_PORT_ONE,
+				RobotMap.ENCODER_PORT_TWO);
+
+		armState = State.Initial;
 	}
 
 	private void calibrate() {
-//		armState = State.Calibrating;
+		armState = State.Calibrating;
 
 		motorController1.setInverted(false);
 		motorController2.setInverted(false);
 		motorController1.stopMotor();
 		motorController2.stopMotor();
 
-//		encoder.setPIDSourceType(PIDSourceType.kDisplacement);
-//		encoder.setDistancePerPulse(360.0 / 250);
+		encoder.setPIDSourceType(PIDSourceType.kDisplacement);
+		encoder.setDistancePerPulse(360.0 / 250);
 
 		double speed = -.5 * ARM_WHEEL_SPEED;
 		motorController1.set(speed);
 		motorController2.set(speed);
-		
-//		timer = new Timer();
 
-//		timer.schedule(new DetermineIfCalibrationComplete(), 200, 200);
+		timer = new Timer();
+
+		timer.schedule(new DetermineIfCalibrationComplete(), 200, 200);
 	}
-/*
+
 	private class DetermineIfCalibrationComplete extends TimerTask {
 
 		// initialize last position read to a random big number
@@ -79,15 +78,15 @@ public class Arm {
 				lastPositionRead = currentPositionRead;
 			}
 		}
-	}*/
+	}
 
 	public void handleButtons(boolean raiseButton, boolean lowerButton,
 			boolean powerButton) {
-//		if (armState != State.Ready) {
-//			if (armState != State.Calibrating) {
-//				calibrate();
-//			}
-//		} else {
+		if (armState != State.Ready) {
+			if (armState != State.Calibrating) {
+				calibrate();
+			}
+		} else {
 
 			double speed = 0;
 
@@ -101,13 +100,13 @@ public class Arm {
 				}
 			} else if (raiseButton) {
 				speed = -1 * RobotMap.ARM_WHEEL_SPEED;
-				if (powerButton )
+				if (powerButton)
 					speed = -1 * POWER_SPEED;
 			}
 
 			motorController1.set(speed);
 			motorController2.set(speed);
-//		}
+		}
 	}
 
 	public void autonomousArm(boolean raise, boolean lower, boolean power) {
