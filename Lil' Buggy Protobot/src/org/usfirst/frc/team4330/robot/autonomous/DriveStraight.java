@@ -23,7 +23,7 @@ public class DriveStraight extends Command {
 		execCounter = 0;
 		finished = false;
 		if (distanceToDrive < 0) {
-			dT.drive(-1 * speed, -1 * speed);
+			dT.drive(-speed, -speed);
 		} else {
 			dT.drive(speed, speed);
 		}

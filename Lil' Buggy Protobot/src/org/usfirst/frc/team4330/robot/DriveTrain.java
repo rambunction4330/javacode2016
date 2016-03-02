@@ -7,23 +7,25 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Victor;
 
 public class DriveTrain {
 	private SpeedController rFW, lFW, rBW, lBW;
 	boolean reverse;
 	boolean lastPressed;
+	
 	Timer timer = new Timer();
 
 	public DriveTrain() {
 		reverse = false;
 		lastPressed = false;
 
-		rFW = new Talon(RobotMap.RIGHT_FRONT_WHEEL);
-		rFW.setInverted(true);
+		rFW = new Victor(RobotMap.RIGHT_FRONT_WHEEL);
 		rBW = new Jaguar(RobotMap.RIGHT_BACK_WHEEL);
-		lFW = new Talon(RobotMap.LEFT_FRONT_WHEEL);
+		lFW = new Victor(RobotMap.LEFT_FRONT_WHEEL);
+		lFW.setInverted(true);
 		lBW = new Jaguar(RobotMap.LEFT_BACK_WHEEL);
+		lBW.setInverted(true);
 	}
 
 	/**

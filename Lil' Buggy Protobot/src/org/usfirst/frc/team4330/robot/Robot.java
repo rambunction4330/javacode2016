@@ -23,77 +23,35 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * 
  */
 public class Robot extends IterativeRobot {
+	Joystick leftJoystick, rightJoystick;
+
 	DriveTrain hotbod;
 	Arm trekudesu;
 	BallControl ballControl;
-	Joystick left, right;
 	LeddarDistanceSensor leddar;
 	Manager woman;
 
-	SendableChooser defenseChooser;
-	SendableChooser positionChooser;
-
-	public static int autoPosition;
-	public static String autoDefense;
-
-	private String portcullis = "portcullis";
-	private String chivalDeFrise = "chivalDeFrise";
-	private String roughTerrain = "roughTerrain";
-	private String moat = "moat";
-	private String rampart = "rampart";
-	private String rockWall = "rockWall";
-	private String lowBar = "lowBar";
-	private int one = 1;
-	private int two = 2;
-	private int three = 3;
-	private int four = 4;
-	private int five = 5;
+	SmartDashboardSetup smartDashboard;
 
 	public Robot() {
+		leftJoystick = new Joystick(RobotMap.JOYSTICK_ONE);
+		rightJoystick = new Joystick(RobotMap.JOYSTICK_TWO);
+
 		hotbod = new DriveTrain();
-		left = new Joystick(RobotMap.JOYSTICK_ONE);
-		right = new Joystick(RobotMap.JOYSTICK_TWO);
 		leddar = new LeddarDistanceSensor();
 		trekudesu = new Arm(); // new Victor(RobotMap.TREXARM_PORT)
 		ballControl = new BallControl(new Victor(RobotMap.INTAKE_PORT),
 				new Relay(RobotMap.SPIKE_PORT, Direction.kBoth));
 		woman = new Manager(hotbod, new AnalogGyro(0, 0, 0));
-
+		smartDashboard = new SmartDashboardSetup();
 		// scaleraptor = new Scaling(new Victor(RobotMap.SCALAR_PORT));
-
-		defenseChooser = new SendableChooser();
-		defenseChooser.addDefault("Portcullis", portcullis);
-		defenseChooser.addObject("Chival de Frise (four moving trains)",
-				chivalDeFrise);
-		defenseChooser.addObject("Rough Terrain", roughTerrain);
-		defenseChooser.addObject("Moat", moat);
-		defenseChooser.addObject("Rampart (two non-moving trains)", rampart);
-		defenseChooser.addObject("Rock Wall", rockWall);
-		defenseChooser.addObject("Low Bar", lowBar);
-		SmartDashboard.putData("Autonomous Defense", defenseChooser);
-
-		positionChooser = new SendableChooser();
-		positionChooser.addDefault("One", one);
-		positionChooser.addObject("Two", two);
-		positionChooser.addObject("Three", three);
-		positionChooser.addObject("Four", four);
-		positionChooser.addObject("Five", five);
-		SmartDashboard.putData("Autonomous Position", positionChooser);
 	}
 
 	public void autonomousInit() {
-		autoPosition = (int) positionChooser.getSelected();
-		autoDefense = (String) defenseChooser.getSelected();
-		System.out.println("Position choice is " + autoPosition);
-		System.out.println("Defense choice is " + autoDefense);
-
-		System.out.println("*********************************");
-		System.out.println("*********************************");
-		System.out.println("******** May the evens be *******");
-		System.out.println("****** ever in your favor! ******");
-		System.out.println("*********************************");
-		System.out.println("*********************************");
-
+		smartDashboard.initiliaze();
+		System.out.println("Position choice is " + smartDashboard.autoPosition);
+		System.out.println("Defense choice is " + smartDashboard.autoDefense);
+		
 		woman.initialize();
 	}
 
@@ -152,9 +110,6 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void teleopInit() {
-		// trekudesu.initialize(false);
-		// scaleraptor.initialize();
-
 		System.out.println("\n****************************************");
 		System.out.println("********** BUTTONS FOR DRIVERS *********");
 		System.out.println("\nLEFT joystick controls :" + "\nPRESS "
@@ -176,16 +131,16 @@ public class Robot extends IterativeRobot {
 
 	public void teleopPeriodic() {
 
-		ballControl.performIntake(right
+		ballControl.performIntake(rightJoystick
 				.getRawButton(RobotMap.BALL_CONTROL_INTAKE_BUTTON)); // 6
 
-		ballControl.shoot(right
+		ballControl.shoot(rightJoystick
 				.getRawButton(RobotMap.BALL_CONTROL_SHOOT_BUTTON)); // 4
 
 		trekudesu.handleButtons(
-				left.getRawButton(RobotMap.TREXARM_RAISE_BUTTON), // 5
-				left.getRawButton(RobotMap.TREXARM_LOWER_BUTTON), // 3
-				left.getTrigger());
+				leftJoystick.getRawButton(RobotMap.TREXARM_RAISE_BUTTON), // 5
+				leftJoystick.getRawButton(RobotMap.TREXARM_LOWER_BUTTON), // 3
+				leftJoystick.getRawButton(RobotMap.TREXARM_POWER_BUTTON)); // 2
 
 		// RIP HER DREAMS, NOBODY WANTED THEM ANYWAYS
 
@@ -196,21 +151,22 @@ public class Robot extends IterativeRobot {
 		// shooter.getRawButton(RobotMap.SCALING_DOWNWARDS_BUTTON), // 4
 		// shooter.getTrigger(), 20);
 
-		if (left.getIsXbox())
-			hotbod.xboxDrive(left,
-					left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON));
+		/*if (leftJoystick.getIsXbox())
+			hotbod.xboxDrive(leftJoystick,
+					rightJoystick.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)); // 8
 		else
-			hotbod.drive(left, right,
-					left.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)); // 8
+			*/
+		hotbod.drive(leftJoystick, rightJoystick,
+					rightJoystick.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)); // 8
 
 	}
 
 	public void testInit() {
-		// trekudesu.initialize(true);
+		
 	}
 
 	public void testPeriodic() {
-
+		System.out.println("Left values: " + leftJoystick.getY() + "; Right values: " + rightJoystick.getY());
 	}
 
 }
