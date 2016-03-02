@@ -14,6 +14,7 @@ public class Driver {
 	AnalogGyro gyro;
 
 	public Driver() {
+		
 		gyro = new AnalogGyro(0, 0, 0);
 		autonomousSteps = State.Initial;
 	}
@@ -22,6 +23,7 @@ public class Driver {
 		if (autonomousSteps != State.Initial)
 			return;
 		if (autonomousSteps != State.DrivenOverTheDefense) {
+			
 		autonomousSteps = State.DrivenOverTheDefense;
 		overDefense();
 		}
