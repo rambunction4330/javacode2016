@@ -59,19 +59,19 @@ public class Align extends Command {
 		} else {
 			double desiredp = desiredBearing;
 			double currentp = currentBearing;
-			if (desiredBearing < 0)
-				desiredp = desiredBearing + 360;
-			if (currentBearing < 0)
+			if (desiredp < 0 || currentp < 0) {
 				currentp = currentBearing + 360;
+				desiredp = desiredBearing + 360;
+			}
 			
 			double val = desiredp - currentp;
-			boolean turnRight = (val > 0 && val < 180);	
-			if (!turnRight) {
+			boolean turnClockwise = (val > 0 && val < 180);	
+			if (!turnClockwise) {
 				System.out.println("Turning left.");
-				dT.drive(-SPEED, -SPEED);
+				dT.drive(-SPEED, SPEED);
 			} else {
 				System.out.println("Turning right.");
-				dT.drive(SPEED, SPEED);
+				dT.drive(SPEED, -SPEED);
 			}
 		}
 	}

@@ -28,15 +28,13 @@ public class Robot extends IterativeRobot {
 	BallControl ballControl;
 	Joystick left, right;
 	LeddarDistanceSensor leddar;
-	AnonymousJoystick ajoy;
-	Gyro dudero;
 	Manager woman;
 
 	SendableChooser defenseChooser;
 	SendableChooser positionChooser;
 
-	private int autoPosition;
-	private String autoDefense;
+	public static int autoPosition;
+	public static String autoDefense;
 
 	private String portcullis = "portcullis";
 	private String chivalDeFrise = "chivalDeFrise";
@@ -59,9 +57,8 @@ public class Robot extends IterativeRobot {
 		trekudesu = new Arm(); // new Victor(RobotMap.TREXARM_PORT)
 		ballControl = new BallControl(new Victor(RobotMap.INTAKE_PORT),
 				new Relay(RobotMap.SPIKE_PORT, Direction.kBoth));
-		dudero = new AnalogGyro(0, 0, 0);
-		woman = new Manager(hotbod, dudero);
-		
+		woman = new Manager(hotbod, new AnalogGyro(0, 0, 0));
+
 		// scaleraptor = new Scaling(new Victor(RobotMap.SCALAR_PORT));
 
 		defenseChooser = new SendableChooser();
@@ -85,8 +82,8 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void autonomousInit() {
-		// autoPosition = (int) positionChooser.getSelected();
-		// autoDefense = (String) defenseChooser.getSelected();
+		autoPosition = (int) positionChooser.getSelected();
+		autoDefense = (String) defenseChooser.getSelected();
 		System.out.println("Position choice is " + autoPosition);
 		System.out.println("Defense choice is " + autoDefense);
 
