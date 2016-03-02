@@ -176,9 +176,9 @@ public class SmartArm {
 		public void run() {
 			encoder.pidGet();
 
-			SmartDashboard.putNumber("amanda encoder", encoder.pidGet());
-			SmartDashboard.putNumber("amanda motor", speedController1.get());
-			SmartDashboard.putNumber("amanda motor 2", speedController2.get());
+			SmartDashboardSetup.putNumber("amanda encoder", encoder.pidGet());
+			SmartDashboardSetup.putNumber("amanda motor", speedController1.get());
+			SmartDashboardSetup.putNumber("amanda motor 2", speedController2.get());
 
 			// System.out.println("Actual Position is " + encoder.pidGet());
 		}
@@ -211,8 +211,8 @@ public class SmartArm {
 			}
 
 			System.out.println("Current Setpoint is " + currentSetpoint);
-			SmartDashboard.putNumber("pid current Setpoint", currentSetpoint);
-			SmartDashboard.putNumber("pid desired Setpoint", desiredSetpoint);
+			SmartDashboardSetup.putNumber("pid current Setpoint", currentSetpoint);
+			SmartDashboardSetup.putNumber("pid desired Setpoint", desiredSetpoint);
 
 			positionController.setSetpoint(currentSetpoint);
 		}

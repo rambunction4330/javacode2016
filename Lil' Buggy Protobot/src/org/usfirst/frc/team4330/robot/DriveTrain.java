@@ -19,10 +19,11 @@ public class DriveTrain {
 		lastPressed = false;
 
 		rFW = new Jaguar(RobotMap.RIGHT_FRONT_WHEEL);
-		rFW.setInverted(true);
 		rBW = new Jaguar(RobotMap.RIGHT_BACK_WHEEL);
 		lFW = new Jaguar(RobotMap.LEFT_FRONT_WHEEL);
+		lFW.setInverted(true);
 		lBW = new Jaguar(RobotMap.LEFT_BACK_WHEEL);
+		lBW.setInverted(true);
 	}
 
 	/**

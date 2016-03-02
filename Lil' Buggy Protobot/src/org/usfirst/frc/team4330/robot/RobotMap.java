@@ -21,13 +21,14 @@ public class RobotMap {
 	public static final double INTAKE_SPEED = .5;
 
 	// Buttons
-	public static final int REVERSE_DRIVE_BUTTON = 8;
+	public static final int REVERSE_DRIVE_BUTTON = 2;
 	public static final int BALL_CONTROL_INTAKE_BUTTON = 6;
 	public static final int BALL_CONTROL_SHOOT_BUTTON = 4;
 	public static final int TREXARM_LOWER_BUTTON = 3;
 	public static final int TREXARM_RAISE_BUTTON = 5;
 	public static final int SCALING_UPWARDS_BUTTON = 6;
 	public static final int SCALING_DOWNWARDS_BUTTON = 4;
+	public static final int TREXARM_POWER_BUTTON = 2;
 
 	// Joysticks
 	public static final int JOYSTICK_ONE = 0;
