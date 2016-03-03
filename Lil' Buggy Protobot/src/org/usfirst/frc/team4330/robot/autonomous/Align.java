@@ -9,7 +9,6 @@ public class Align extends Command {
 	private DriveTrain dT;
 	private Gyro gyro;
 	private double desiredBearing;
-	private double currentBearing;
 	private boolean finished = false;
 
 	private static final double SPEED = .8;
@@ -24,53 +23,62 @@ public class Align extends Command {
 
 	@Override
 	protected void initialize() {
-		currentBearing = angleCalculator();
+		
 	}
 
-	private double angleCalculator() {
-		double raw = gyro.getAngle();
+	/**
+	 * 
+	 * @return value between -180 and 180
+	 */
+	protected double angleCalculator() {
+		double raw = getRaw();
 
 		if (raw > 0) {
 			raw = raw % 360;
 
 			if (raw > 180) {
-				raw = 360 - raw;
+				raw -= 360;
 			}
 		} else {
 			raw = raw % 360;
 
 			if (raw < -180) {
-				raw = 360 + raw;
+				raw += 360;
 			}
 		}
 
 		return raw;
 	}
+	
+	protected double getRaw() {
+		return gyro.getAngle();
+	}
 
 	@Override
 	protected void execute() {
-		currentBearing = angleCalculator();
-		System.out.println("Angle is " + gyro.getAngle());
-
-		if (Math.abs(currentBearing - desiredBearing) < angleTolerance) {
+		double currentBearing = angleCalculator();
+		double desiredp = desiredBearing;
+		double currentp = currentBearing;
+		if (currentp > 0 && desiredp < 0) {
+			desiredp = desiredBearing + 360;
+		} else if ( currentp < 0 && desiredp > 0 ) {
+			if ( currentp > -90 ) {
+				desiredp = desiredBearing + 360;
+			}
+			currentp = currentBearing + 360;
+		}
+		if (Math.abs(currentp - desiredp) < angleTolerance) {
 			dT.drive(0, 0);
 			System.out.println("Done.");
 			finished = true;
 		} else {
-			double desiredp = desiredBearing;
-			double currentp = currentBearing;
-			if (desiredp < 0 || currentp < 0) {
-				currentp = currentBearing + 360;
-				desiredp = desiredBearing + 360;
-			}
-			
 			double val = desiredp - currentp;
 			boolean turnClockwise = (val > 0 && val < 180);	
 			if (!turnClockwise) {
-				System.out.println("Turning left.");
+				System.out.println("Turning counter clockwise.");
 				dT.drive(-SPEED, SPEED);
 			} else {
-				System.out.println("Turning right.");
+				System.out.println("Turning clockwise.");
 				dT.drive(SPEED, -SPEED);
 			}
 		}

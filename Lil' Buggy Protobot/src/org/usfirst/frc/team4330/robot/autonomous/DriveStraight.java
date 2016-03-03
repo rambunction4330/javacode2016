@@ -8,7 +8,7 @@ public class DriveStraight extends Command {
 	private DriveTrain dT;
 	double distanceToDrive;
 	double execCounter;
-	private double speed = .5;
+	private double speed = .7;
 	private double speedActual = 3; // (Physical speed of the robot in feet per
 									// second)
 	private boolean finished = false;
@@ -20,6 +20,7 @@ public class DriveStraight extends Command {
 
 	@Override
 	protected void initialize() {
+		System.out.println("Driving forward.");
 		execCounter = 0;
 		finished = false;
 		if (distanceToDrive < 0) {

@@ -26,7 +26,7 @@ public class Manager {
 	
 	public void initialize() {
 		// TODO set gyro position to 0 at beginning
-	/*	if (Robot.autoDefense.equals("lowBar")) {
+		/*if (Robot.autoDefense.equals("lowBar")) {
 			sche.add(new DriveStraight(dT, 8));
 		}
 		if (Robot.autoDefense.equals("roughTerrain")) {
@@ -36,7 +36,8 @@ public class Manager {
 			sche.add(new Align(dT, gyro, -30));
 			sche.add(new DriveStraight(dT, 3)); // 30 degrees at 3 = 3sqrt(3)/2 total = 8?
 			sche.add(new Align(dT, gyro, 0));
-		}
+		}*/
+		
 //		 testing stuff
 	 	gyro.calibrate();
 		sche.add(new WaitCommand(5.0));
@@ -44,9 +45,9 @@ public class Manager {
 		sche.add(new DriveStraight(dT, 5));
 		sche.add(new Align(dT, gyro, 180));
 		sche.add(new DriveStraight(dT, 5));
-	*/
-		sche.add(new DriveStraight(dT, 5));
-		sche.add(new Align(dT, gyro, 0));
+		
+//		sche.add(new DriveStraight(dT, 5));
+//		sche.add(new Align(dT, gyro, 0));
 		}
 	
 }

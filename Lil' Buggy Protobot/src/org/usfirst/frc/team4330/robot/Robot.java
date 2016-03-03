@@ -11,9 +11,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Relay.Direction;
 import edu.wpi.first.wpilibj.Victor;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * 2016 final code!!
@@ -166,7 +163,8 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void testPeriodic() {
-		System.out.println("Left values: " + leftJoystick.getY() + "; Right values: " + rightJoystick.getY());
+//		hotbod.drive(.2, .2);
+//		System.out.println("Left values: " + leftJoystick.getY() + "; Right values: " + rightJoystick.getY());
 	}
 
 }
