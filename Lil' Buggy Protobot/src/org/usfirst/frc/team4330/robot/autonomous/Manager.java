@@ -28,9 +28,32 @@ public class Manager {
 	private double y;
 	private boolean givingUp = false;
 	
+	// autoline is at 1'2"
+	private static final double autoLineY = 1 + 2/12;
+	
 	// TODO determine crossing defense distance
-	private static final double crossDefenseDistance = 5;
+	// defenses start at 7'2" and are 4'2" deep so end and target ending at 1' past defense
+	private static final double crossDefenseDistance = 7 + 2/12 + 4 + 2/12 + 1 - autoLineY;
+	
+	// confirm defense width is 4' 5"
+	private static final double defenseWidth = 4 + 5/12;
+	private static final double startingPosOneX = 0.5 * defenseWidth;
+	private static final double startingPosTwoX = 1.5 * defenseWidth;
+	private static final double startingPosThreeX = 2.5 * defenseWidth;
+	private static final double startingPosFourX = 3.5 * defenseWidth;
+	private static final double startingPosFiveX = 4.5 * defenseWidth;
+	
+	// determine approach positions
+	private static final double leftTargetApproachX = 5.63;
+	private static final double leftTargetApproachY = 22.05;
+	private static final double rightTargetApproachX = 21.22;
+	private static final double rightTargetApproachY = 23.05;
+	
+	// TODO determine idea angle to stop for camera system
 	private static final double idealAngle = 20; 
+		
+	// TODO determine the distance to drive in reverse after rotating 180 degrees prior to shooting
+	private static final double distanceToDriveInReversePriorToShoot = 2;
 	
 	private Timer timer;
 	private Command driveInCommand;
@@ -50,7 +73,7 @@ public class Manager {
 		timer = new Timer();
 		scheduler.enable();
 		setInitialPosition();
-		loadDefenseCommands();
+		loadCommandsToGetOverDefence();
 	}
 
 	public void autonomousPeriodic() {
@@ -133,7 +156,7 @@ public class Manager {
 		case Initial:	
 			y += crossDefenseDistance;
 			state = AutonomousState.CrossedDefense;
-			loadLookingAtTargetCommands();
+			loadCommandsToGetToLookingAtTarget();
 			break;
 		case CrossedDefense:
 			state = AutonomousState.LookingAtTarget;
@@ -158,20 +181,33 @@ public class Manager {
 		}
 	}
 	
-	private void loadShootCommands() {
+	private void loadCommandsToGetOverDefence() {
+		String defense = smartDashboardSetup.autoDefense;
+		switch(defense) {
+		case SmartDashboardSetup.lowBar:
+			loadCommandsForLowbarDefense();
+			break;
+		default:
+			givingUp = true;
+			break;
+		}
+		
+		scheduler.add(new CallbackToManager(this));
+		
+	}
+	
+	private void loadCommandsToGetToShoot() {
 		double currentHeading = new Align(driveTrain, gyro, 0.0).angleCalculator();
 		double newHeading = currentHeading + 180;
 		if ( newHeading > 180 ) {
 			newHeading -= 360;
 		}
-		scheduler.add(new WaitCommand(1));
 		scheduler.add(new Align(driveTrain, gyro, newHeading));
-		// TODO determine distance to drive
-		scheduler.add(new DriveStraight(driveTrain, -5));
+		scheduler.add(new DriveStraight(driveTrain, -1 * distanceToDriveInReversePriorToShoot));
 		scheduler.add(new ShootCommand(ballControl));
 	}
 	
-	private void loadLookingAtTargetCommands() {
+	private void loadCommandsToGetToLookingAtTarget() {
 		double[] values = determineLookingAtTargetPositionAndHeading();
 		double newX = values[0];
 		double newY = values[1];
@@ -208,14 +244,13 @@ public class Manager {
 		double y = 0;
 		double heading = 0;
 		
-		// TODO determine positions
 		if ( isLeftTargetActive() ) {
-			x = 2;
-			y = 15;
+			x = leftTargetApproachX;
+			y = leftTargetApproachY;
 			heading = 60;
 		} else {
-			x = 25;
-			y = 15;
+			x = rightTargetApproachX;
+			y = rightTargetApproachY;
 			heading = -60;
 		}
 		
@@ -234,46 +269,29 @@ public class Manager {
 		return result;
 	}
 	
-	private void loadDefenseCommands() {
-		String defense = smartDashboardSetup.autoDefense;
-		switch(defense) {
-		case SmartDashboardSetup.lowBar:
-			loadLowbarCommands();
-			break;
-		default:
-			givingUp = true;
-			break;
-		}
-		
-		scheduler.add(new CallbackToManager(this));
-		
-	}
-	
-	private void loadLowbarCommands() {
-		// TODO measure how far to drive forward
-		scheduler.add(new DriveStraight(driveTrain, 5));
+	private void loadCommandsForLowbarDefense() {
+		scheduler.add(new DriveStraight(driveTrain, crossDefenseDistance));
 	}
 	
 	private void setInitialPosition() {
 		int startingPosition = smartDashboardSetup.getAutoPosition();
 		
-		// TODO measure these positions
-		y = 15;
+		y = autoLineY;
 		switch(startingPosition) {
 		case SmartDashboardSetup.one:
-			x = 2;
+			x = startingPosOneX;
 			break;
 		case SmartDashboardSetup.two:
-			x = 4;
+			x = startingPosTwoX;
 			break;
 		case SmartDashboardSetup.three:
-			x = 6;
+			x = startingPosThreeX;
 			break;
 		case SmartDashboardSetup.four:
-			x = 8;
+			x = startingPosFourX;
 			break;
 		case SmartDashboardSetup.five:
-			x = 10;
+			x = startingPosFiveX;
 			break;
 		default:
 			throw new RuntimeException("Starting position " + startingPosition + " is not expected");
@@ -299,7 +317,7 @@ public class Manager {
 			if ( done ) {	
 				driveInCommand.cancel();
 				driveTrain.stop();
-				loadShootCommands();
+				loadCommandsToGetToShoot();
 				this.cancel();
 				timer.cancel();
 			}
