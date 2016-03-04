@@ -9,7 +9,7 @@ import org.usfirst.frc.team4330.robot.DriveTrain;
 public class AlignTest {
 
 	
-	private Align testObject;
+	private RoughAlign testObject;
 	double speed = 0.8;
 	
 	private double rawValue = 0;
@@ -17,7 +17,7 @@ public class AlignTest {
 		
 	@Before
 	public void setUp() {
-		testObject = new Align(null, null, 0) { 
+		testObject = new RoughAlign(null, null, 0) { 
 			
 			@Override
 			protected double getRaw() {
@@ -51,7 +51,7 @@ public class AlignTest {
 		
 		DriveTrain mockDt = mock(DriveTrain.class);
 		
-		testObject = new Align(mockDt, null, -45) {
+		testObject = new RoughAlign(mockDt, null, -45) {
 
 			@Override
 			protected double angleCalculator() {
@@ -73,7 +73,7 @@ public class AlignTest {
 		
 		DriveTrain mockDt = mock(DriveTrain.class);
 		
-		testObject = new Align(mockDt, null, -135) {
+		testObject = new RoughAlign(mockDt, null, -135) {
 
 			@Override
 			protected double angleCalculator() {
@@ -92,7 +92,7 @@ public class AlignTest {
 		
 		DriveTrain mockDt = mock(DriveTrain.class);
 		
-		testObject = new Align(mockDt, null, 135) {
+		testObject = new RoughAlign(mockDt, null, 135) {
 
 			@Override
 			protected double angleCalculator() {
@@ -111,7 +111,7 @@ public class AlignTest {
 		
 		DriveTrain mockDt = mock(DriveTrain.class);
 		
-		testObject = new Align(mockDt, null, 45) {
+		testObject = new RoughAlign(mockDt, null, 45) {
 
 			@Override
 			protected double angleCalculator() {
@@ -130,7 +130,7 @@ public class AlignTest {
 		
 		DriveTrain mockDt = mock(DriveTrain.class);
 		
-		testObject = new Align(mockDt, null, 135) {
+		testObject = new RoughAlign(mockDt, null, 135) {
 
 			@Override
 			protected double angleCalculator() {
@@ -149,7 +149,7 @@ public class AlignTest {
 		
 		DriveTrain mockDt = mock(DriveTrain.class);
 		
-		testObject = new Align(mockDt, null, -135) {
+		testObject = new RoughAlign(mockDt, null, -135) {
 
 			@Override
 			protected double angleCalculator() {
@@ -169,7 +169,7 @@ public class AlignTest {
 		
 		DriveTrain mockDt = mock(DriveTrain.class);
 		
-		testObject = new Align(mockDt, null, -45) {
+		testObject = new RoughAlign(mockDt, null, -45) {
 
 			@Override
 			protected double angleCalculator() {
@@ -189,7 +189,7 @@ public class AlignTest {
 		
 		DriveTrain mockDt = mock(DriveTrain.class);
 		
-		testObject = new Align(mockDt, null, 45) {
+		testObject = new RoughAlign(mockDt, null, 45) {
 
 			@Override
 			protected double angleCalculator() {
@@ -209,7 +209,7 @@ public class AlignTest {
 		
 		DriveTrain mockDt = mock(DriveTrain.class);
 		
-		testObject = new Align(mockDt, null, -135) {
+		testObject = new RoughAlign(mockDt, null, -135) {
 
 			@Override
 			protected double angleCalculator() {
@@ -229,7 +229,7 @@ public class AlignTest {
 		
 		DriveTrain mockDt = mock(DriveTrain.class);
 		
-		testObject = new Align(mockDt, null, 50) {
+		testObject = new RoughAlign(mockDt, null, 50) {
 
 			@Override
 			protected double angleCalculator() {
@@ -249,7 +249,7 @@ public class AlignTest {
 		
 		DriveTrain mockDt = mock(DriveTrain.class);
 		
-		testObject = new Align(mockDt, null, 40) {
+		testObject = new RoughAlign(mockDt, null, 40) {
 
 			@Override
 			protected double angleCalculator() {
@@ -268,7 +268,7 @@ public class AlignTest {
 		
 		DriveTrain mockDt = mock(DriveTrain.class);
 		
-		testObject = new Align(mockDt, null, 140) {
+		testObject = new RoughAlign(mockDt, null, 140) {
 
 			@Override
 			protected double angleCalculator() {
@@ -287,7 +287,7 @@ public class AlignTest {
 		
 		DriveTrain mockDt = mock(DriveTrain.class);
 		
-		testObject = new Align(mockDt, null, 130) {
+		testObject = new RoughAlign(mockDt, null, 130) {
 
 			@Override
 			protected double angleCalculator() {
@@ -307,7 +307,7 @@ public class AlignTest {
 		
 		DriveTrain mockDt = mock(DriveTrain.class);
 		
-		testObject = new Align(mockDt, null, -40) {
+		testObject = new RoughAlign(mockDt, null, -40) {
 
 			@Override
 			protected double angleCalculator() {
@@ -327,7 +327,7 @@ public class AlignTest {
 		
 		DriveTrain mockDt = mock(DriveTrain.class);
 		
-		testObject = new Align(mockDt, null, -50) {
+		testObject = new RoughAlign(mockDt, null, -50) {
 
 			@Override
 			protected double angleCalculator() {
@@ -347,7 +347,7 @@ public class AlignTest {
 		
 		DriveTrain mockDt = mock(DriveTrain.class);
 		
-		testObject = new Align(mockDt, null, -140) {
+		testObject = new RoughAlign(mockDt, null, -140) {
 
 			@Override
 			protected double angleCalculator() {
@@ -367,7 +367,7 @@ public class AlignTest {
 		
 		DriveTrain mockDt = mock(DriveTrain.class);
 		
-		testObject = new Align(mockDt, null, -130) {
+		testObject = new RoughAlign(mockDt, null, -130) {
 
 			@Override
 			protected double angleCalculator() {
@@ -387,7 +387,7 @@ public class AlignTest {
 		
 		DriveTrain mockDt = mock(DriveTrain.class);
 		
-		testObject = new Align(mockDt, null, 180) {
+		testObject = new RoughAlign(mockDt, null, 180) {
 
 			@Override
 			protected double angleCalculator() {
@@ -411,7 +411,7 @@ public class AlignTest {
 		
 		DriveTrain mockDt = mock(DriveTrain.class);
 		
-		testObject = new Align(mockDt, null, 180) {
+		testObject = new RoughAlign(mockDt, null, 180) {
 
 			@Override
 			protected double angleCalculator() {
@@ -430,7 +430,7 @@ public class AlignTest {
 		
 		DriveTrain mockDt = mock(DriveTrain.class);
 		
-		testObject = new Align(mockDt, null, 0) {
+		testObject = new RoughAlign(mockDt, null, 0) {
 
 			@Override
 			protected double angleCalculator() {
@@ -452,7 +452,7 @@ public class AlignTest {
 		
 		DriveTrain mockDt = mock(DriveTrain.class);
 		
-		testObject = new Align(mockDt, null, 0) {
+		testObject = new RoughAlign(mockDt, null, 0) {
 
 			@Override
 			protected double angleCalculator() {

@@ -98,12 +98,28 @@ public class DriveTrain {
 		rFW.set(0.7);
 	}
 	
+	public void autonomousTurnLeftSlow() {
+		// TODO tune robot so pivots left in place
+		lFW.set(-0.3);
+		lBW.set(-0.3);
+		rFW.set(0.3);
+		rFW.set(0.3);
+	}
+	
 	public void autonomousTurnRight() {
 		// TODO tune robot so pivots right in place
 		lFW.set(0.7);
 		lBW.set(0.7);
 		rFW.set(-0.7);
 		rFW.set(-0.7);
+	}
+	
+	public void autonomousTurnRightSlow() {
+		// TODO tune robot so pivots right in place
+		lFW.set(0.3);
+		lBW.set(0.3);
+		rFW.set(-0.3);
+		rFW.set(-0.3);
 	}
 	
 	public void autonomousDriveForward() {

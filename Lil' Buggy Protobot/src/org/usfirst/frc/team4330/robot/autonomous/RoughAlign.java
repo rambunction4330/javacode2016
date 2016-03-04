@@ -5,15 +5,13 @@ import org.usfirst.frc.team4330.robot.DriveTrain;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 
-public class Align extends Command {
-	private DriveTrain dT;
+public class RoughAlign extends Command {
+	protected DriveTrain dT;
 	private Gyro gyro;
 	private double desiredBearing;
 	private boolean finished = false;
 
-	private double angleTolerance = .5;
-
-	public Align(DriveTrain dT, Gyro gyro, double desiredAngle) {
+	public RoughAlign(DriveTrain dT, Gyro gyro, double desiredAngle) {
 		this.dT = dT;
 		this.gyro = gyro;
 		this.desiredBearing = desiredAngle;
@@ -65,7 +63,7 @@ public class Align extends Command {
 			}
 			currentp = currentBearing + 360;
 		}
-		if (Math.abs(currentp - desiredp) < angleTolerance) {
+		if (Math.abs(currentp - desiredp) < getTolerence()) {
 			dT.drive(0, 0);
 			System.out.println("Done.");
 			finished = true;
@@ -80,6 +78,18 @@ public class Align extends Command {
 				dT.autonomousTurnRight();
 			}
 		}
+	}
+	
+	protected double getTolerence() {
+		return 5;
+	}
+	
+	protected void turnLeft() {
+		dT.autonomousTurnLeft();
+	}
+	
+	protected void turnRight() {
+		dT.autonomousTurnRight();
 	}
 
 	@Override

@@ -83,54 +83,12 @@ public class Manager {
 	public void testInit() {
 	 	gyro.calibrate();
 		scheduler.add(new WaitCommand(5.0));
-		scheduler.add(new Align(driveTrain, gyro, 30));
+		turnToHeading(30);
 		scheduler.add(new WaitCommand(5.0));
-		scheduler.add(new Align(driveTrain, gyro, 60));
+		turnToHeading(60);
 		scheduler.add(new WaitCommand(5.0));
-		scheduler.add(new Align(driveTrain, gyro, 90));
-		scheduler.add(new WaitCommand(5.0));
-		scheduler.add(new Align(driveTrain, gyro, 120));
-		scheduler.add(new WaitCommand(5.0));
-		scheduler.add(new Align(driveTrain, gyro, 150));
-		scheduler.add(new WaitCommand(5.0));
-		scheduler.add(new Align(driveTrain, gyro, 180));
-		scheduler.add(new WaitCommand(5.0));
-		scheduler.add(new Align(driveTrain, gyro, -150));
-		scheduler.add(new WaitCommand(5.0));
-		scheduler.add(new Align(driveTrain, gyro, -120));
-		scheduler.add(new WaitCommand(5.0));
-		scheduler.add(new Align(driveTrain, gyro, -90));
-		scheduler.add(new WaitCommand(5.0));
-		scheduler.add(new Align(driveTrain, gyro, -60));
-		scheduler.add(new WaitCommand(5.0));
-		scheduler.add(new Align(driveTrain, gyro, -30));
-		scheduler.add(new WaitCommand(5.0));
-		scheduler.add(new Align(driveTrain, gyro, 0));
-		
-		scheduler.add(new WaitCommand(5.0));
-		scheduler.add(new Align(driveTrain, gyro, -30));
-		scheduler.add(new WaitCommand(5.0));
-		scheduler.add(new Align(driveTrain, gyro, -60));
-		scheduler.add(new WaitCommand(5.0));
-		scheduler.add(new Align(driveTrain, gyro, -90));
-		scheduler.add(new WaitCommand(5.0));
-		scheduler.add(new Align(driveTrain, gyro, -120));
-		scheduler.add(new WaitCommand(5.0));
-		scheduler.add(new Align(driveTrain, gyro, -150));
-		scheduler.add(new WaitCommand(5.0));
-		scheduler.add(new Align(driveTrain, gyro, 180));
-		scheduler.add(new WaitCommand(5.0));
-		scheduler.add(new Align(driveTrain, gyro, 150));
-		scheduler.add(new WaitCommand(5.0));
-		scheduler.add(new Align(driveTrain, gyro, 120));
-		scheduler.add(new WaitCommand(5.0));
-		scheduler.add(new Align(driveTrain, gyro, 90));
-		scheduler.add(new WaitCommand(5.0));
-		scheduler.add(new Align(driveTrain, gyro, 60));
-		scheduler.add(new WaitCommand(5.0));
-		scheduler.add(new Align(driveTrain, gyro, 30));
-		scheduler.add(new WaitCommand(5.0));
-		scheduler.add(new Align(driveTrain, gyro, 0));
+		turnToHeading(90);
+
 	}
 	
 	public void disableInit() {
@@ -171,9 +129,9 @@ public class Manager {
 		String relativeBearingStr = vision.retrieveData().get(SensorDataRetriever.RELATIVE_BEARING);
 		if ( relativeBearingStr != null ) {
 			double relativeBearing = Double.parseDouble(relativeBearingStr);
-			double heading = new Align(driveTrain, gyro, 0.0).angleCalculator();
+			double heading = new RoughAlign(driveTrain, gyro, 0.0).angleCalculator();
 			double newHeading = heading + relativeBearing;
-			scheduler.add(new Align(driveTrain, gyro, newHeading));
+			turnToHeading(newHeading);
 			driveInCommand = new DriveStraight(driveTrain, 20);
 			scheduler.add(driveInCommand);
 			
@@ -197,14 +155,19 @@ public class Manager {
 	}
 	
 	private void loadCommandsToGetToShoot() {
-		double currentHeading = new Align(driveTrain, gyro, 0.0).angleCalculator();
+		double currentHeading = new RoughAlign(driveTrain, gyro, 0.0).angleCalculator();
 		double newHeading = currentHeading + 180;
 		if ( newHeading > 180 ) {
 			newHeading -= 360;
 		}
-		scheduler.add(new Align(driveTrain, gyro, newHeading));
+		turnToHeading(newHeading);
 		scheduler.add(new DriveStraight(driveTrain, -1 * distanceToDriveInReversePriorToShoot));
 		scheduler.add(new ShootCommand(ballControl));
+	}
+	
+	private void turnToHeading(double heading) {
+		scheduler.add(new RoughAlign(driveTrain, gyro, heading));
+		scheduler.add(new FineAlign(driveTrain, gyro, heading));
 	}
 	
 	private void loadCommandsToGetToLookingAtTarget() {
@@ -217,9 +180,9 @@ public class Manager {
 		double direction = directionAndDistance[0];
 		double distance = directionAndDistance[1];
 		
-		scheduler.add(new Align(driveTrain, gyro, direction));
+		turnToHeading(direction);
 		scheduler.add(new DriveStraight(driveTrain, distance));
-		scheduler.add(new Align(driveTrain, gyro, newHeading));
+		turnToHeading(newHeading);
 		scheduler.add(new WaitCommand(1));
 		scheduler.add(new CallbackToManager(this));
 	}
