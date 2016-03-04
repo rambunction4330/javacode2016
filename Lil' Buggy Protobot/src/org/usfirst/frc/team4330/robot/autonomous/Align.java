@@ -11,8 +11,6 @@ public class Align extends Command {
 	private double desiredBearing;
 	private boolean finished = false;
 
-	private static final double SPEED = .8;
-
 	private double angleTolerance = .5;
 
 	public Align(DriveTrain dT, Gyro gyro, double desiredAngle) {
@@ -75,11 +73,11 @@ public class Align extends Command {
 			double val = desiredp - currentp;
 			boolean turnClockwise = (val > 0 && val < 180);	
 			if (!turnClockwise) {
-				System.out.println("Turning counter clockwise.");
-				dT.drive(-SPEED, SPEED);
+				System.out.println("Turning Left");
+				dT.autonomousTurnLeft();
 			} else {
-				System.out.println("Turning clockwise.");
-				dT.drive(SPEED, -SPEED);
+				System.out.println("Turning Right");
+				dT.autonomousTurnRight();
 			}
 		}
 	}

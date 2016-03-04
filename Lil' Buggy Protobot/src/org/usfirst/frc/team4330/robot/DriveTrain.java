@@ -90,19 +90,43 @@ public class DriveTrain {
 			drive(left.getY(), right.getY());
 	}
 	
+	public void autonomousTurnLeft() {
+		// TODO tune robot so pivots left in place
+		lFW.set(-0.7);
+		lBW.set(-0.7);
+		rFW.set(0.7);
+		rFW.set(0.7);
+	}
+	
+	public void autonomousTurnRight() {
+		// TODO tune robot so pivots right in place
+		lFW.set(0.7);
+		lBW.set(0.7);
+		rFW.set(-0.7);
+		rFW.set(-0.7);
+	}
+	
+	public void autonomousDriveForward() {
+		// TODO tune robot so drives straight forward
+		lFW.set(0.7);
+		lBW.set(0.7);
+		rFW.set(0.7);
+		rFW.set(0.7);
+	}
+	
+	public void autonomousDriveReverse() {
+		// TODO tune robot so drives straight back
+		lFW.set(-0.7);
+		lBW.set(-0.7);
+		rFW.set(-0.7);
+		rFW.set(-0.7);
+	}
 	
 	public void drive(double left, double right){
 			rFW.set(right);
 			rBW.set(right);
 			lFW.set(left);
 			lBW.set(left);
-	}
-	public void driveToPosition(int x, int y) {
-
-	}
-
-	public void spin180() {
-
 	}
 
 	/**

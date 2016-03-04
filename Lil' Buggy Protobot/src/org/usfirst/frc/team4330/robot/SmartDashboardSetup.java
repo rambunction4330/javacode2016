@@ -10,18 +10,18 @@ public class SmartDashboardSetup {
 	public int autoPosition;
 	public String autoDefense;
 
-	private String portcullis = "portcullis";
-	private String chivalDeFrise = "chivalDeFrise";
-	private String roughTerrain = "roughTerrain";
-	private String moat = "moat";
-	private String rampart = "rampart";
-	private String rockWall = "rockWall";
-	private String lowBar = "lowBar";
-	private int one = 1;
-	private int two = 2;
-	private int three = 3;
-	private int four = 4;
-	private int five = 5;
+	public static final String portcullis = "portcullis";
+	public static final String chivalDeFrise = "chivalDeFrise";
+	public static final String roughTerrain = "roughTerrain";
+	public static final String moat = "moat";
+	public static final String rampart = "rampart";
+	public static final String rockWall = "rockWall";
+	public static final String lowBar = "lowBar";
+	public static final int one = 1;
+	public static final int two = 2;
+	public static final int three = 3;
+	public static final int four = 4;
+	public static final int five = 5;
 	
 	public SmartDashboardSetup() {
 		defenseChooser = new SendableChooser();

@@ -4,6 +4,7 @@ package org.usfirst.frc.team4330.robot;
 
 import org.usfirst.frc.team4330.robot.autonomous.Manager;
 import org.usfirst.frc.team4330.robot.canbus.LeddarDistanceSensor;
+import org.usfirst.frc.team4330.robot.raspberrypi.SensorDataRetriever;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -11,6 +12,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Relay.Direction;
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 /**
  * 2016 final code!!
@@ -22,11 +25,13 @@ import edu.wpi.first.wpilibj.Victor;
 public class Robot extends IterativeRobot {
 	Joystick leftJoystick, rightJoystick;
 
-	DriveTrain hotbod;
+	DriveTrain driveTrain;
 	Arm trekudesu;
 	BallControl ballControl;
 	LeddarDistanceSensor leddar;
-	Manager woman;
+	SensorDataRetriever vision;
+	Gyro gyro;
+	Manager manager;
 
 	SmartDashboardSetup smartDashboard;
 
@@ -34,12 +39,14 @@ public class Robot extends IterativeRobot {
 		leftJoystick = new Joystick(RobotMap.JOYSTICK_ONE);
 		rightJoystick = new Joystick(RobotMap.JOYSTICK_TWO);
 
-		hotbod = new DriveTrain();
+		driveTrain = new DriveTrain();
 		leddar = new LeddarDistanceSensor();
 		trekudesu = new Arm(); // new Victor(RobotMap.TREXARM_PORT)
 		ballControl = new BallControl(new Victor(RobotMap.INTAKE_PORT),
 				new Relay(RobotMap.SPIKE_PORT, Direction.kBoth));
-		woman = new Manager(hotbod, new AnalogGyro(0, 0, 0));
+		vision = new SensorDataRetriever();
+		gyro = new AnalogGyro(0, 0, 0);
+		manager = new Manager(driveTrain, gyro, smartDashboard, vision, ballControl, Scheduler.getInstance());
 		smartDashboard = new SmartDashboardSetup();
 		// scaleraptor = new Scaling(new Victor(RobotMap.SCALAR_PORT));
 	}
@@ -48,62 +55,11 @@ public class Robot extends IterativeRobot {
 		smartDashboard.initiliaze();
 		System.out.println("Position choice is " + smartDashboard.autoPosition);
 		System.out.println("Defense choice is " + smartDashboard.autoDefense);
-		
-		woman.initialize();
+		manager.autonomousInit();
 	}
 
-	//
-
 	public void autonomousPeriodic() {
-		woman.runSchedule();
-
-		// /* step one: move forward */
-		// if (once == 0 && flag == thread.OFF) {
-		// // hotbod.forward(1000, .2);
-		//
-		// /* step two: get over obstacle */
-		// if (autoDefense.equals(portcullis)) {
-		// flag = thread.ARM;
-		// // trekudesu.autonomousArm(false, true, false);
-		// // hotbod.forward(1000, .2);
-		// // trekudesu.autonomousArm(true, false, true);
-		// flag = thread.OFF;
-		// }
-		// /*
-		// * if (autoDefense.equals(chivalDeFrise)) { // trex then ram }
-		// */
-		// // drivers have trouble
-		// // TODO choose rampart in Dashboard
-		// // TODO initialize autoDefense
-		// if (autoDefense.equals(rampart)) {
-		// flag = thread.DRIVE;
-		// hotbod.forward(0.5, 0, 499);
-		// hotbod.forward(0.8, 500, 1000);
-		// flag = thread.OFF;
-		// // ram 1 gb`
-		// }
-		// if (autoDefense.equals(moat)) {
-		// // hotbod.forward(1000, .2);
-		// // ram 2.5 gb
-		// }
-		// if (autoDefense.equals(roughTerrain)) {
-		// // hotbod.forward(1000, .2);
-		// // ram 4 gb
-		// }
-		// if (autoDefense.equals(rockWall)) {
-		// // hotbod.forward(1000, .2);
-		// // ram 6 gb
-		// }
-		// }
-		// // threads so you don't keep doing other stuff while something is
-		// // active
-		// driver.findAngle(angle);
-		// System.out.println("You should not be seeing this unless the robot has finished attempting to cross an obstacle \n \n \n");
-		// System.out.println("DISABLE");
-		//
-		// once = 1;
-		//
-		// // } else {
+		manager.autonomousPeriodic();
 	}
 
 	public void teleopInit() {
@@ -153,18 +109,29 @@ public class Robot extends IterativeRobot {
 					rightJoystick.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)); // 8
 		else
 			*/
-		hotbod.drive(leftJoystick, rightJoystick,
+		driveTrain.drive(leftJoystick, rightJoystick,
 					rightJoystick.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)); // 8
 
 	}
 
 	public void testInit() {
-		
+		manager.testInit();
 	}
 
 	public void testPeriodic() {
 //		hotbod.drive(.2, .2);
 //		System.out.println("Left values: " + leftJoystick.getY() + "; Right values: " + rightJoystick.getY());
 	}
+
+	@Override
+	public void disabledInit() {
+		manager.disableInit();
+	}
+
+	@Override
+	public void disabledPeriodic() {
+	}
+	
+	
 
 }
