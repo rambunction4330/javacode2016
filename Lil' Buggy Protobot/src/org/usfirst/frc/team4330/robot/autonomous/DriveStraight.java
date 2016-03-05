@@ -10,8 +10,8 @@ public class DriveStraight extends Command {
 	double execCounter;
 	private double speedActual = 3; // (Physical speed of the robot in feet per second)
 	private boolean finished = false;
-	private boolean coasting = false;
-	private int coastingCounter = 0;
+	private boolean stopping = false;
+	private int stoppingCounter = 0;
 
 	public DriveStraight(DriveTrain dT, double distanceToDrive) {
 		this.dT = dT;
@@ -31,9 +31,10 @@ public class DriveStraight extends Command {
 
 	@Override
 	protected void execute() {
-		if ( coasting ) {
-			coastingCounter--;
-			if ( coastingCounter <= 0 ) {
+		if ( stopping ) {
+			stoppingCounter--;
+			if ( stoppingCounter <= 0 ) {
+				dT.stop();
 				finished = true;
 			}
 		} else {
@@ -46,11 +47,15 @@ public class DriveStraight extends Command {
 				coastDistance = maxCoastDistance;
 			}
 			if ((execCounter * 20 / 1000) * speedActual > distanceToDrive - coastDistance) {
-				dT.stop();
-				System.out.println("coasting");
-				coasting = true;
-				final double timePerFootCoastingFactor = 0.33;
-				coastingCounter = (int) (coastDistance * timePerFootCoastingFactor / 0.02);
+				if ( distanceToDrive > 0 ) {
+					dT.autonomousDriveReverse();
+				} else {
+					dT.autonomousDriveForward();
+				}
+				System.out.println("stopping");
+				stopping = true;
+				final double timePerFootStoppingFactor = 0.11;
+				stoppingCounter = (int) (coastDistance * timePerFootStoppingFactor / 0.02);
 			}
 		}
 	}
