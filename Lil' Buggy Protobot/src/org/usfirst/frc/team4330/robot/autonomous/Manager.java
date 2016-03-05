@@ -142,8 +142,26 @@ public class Manager {
 	private void loadCommandsToGetOverDefence() {
 		String defense = smartDashboardSetup.autoDefense;
 		switch(defense) {
+		case SmartDashboardSetup.portcullis:
+			loadCommandsForPortcullis();
+			break;
+		case SmartDashboardSetup.chivalDeFrise:
+			loadCommandsForChevalDeFrise();
+			break;
+		case SmartDashboardSetup.moat:
+			loadCommandsForMoat();
+			break;
+		case SmartDashboardSetup.rampart:
+			loadCommandsForRamparts();
+			break;
+		case SmartDashboardSetup.rockWall:
+			loadCommandsForRockWall();
+			break;
+		case SmartDashboardSetup.roughTerrain:
+			loadCommandsForRoughTerrain();
+			break;
 		case SmartDashboardSetup.lowBar:
-			loadCommandsForLowbarDefense();
+			loadCommandsForLowbar();
 			break;
 		default:
 			givingUp = true;
@@ -155,6 +173,7 @@ public class Manager {
 	}
 	
 	private void loadCommandsToGetToShoot() {
+		scheduler.add(new WaitCommand(1));
 		double newHeading = HeadingCalculator.normalize(shootAngle + 180);
 		turnToHeading(newHeading);
 		scheduler.add(new DriveStraight(driveTrain, gyro, -1 * distanceToDriveInReversePriorToShoot, newHeading));
@@ -227,8 +246,41 @@ public class Manager {
 		return result;
 	}
 	
-	private void loadCommandsForLowbarDefense() {
+	private void loadCommandsForLowbar() {
 		scheduler.add(new DriveStraight(driveTrain, gyro, crossDefenseDistance, 0));
+	}
+	
+	private void loadCommandsForRockWall() {
+		scheduler.add(new RammingSpeed(driveTrain));
+		scheduler.add(new WaitCommand(2));
+		scheduler.add(new Stop(driveTrain));
+	}
+	
+	private void loadCommandsForRoughTerrain() {
+		scheduler.add(new RammingSpeed(driveTrain));
+		scheduler.add(new WaitCommand(0.5));
+		scheduler.add(new OscillatingRammingSpeed(driveTrain, 1.5));
+		scheduler.add(new Stop(driveTrain));
+	}
+	
+	private void loadCommandsForPortcullis() {
+		
+	}
+	
+	private void loadCommandsForChevalDeFrise() {
+		
+	}
+	
+	private void loadCommandsForMoat() {
+		scheduler.add(new RammingSpeed(driveTrain));
+		scheduler.add(new WaitCommand(2));
+		scheduler.add(new Stop(driveTrain));
+	}
+	
+	private void loadCommandsForRamparts() {
+		scheduler.add(new RammingSpeed(driveTrain));
+		scheduler.add(new WaitCommand(2));
+		scheduler.add(new Stop(driveTrain));
 	}
 	
 	private void setInitialPosition() {

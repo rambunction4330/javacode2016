@@ -61,7 +61,7 @@ public class DriveStraight extends Command {
 				System.out.println("stopping");
 				stopping = true;
 				final double timePerFootStoppingFactor = 0.11;
-				stoppingCounter = (int) (stopDistance * timePerFootStoppingFactor / 0.02);
+				stoppingCounter = (int) (stopDistance * 0.02 * timePerFootStoppingFactor );
 			}
 			
 			if ( !stopping ) {
