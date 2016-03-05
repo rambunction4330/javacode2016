@@ -22,6 +22,9 @@ public class SensorDataRetriever {
 	private static final byte[] GET_DATA_COMMAND = "DATA\n".getBytes();
 	private static final byte[] STOP_COMMAND = "STOP\n".getBytes();
 	
+	public static final String RELATIVE_BEARING = "rb";
+	public static final String VERTICAL_ANGLE = "nya";
+	
 	public SensorDataRetriever() {
 		
 	}

@@ -109,25 +109,27 @@ public class Arm {
 		}
 	}
 
-	public void autonomousArm(boolean raise, boolean lower, boolean power) {
+	public void autonomousArm(boolean raise, boolean lower, boolean power, double time) {
 		if (raise)
-			timer.schedule(new autonomousArmRaise(power), 0);
+			timer.schedule(new AutonomousArmRaise(power, time), 0);
 		if (lower)
-			timer.schedule(new autonomousArmLower(power), 0);
+			timer.schedule(new AutonomousArmLower(power, time), 0);
 	}
 
-	private class autonomousArmLower extends TimerTask {
+	private class AutonomousArmLower extends TimerTask {
 		private boolean power;
+		private double time;
 
-		public autonomousArmLower(boolean power) {
+		public AutonomousArmLower(boolean power, double time) {
 			this.power = power;
+			this.time = time;
 		}
 
 		@Override
 		public void run() {
 			try {
 				handleButtons(false, true, power);
-				Thread.sleep(300);
+				Thread.sleep((long)(time * 1000));
 				handleButtons(false, false, power);
 			} catch (Exception e) {
 				System.out.println(e);
@@ -135,18 +137,20 @@ public class Arm {
 		}
 	}
 
-	private class autonomousArmRaise extends TimerTask {
+	private class AutonomousArmRaise extends TimerTask {
 		private boolean power;
+		private double time;
 
-		public autonomousArmRaise(boolean power) {
+		public AutonomousArmRaise(boolean power, double time) {
 			this.power = power;
+			this.time = time;
 		}
 
 		@Override
 		public void run() {
 			try {
 				handleButtons(true, false, power);
-				Thread.sleep(300);
+				Thread.sleep((long)(time * 1000));
 				handleButtons(false, false, power);
 			} catch (Exception e) {
 				System.out.println(e);
