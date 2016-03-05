@@ -27,6 +27,7 @@ public class Manager {
 	private double x;
 	private double y;
 	private boolean givingUp = false;
+	private double shootAngle;
 	
 	// autoline is at 1'2"
 	private static final double autoLineY = 1 + 2/12;
@@ -129,10 +130,9 @@ public class Manager {
 		String relativeBearingStr = vision.retrieveData().get(SensorDataRetriever.RELATIVE_BEARING);
 		if ( relativeBearingStr != null ) {
 			double relativeBearing = Double.parseDouble(relativeBearingStr);
-			double heading = new RoughAlign(driveTrain, gyro, 0.0).angleCalculator();
-			double newHeading = heading + relativeBearing;
+			double newHeading = HeadingCalculator.normalize(gyro.getAngle() + relativeBearing);
 			turnToHeading(newHeading);
-			driveInCommand = new DriveStraight(driveTrain, 20);
+			driveInCommand = new DriveStraight(driveTrain, gyro, 20, newHeading);
 			scheduler.add(driveInCommand);
 			
 			timer.schedule(new DriveInMonitorTask(), 20, 20);
@@ -155,13 +155,9 @@ public class Manager {
 	}
 	
 	private void loadCommandsToGetToShoot() {
-		double currentHeading = new RoughAlign(driveTrain, gyro, 0.0).angleCalculator();
-		double newHeading = currentHeading + 180;
-		if ( newHeading > 180 ) {
-			newHeading -= 360;
-		}
+		double newHeading = HeadingCalculator.normalize(shootAngle + 180);
 		turnToHeading(newHeading);
-		scheduler.add(new DriveStraight(driveTrain, -1 * distanceToDriveInReversePriorToShoot));
+		scheduler.add(new DriveStraight(driveTrain, gyro, -1 * distanceToDriveInReversePriorToShoot, newHeading));
 		scheduler.add(new ShootCommand(ballControl));
 	}
 	
@@ -181,7 +177,7 @@ public class Manager {
 		double distance = directionAndDistance[1];
 		
 		turnToHeading(direction);
-		scheduler.add(new DriveStraight(driveTrain, distance));
+		scheduler.add(new DriveStraight(driveTrain, gyro, distance, direction));
 		turnToHeading(newHeading);
 		scheduler.add(new WaitCommand(1));
 		scheduler.add(new CallbackToManager(this));
@@ -205,19 +201,18 @@ public class Manager {
 		
 		double x = 0;
 		double y = 0;
-		double heading = 0;
 		
 		if ( isLeftTargetActive() ) {
 			x = leftTargetApproachX;
 			y = leftTargetApproachY;
-			heading = 60;
+			shootAngle = 60;
 		} else {
 			x = rightTargetApproachX;
 			y = rightTargetApproachY;
-			heading = -60;
+			shootAngle = -60;
 		}
 		
-		return new double[] { x, y, heading };
+		return new double[] { x, y, shootAngle };
 	}
 	
 	protected boolean isLeftTargetActive() {
@@ -233,7 +228,7 @@ public class Manager {
 	}
 	
 	private void loadCommandsForLowbarDefense() {
-		scheduler.add(new DriveStraight(driveTrain, crossDefenseDistance));
+		scheduler.add(new DriveStraight(driveTrain, gyro, crossDefenseDistance, 0));
 	}
 	
 	private void setInitialPosition() {

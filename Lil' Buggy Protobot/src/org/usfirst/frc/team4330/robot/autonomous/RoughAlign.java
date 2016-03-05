@@ -8,42 +8,18 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 public class RoughAlign extends Command {
 	protected DriveTrain dT;
 	private Gyro gyro;
-	private double desiredBearing;
+	private double desiredHeading;
 	private boolean finished = false;
 
-	public RoughAlign(DriveTrain dT, Gyro gyro, double desiredAngle) {
+	public RoughAlign(DriveTrain dT, Gyro gyro, double desiredHeading) {
 		this.dT = dT;
 		this.gyro = gyro;
-		this.desiredBearing = desiredAngle;
+		this.desiredHeading = desiredHeading;
 	}
 
 	@Override
 	protected void initialize() {
 		
-	}
-
-	/**
-	 * 
-	 * @return value between -180 and 180
-	 */
-	protected double angleCalculator() {
-		double raw = getRaw();
-
-		if (raw > 0) {
-			raw = raw % 360;
-
-			if (raw > 180) {
-				raw -= 360;
-			}
-		} else {
-			raw = raw % 360;
-
-			if (raw < -180) {
-				raw += 360;
-			}
-		}
-
-		return raw;
 	}
 	
 	protected double getRaw() {
@@ -52,25 +28,13 @@ public class RoughAlign extends Command {
 
 	@Override
 	protected void execute() {
-		double currentBearing = angleCalculator();
-		double desiredp = desiredBearing;
-		double currentp = currentBearing;
-		if (currentp > 0 && desiredp < 0) {
-			desiredp = desiredBearing + 360;
-		} else if ( currentp < 0 && desiredp > 0 ) {
-			if ( currentp > -90 ) {
-				desiredp = desiredBearing + 360;
-			}
-			currentp = currentBearing + 360;
-		}
-		if (Math.abs(currentp - desiredp) < getTolerence()) {
+		double turnAmount = HeadingCalculator.calculateCourseChange(getRaw(), desiredHeading);
+		if (Math.abs(turnAmount) < getTolerence()) {
 			dT.drive(0, 0);
 			System.out.println("Done.");
 			finished = true;
 		} else {
-			double val = desiredp - currentp;
-			boolean turnClockwise = (val > 0 && val < 180);	
-			if (!turnClockwise) {
+			if (turnAmount < 0) {
 				System.out.println("Turning Left");
 				dT.autonomousTurnLeft();
 			} else {
