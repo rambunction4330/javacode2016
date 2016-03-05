@@ -58,7 +58,7 @@ public class Robot extends IterativeRobot {
 		manager.autonomousInit();
 	}
 
-	public void autonomousPeriodic() {
+	public void autonomousPeriodic() {		
 		manager.autonomousPeriodic();
 	}
 
@@ -119,6 +119,7 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void testPeriodic() {
+		manager.testPeriodic();
 //		hotbod.drive(.2, .2);
 //		System.out.println("Left values: " + leftJoystick.getY() + "; Right values: " + rightJoystick.getY());
 	}

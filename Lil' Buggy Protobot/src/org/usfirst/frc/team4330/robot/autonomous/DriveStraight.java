@@ -26,6 +26,7 @@ public class DriveStraight extends Command {
 
 	@Override
 	protected void initialize() {
+		System.out.println("DriveStraight is getting called");
 		execCounter = 0;
 		finished = false;
 		if (distanceToDrive < 0) {

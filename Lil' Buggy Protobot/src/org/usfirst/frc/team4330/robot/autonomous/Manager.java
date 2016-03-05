@@ -30,6 +30,7 @@ public class Manager {
 	private double y;
 	private boolean givingUp = false;
 	private double shootAngle;
+	private boolean testInitialized = false;
 	
 	// autoline is at 1'2"
 	private static final double autoLineY = 1 + 2/12;
@@ -58,7 +59,7 @@ public class Manager {
 	// TODO determine the distance to drive in reverse after rotating 180 degrees prior to shooting
 	private static final double distanceToDriveInReversePriorToShoot = 2;
 	
-	private Timer timer;
+	private Timer timer = new Timer();
 	private Command driveInCommand;
 
 	public Manager(DriveTrain dT, Gyro gyro, SmartDashboardSetup smartDashboardSetup, SensorDataRetriever sensorDataRetriever, 
@@ -85,19 +86,33 @@ public class Manager {
 	}
 	
 	public void testInit() {
-	 	gyro.calibrate();
-		scheduler.add(new WaitCommand(5.0));
-		turnToHeading(30);
-		scheduler.add(new WaitCommand(5.0));
-		turnToHeading(60);
-		scheduler.add(new WaitCommand(5.0));
-		turnToHeading(90);
+		
+		testInitialized = false;
+		
 
+//		turnToHeading(30);
+//		scheduler.add(new WaitCommand(5.0));
+//		turnToHeading(60);
+//		scheduler.add(new WaitCommand(5.0));
+//		turnToHeading(90);
+
+	}
+	
+	public void testPeriodic() {
+		scheduler.run();
+		if ( testInitialized ) {
+		
+			return;
+		}
+		gyro.calibrate();
+		scheduler.add(new WaitCommand(5.0));
+		System.out.println("Waited");
+		scheduler.add(new DriveStraight(driveTrain, gyro, 3, 0));
+		testInitialized = true;
 	}
 	
 	public void disableInit() {
 		timer.cancel();
-		timer = null;
 		scheduler.disable();
 	}
 	
