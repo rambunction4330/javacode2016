@@ -74,11 +74,12 @@ public class DriveStraight extends Command {
 				}
 				double courseChange = HeadingCalculator.calculateCourseChange(gyro.getAngle(), heading);
 				final double motorDelta = 0.1;
-				if ( courseChange < -3 ) {
+				final double tolerance = 3;
+				if ( courseChange < -1 * tolerance ) {
 					// steer to the left more
 					leftSpeed -= motorDelta;
 					rightSpeed += motorDelta;
-				} else if ( courseChange > 3 ) {
+				} else if ( courseChange > tolerance ) {
 					// steer to the right more
 					leftSpeed += motorDelta;
 					rightSpeed -= motorDelta;
