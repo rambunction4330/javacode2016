@@ -1,5 +1,7 @@
 package org.usfirst.frc.team4330.robot.autonomous;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -20,6 +22,7 @@ public class Manager {
 	private AutonomousState state = AutonomousState.Initial;
 	
 	Scheduler scheduler;
+	private List<Command> commands = new ArrayList<Command>();
 	private DriveTrain driveTrain;
 	private Gyro gyro;
 	private SmartDashboardSetup smartDashboardSetup;
@@ -102,19 +105,14 @@ public class Manager {
 		gyro.calibrate();
 		
 		testInitialized = true;
-		CommandGroup group = new CommandGroup();
-		group.addSequential(new WaitCommand(5.0));
-		group.addSequential(new RoughAlign(driveTrain, gyro, 30, "30 turn"));
-		group.addSequential(new WaitCommand(5.0));
-		group.addSequential(new RoughAlign(driveTrain, gyro, 60, "60 turn"));
-		group.addSequential(new WaitCommand(5.0));
-		group.addSequential(new RoughAlign(driveTrain, gyro, 90, "90 turn"));
-		scheduler.add(group);
-//		turnToHeading(60);
-//		scheduler.add(new WaitCommand(5.0));
-//		turnToHeading(90);
-		
-//		scheduler.add(new DriveStraight(driveTrain, gyro, 3, 0));
+		commands.clear();
+		commands.add(new WaitCommand(5.0));
+		commands.add(new RoughAlign(driveTrain, gyro, 30, "30 turn"));
+		commands.add(new WaitCommand(5.0));
+		commands.add(new RoughAlign(driveTrain, gyro, 60, "60 turn"));
+		commands.add(new WaitCommand(5.0));
+		commands.add(new RoughAlign(driveTrain, gyro, 90, "90 turn"));
+		scheduleCommands();
 	}
 	
 	public void disableInit() {
@@ -157,8 +155,8 @@ public class Manager {
 			double newHeading = HeadingCalculator.normalize(gyro.getAngle() + relativeBearing);
 			turnToHeading(newHeading);
 			driveInCommand = new DriveStraight(driveTrain, gyro, 20, newHeading);
-			scheduler.add(driveInCommand);
-			
+			commands.add(driveInCommand);
+			scheduleCommands();
 			timer.schedule(new DriveInMonitorTask(), 20, 20);
 		}
 	}
@@ -192,21 +190,23 @@ public class Manager {
 			break;
 		}
 		
-		scheduler.add(new CallbackToManager(this));
+		commands.add(new CallbackToManager(this));
+		scheduleCommands();
 		
 	}
 	
 	private void loadCommandsToGetToShoot() {
-		scheduler.add(new WaitCommand(1));
+		commands.add(new WaitCommand(1));
 		double newHeading = HeadingCalculator.normalize(shootAngle + 180);
 		turnToHeading(newHeading);
-		scheduler.add(new DriveStraight(driveTrain, gyro, -1 * distanceToDriveInReversePriorToShoot, newHeading));
-		scheduler.add(new ShootCommand(ballControl));
+		commands.add(new DriveStraight(driveTrain, gyro, -1 * distanceToDriveInReversePriorToShoot, newHeading));
+		commands.add(new ShootCommand(ballControl));
+		scheduleCommands();
 	}
 	
 	private void turnToHeading(double heading) {
-		scheduler.add(new RoughAlign(driveTrain, gyro, heading));
-		scheduler.add(new FineAlign(driveTrain, gyro, heading));
+		commands.add(new RoughAlign(driveTrain, gyro, heading));
+		commands.add(new FineAlign(driveTrain, gyro, heading));
 	}
 	
 	private void loadCommandsToGetToLookingAtTarget() {
@@ -220,10 +220,11 @@ public class Manager {
 		double distance = directionAndDistance[1];
 		
 		turnToHeading(direction);
-		scheduler.add(new DriveStraight(driveTrain, gyro, distance, direction));
+		commands.add(new DriveStraight(driveTrain, gyro, distance, direction));
 		turnToHeading(newHeading);
-		scheduler.add(new WaitCommand(1));
-		scheduler.add(new CallbackToManager(this));
+		commands.add(new WaitCommand(1));
+		commands.add(new CallbackToManager(this));
+		scheduleCommands();
 	}
 	
 	protected double[] calculateDirectionAndDistance(double currentX, double currentY, double desiredX, double desiredY) {
@@ -271,49 +272,49 @@ public class Manager {
 	}
 	
 	private void loadCommandsForLowbar() {
-		scheduler.add(new DriveStraight(driveTrain, gyro, crossDefenseDistance, 0));
+		commands.add(new DriveStraight(driveTrain, gyro, crossDefenseDistance, 0));
 	}
 	
 	private void loadCommandsForRockWall() {
-		scheduler.add(new RammingSpeed(driveTrain));
-		scheduler.add(new WaitCommand(2));
-		scheduler.add(new Stop(driveTrain));
+		commands.add(new RammingSpeed(driveTrain));
+		commands.add(new WaitCommand(2));
+		commands.add(new Stop(driveTrain));
 	}
 	
 	private void loadCommandsForRoughTerrain() {
-		scheduler.add(new RammingSpeed(driveTrain));
-		scheduler.add(new WaitCommand(0.5));
-		scheduler.add(new OscillatingRammingSpeed(driveTrain, 1.5));
-		scheduler.add(new Stop(driveTrain));
+		commands.add(new RammingSpeed(driveTrain));
+		commands.add(new WaitCommand(0.5));
+		commands.add(new OscillatingRammingSpeed(driveTrain, 1.5));
+		commands.add(new Stop(driveTrain));
 	}
 	
 	private void loadCommandsForPortcullis() {
-		scheduler.add(new MoveArm(arm, false));
+		commands.add(new MoveArm(arm, false));
 		// give time for arm to move down before driving forward
-		scheduler.add(new WaitCommand(0.2));
-		scheduler.add(new DriveStraight(driveTrain, gyro, 3.5, 0));
-		scheduler.add(new PowerArm(arm, true, 0.5));
-		scheduler.add(new DriveStraight(driveTrain, gyro, 3.0, 0));
+		commands.add(new WaitCommand(0.2));
+		commands.add(new DriveStraight(driveTrain, gyro, 3.5, 0));
+		commands.add(new PowerArm(arm, true, 0.5));
+		commands.add(new DriveStraight(driveTrain, gyro, 3.0, 0));
 	}
 	
 	private void loadCommandsForChevalDeFrise() {
-		scheduler.add(new DriveStraight(driveTrain, gyro, 3.5, 0));
-		scheduler.add(new PowerArm(arm, false, 0.5));
-		scheduler.add(new RammingSpeed(driveTrain));
-		scheduler.add(new WaitCommand(2));
-		scheduler.add(new Stop(driveTrain));
+		commands.add(new DriveStraight(driveTrain, gyro, 3.5, 0));
+		commands.add(new PowerArm(arm, false, 0.5));
+		commands.add(new RammingSpeed(driveTrain));
+		commands.add(new WaitCommand(2));
+		commands.add(new Stop(driveTrain));
 	}
 	
 	private void loadCommandsForMoat() {
-		scheduler.add(new RammingSpeed(driveTrain));
-		scheduler.add(new WaitCommand(2));
-		scheduler.add(new Stop(driveTrain));
+		commands.add(new RammingSpeed(driveTrain));
+		commands.add(new WaitCommand(2));
+		commands.add(new Stop(driveTrain));
 	}
 	
 	private void loadCommandsForRamparts() {
-		scheduler.add(new RammingSpeed(driveTrain));
-		scheduler.add(new WaitCommand(2));
-		scheduler.add(new Stop(driveTrain));
+		commands.add(new RammingSpeed(driveTrain));
+		commands.add(new WaitCommand(2));
+		commands.add(new Stop(driveTrain));
 	}
 	
 	private void setInitialPosition() {
@@ -339,6 +340,18 @@ public class Manager {
 		default:
 			throw new RuntimeException("Starting position " + startingPosition + " is not expected");
 		}
+	}
+	
+	private void scheduleCommands() {
+		if ( commands.isEmpty() ) {
+			return;
+		}
+		CommandGroup group = new CommandGroup();
+		for ( Command command : commands ) {
+			group.addSequential(command);
+		}
+		scheduler.add(group);
+		commands.clear();
 	}
 	
 	private class DriveInMonitorTask extends TimerTask {
@@ -368,5 +381,6 @@ public class Manager {
 		}
 
 	}
+
 	
 }
