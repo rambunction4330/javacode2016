@@ -268,10 +268,19 @@ public class Manager {
 	
 	private void loadCommandsForPortcullis() {
 		scheduler.add(new MoveArm(arm, false));
+		// give time for arm to move down before driving forward
+		scheduler.add(new WaitCommand(0.2));
+		scheduler.add(new DriveStraight(driveTrain, gyro, 3.5, 0));
+		scheduler.add(new PowerArm(arm, true, 0.5));
+		scheduler.add(new DriveStraight(driveTrain, gyro, 3.0, 0));
 	}
 	
 	private void loadCommandsForChevalDeFrise() {
-		
+		scheduler.add(new DriveStraight(driveTrain, gyro, 3.5, 0));
+		scheduler.add(new PowerArm(arm, false, 0.5));
+		scheduler.add(new RammingSpeed(driveTrain));
+		scheduler.add(new WaitCommand(2));
+		scheduler.add(new Stop(driveTrain));
 	}
 	
 	private void loadCommandsForMoat() {
