@@ -49,28 +49,11 @@ public class Robot extends IterativeRobot {
 	private int five = 5;
 	private int once;
 	private int angle = 0;
-<<<<<<< HEAD
-	// private thread flag;
-<<<<<<< HEAD
-=======
 
->>>>>>> 5d7d80a6ac448417cd85b7d0c59a74968edbd92e
-	private thread flag = thread.OFF;
 
 	private enum thread {
 		ARM, INTAKE, DRIVE, OFF;
 	}
-<<<<<<< HEAD
-=======
-//	private thread flag = thread.OFF;
-//
-//	
-//	private enum thread {
-//		ARM, INTAKE, DRIVE, OFF;
-//	}
->>>>>>> 476af8aecf2976d5b3aa360b3e496a77919861e3
-=======
->>>>>>> 5d7d80a6ac448417cd85b7d0c59a74968edbd92e
 
 	/*
      * 
@@ -132,84 +115,8 @@ public class Robot extends IterativeRobot {
 	//
 
 	public void autonomousPeriodic() {
-<<<<<<< HEAD
-<<<<<<< HEAD
-		/* step one: move forward */
-		if (once == 0) {
-			/* step two: get over obstacle */
-			if (autoDefense.equals(portcullis)) {
-				flag = thread.ARM;
-				trekudesu.autonomousArm(false, true, false);
-				hotbod.forward(1000, false);
-				trekudesu.autonomousArm(true, false, true);
-				flag = thread.OFF;
-			}
-			// if (autoDefense.equals(chivalDeFrise)) {
-			// // trex then ram
-			// }
-			// drivers have trouble
-			if (autoDefense.equals(rampart)) {
-				//hotbod.forward(1000);
-				// ram 1 gb
-			}
-			if (autoDefense.equals(moat)) {
-				//hotbod.forward(1000);
-				// ram 2.5 gb
-			}
-			if (autoDefense.equals(roughTerrain)) {
-				//hotbod.forward(1000);
-				// ram 4 gb
-			}
-			if (autoDefense.equals(rockWall)) {
-				//hotbod.forward(1000);
-				// ram 6 gb
-			}
-		}
-		if (flag == thread.OFF) {
-			// threads so you don't keep doing other stuff while something is
-			// active
-			
-			
-			// THIS IS AFTER YOU GET OVER THE OBSTACLE
 
-			driver.findAngle(angle);
 
-			once = 1;
-		}
-=======
-//		/* step one: move forward */
-//		if (once == 0 && flag != thread.OFF) {
-//			/* step two: get over obstacle */
-//			if (autoDefense.equals(portcullis)) {
-//				flag = thread.ARM;
-//				trekudesu.autonomousArm(false, true, false);
-//				hotbod.forward(1000);
-//				trekudesu.autonomousArm(true, false, true);
-//				flag = thread.OFF;
-//				
-//			}
-////			if (autoDefense.equals(chivalDeFrise)) {
-////				// trex then ram
-////			}
-//			// drivers have trouble
-//			if (autoDefense.equals(rampart)) {
-//				hotbod.forward(1000);				
-//				// ram 1 gb
-//			}
-//			if (autoDefense.equals(moat)) {
-//				hotbod.forward(1000);
-//				// ram 2.5 gb
-//			}
-//			if (autoDefense.equals(roughTerrain)) {
-//				hotbod.forward(1000);
-//				// ram 4 gb
-//			}
-//			if (autoDefense.equals(rockWall)) {
-//				hotbod.forward(1000);
-//				// ram 6 gb
-//			}
-//		}
-=======
 		// /* step one: move forward */
 		// if (once == 0 && flag != thread.OFF) {
 		// /* step two: get over obstacle */
@@ -242,19 +149,7 @@ public class Robot extends IterativeRobot {
 		// // ram 6 gb
 		// }
 		// }
->>>>>>> 5d7d80a6ac448417cd85b7d0c59a74968edbd92e
-		// threads so you don't keep doing other stuff while something is active
-		// THIS IS AFTER YOU GET OVER THE F**KING OBSTACLE
 
-		// driver.findAnfgle(angle);
-
-		// if (autoDefense.equals(portcullis)) {
-		//
-		// } else if (autoDefense.equals(moat)) {
-		//
-		// }
-		once = 1;
->>>>>>> 476af8aecf2976d5b3aa360b3e496a77919861e3
 
 	}
 
