@@ -3,6 +3,7 @@ package org.usfirst.frc.team4330.robot.autonomous;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.usfirst.frc.team4330.robot.Arm;
 import org.usfirst.frc.team4330.robot.BallControl;
 import org.usfirst.frc.team4330.robot.DriveTrain;
 import org.usfirst.frc.team4330.robot.SmartDashboardSetup;
@@ -23,6 +24,7 @@ public class Manager {
 	private SmartDashboardSetup smartDashboardSetup;
 	private SensorDataRetriever vision;
 	private BallControl ballControl;
+	private Arm arm;
 	
 	private double x;
 	private double y;
@@ -60,12 +62,13 @@ public class Manager {
 	private Command driveInCommand;
 
 	public Manager(DriveTrain dT, Gyro gyro, SmartDashboardSetup smartDashboardSetup, SensorDataRetriever sensorDataRetriever, 
-			BallControl ballControl, Scheduler scheduler) {
+			BallControl ballControl, Arm arm, Scheduler scheduler) {
 		this.driveTrain = dT;
 		this.gyro = gyro;
 		this.smartDashboardSetup = smartDashboardSetup;
 		this.vision = sensorDataRetriever;
 		this.ballControl = ballControl;
+		this.arm = arm;
 		this.scheduler = scheduler;
 	}
 	
@@ -264,7 +267,7 @@ public class Manager {
 	}
 	
 	private void loadCommandsForPortcullis() {
-		
+		scheduler.add(new MoveArm(arm, false));
 	}
 	
 	private void loadCommandsForChevalDeFrise() {

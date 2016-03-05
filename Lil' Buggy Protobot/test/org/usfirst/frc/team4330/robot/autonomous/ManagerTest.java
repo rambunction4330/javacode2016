@@ -1,9 +1,14 @@
 package org.usfirst.frc.team4330.robot.autonomous;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import org.junit.Before;
 import org.junit.Test;
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
+import org.usfirst.frc.team4330.robot.Arm;
 import org.usfirst.frc.team4330.robot.BallControl;
 import org.usfirst.frc.team4330.robot.DriveTrain;
 import org.usfirst.frc.team4330.robot.SmartDashboardSetup;
@@ -19,6 +24,7 @@ public class ManagerTest {
 	private SmartDashboardSetup smartDashboard;
 	private SensorDataRetriever vision;
 	private BallControl ballControl;
+	private Arm arm;
 	private Scheduler scheduler;
 	
 	private Manager testObject;
@@ -30,8 +36,9 @@ public class ManagerTest {
 		smartDashboard = mock(SmartDashboardSetup.class);
 		vision = mock(SensorDataRetriever.class);
 		ballControl = mock(BallControl.class);
+		arm = mock(Arm.class);
 		scheduler = mock(Scheduler.class);
-		testObject = new Manager(driveTrain, gyro, smartDashboard, vision, ballControl, scheduler);
+		testObject = new Manager(driveTrain, gyro, smartDashboard, vision, ballControl, arm, scheduler);
 	}
 	
 	@Test
