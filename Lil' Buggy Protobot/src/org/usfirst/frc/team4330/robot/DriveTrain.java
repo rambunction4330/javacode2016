@@ -20,7 +20,8 @@ public class DriveTrain {
 		reverse = false;
 		lastPressed = false;
 
-		rFW = new Talon(RobotMap.RIGHT_FRONT_WHEEL);
+		rFW = new Jaguar(RobotMap.RIGHT_FRONT_WHEEL);
+		rFW.setInverted(true);
 		rBW = new Jaguar(RobotMap.RIGHT_BACK_WHEEL);
 		rBW.setInverted(true);
 		lFW = new Jaguar(RobotMap.LEFT_FRONT_WHEEL);
@@ -86,17 +87,17 @@ public class DriveTrain {
 		lastPressed = currentlyPressed;
 
 		if (reverse)
-			drive(-left.getY(), -right.getY());
-		else
 			drive(left.getY(), right.getY());
+		else
+			drive(-left.getY(), -right.getY());
 	}
 	
 	public void autonomousTurnLeft() {
 		// TODO tune robot so pivots left in place
-		lFW.set(-0.7);
+		lFW.set(-0.5);
 		lBW.set(-0.7);
-		rFW.set(0.7);
-		rFW.set(0.7);
+		rFW.set(0.5);
+		rBW.set(0.5);
 	}
 	
 	public void autonomousTurnLeftSlow() {
@@ -104,15 +105,15 @@ public class DriveTrain {
 		lFW.set(-0.3);
 		lBW.set(-0.3);
 		rFW.set(0.3);
-		rFW.set(0.3);
+		rBW.set(0.3);
 	}
 	
 	public void autonomousTurnRight() {
 		// TODO tune robot so pivots right in place
-		lFW.set(0.7);
+		lFW.set(0.5);
 		lBW.set(0.7);
-		rFW.set(-0.7);
-		rFW.set(-0.7);
+		rFW.set(-0.5);
+		rBW.set(-0.5);
 	}
 	
 	public void autonomousTurnRightSlow() {
@@ -120,7 +121,7 @@ public class DriveTrain {
 		lFW.set(0.3);
 		lBW.set(0.3);
 		rFW.set(-0.3);
-		rFW.set(-0.3);
+		rBW.set(-0.3);
 	}
 	
 	public void drive(double left, double right){

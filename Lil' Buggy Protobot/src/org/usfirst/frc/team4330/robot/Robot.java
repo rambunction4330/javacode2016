@@ -45,7 +45,8 @@ public class Robot extends IterativeRobot {
 		ballControl = new BallControl(new Victor(RobotMap.INTAKE_PORT),
 				new Relay(RobotMap.SPIKE_PORT, Direction.kBoth));
 		vision = new SensorDataRetriever();
-		gyro = new AnalogGyro(0, 0, 0);
+//		gyro = new AnalogGyro(0, 0, 0);
+		gyro = new AnalogGyro(1); // TODO Find the right port for the gyro
 		manager = new Manager(driveTrain, gyro, smartDashboard, vision, ballControl, trekudesu, Scheduler.getInstance());
 		smartDashboard = new SmartDashboardSetup();
 		// scaleraptor = new Scaling(new Victor(RobotMap.SCALAR_PORT));
@@ -83,7 +84,6 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void teleopPeriodic() {
-
 		ballControl.performIntake(rightJoystick
 				.getRawButton(RobotMap.BALL_CONTROL_INTAKE_BUTTON)); // 6
 
@@ -116,10 +116,13 @@ public class Robot extends IterativeRobot {
 
 	public void testInit() {
 		manager.testInit();
+		System.out.println("Defense is : " + smartDashboard.autoDefense);
+		System.out.println("Position is : " + smartDashboard.autoPosition);
 	}
 
 	public void testPeriodic() {
 		manager.testPeriodic();
+		
 //		hotbod.drive(.2, .2);
 //		System.out.println("Left values: " + leftJoystick.getY() + "; Right values: " + rightJoystick.getY());
 	}

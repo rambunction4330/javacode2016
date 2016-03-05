@@ -10,6 +10,7 @@ import org.usfirst.frc.team4330.robot.SmartDashboardSetup;
 import org.usfirst.frc.team4330.robot.raspberrypi.SensorDataRetriever;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
@@ -86,15 +87,8 @@ public class Manager {
 	}
 	
 	public void testInit() {
-		
+		scheduler.enable();
 		testInitialized = false;
-		
-
-//		turnToHeading(30);
-//		scheduler.add(new WaitCommand(5.0));
-//		turnToHeading(60);
-//		scheduler.add(new WaitCommand(5.0));
-//		turnToHeading(90);
 
 	}
 	
@@ -104,11 +98,23 @@ public class Manager {
 		
 			return;
 		}
+		System.out.println("Initializing");
 		gyro.calibrate();
-		scheduler.add(new WaitCommand(5.0));
-		System.out.println("Waited");
-		scheduler.add(new DriveStraight(driveTrain, gyro, 3, 0));
+		
 		testInitialized = true;
+		CommandGroup group = new CommandGroup();
+		group.addSequential(new WaitCommand(5.0));
+		group.addSequential(new RoughAlign(driveTrain, gyro, 30, "30 turn"));
+		group.addSequential(new WaitCommand(5.0));
+		group.addSequential(new RoughAlign(driveTrain, gyro, 60, "60 turn"));
+		group.addSequential(new WaitCommand(5.0));
+		group.addSequential(new RoughAlign(driveTrain, gyro, 90, "90 turn"));
+		scheduler.add(group);
+//		turnToHeading(60);
+//		scheduler.add(new WaitCommand(5.0));
+//		turnToHeading(90);
+		
+//		scheduler.add(new DriveStraight(driveTrain, gyro, 3, 0));
 	}
 	
 	public void disableInit() {

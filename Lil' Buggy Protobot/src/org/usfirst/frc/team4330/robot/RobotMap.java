@@ -7,13 +7,13 @@ public class RobotMap {
 	public static final int LEFT_BACK_WHEEL = 9;
 	public static final int RIGHT_FRONT_WHEEL = 6;
 	public static final int LEFT_FRONT_WHEEL = 3;
-	public static final int SCALAR_PORT = 1; // wench
+	public static final int SCALAR_PORT = 4; // wench
 	public static final int TREXARM_PORT_ONE = 7;
 	public static final int TREXARM_PORT_TWO = 8;	
-	public static final int INTAKE_PORT = 4;
+	public static final int INTAKE_PORT = 1; // (1?)
 
 	// Relays
-	public static final int SPIKE_PORT = 3;
+	public static final int SPIKE_PORT = 3; // kicker
 
 	// Speeds
 	public static final double SCALING_MAXIMUM = .75;
