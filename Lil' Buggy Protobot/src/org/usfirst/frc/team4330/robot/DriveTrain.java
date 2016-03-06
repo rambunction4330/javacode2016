@@ -19,6 +19,7 @@ public class DriveTrain {
 		reverse = false;
 		lastPressed = false;
 
+		// if a wheel is not spinning the right direction, use .setInverted(true) to change for that individual wheel
 		rFW = new Jaguar(RobotMap.RIGHT_FRONT_WHEEL);
 		rFW.setInverted(true);
 		rBW = new Jaguar(RobotMap.RIGHT_BACK_WHEEL);
@@ -85,10 +86,13 @@ public class DriveTrain {
 
 		lastPressed = currentlyPressed;
 
+		// joystick getY returns negative value when pushing stick forward, so multiply times -1
+		// when in forward and don't when in reverse.  If wheels are not spinning correct direction,
+		// DO NOT CHANGE HERE but instead change in the DriveTrain constructor
 		if (reverse)
 			drive(left.getY(), right.getY());
 		else
-			drive(-left.getY(), -right.getY());
+			drive(-1 * left.getY(), -1 * right.getY());
 	}
 	
 	public void autonomousTurnLeft() {
