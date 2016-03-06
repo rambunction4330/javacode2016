@@ -162,7 +162,7 @@ public class Manager {
 	}
 	
 	private void loadCommandsToGetOverDefence() {
-		String defense = smartDashboardSetup.autoDefense;
+		String defense = smartDashboardSetup.getAutoDefense();
 		switch(defense) {
 		case SmartDashboardSetup.portcullis:
 			loadCommandsForPortcullis();

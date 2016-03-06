@@ -6,9 +6,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class SmartDashboardSetup {
 	SendableChooser defenseChooser;
 	SendableChooser positionChooser;
-	
-	public int autoPosition;
-	public String autoDefense;
 
 	public static final String portcullis = "portcullis";
 	public static final String chivalDeFrise = "chivalDeFrise";
@@ -44,18 +41,11 @@ public class SmartDashboardSetup {
 		SmartDashboard.putData("Autonomous Position", positionChooser);
 	}
 	
-	public void initiliaze() {
-		 autoPosition = (int) positionChooser.getSelected();
-		 autoDefense = (String) defenseChooser.getSelected();
-	}
-	
 	public int getAutoPosition() {
-		autoPosition = (int) positionChooser.getSelected();
-		return autoPosition;
+		return (int) positionChooser.getSelected();
 	}
 	
 	public String getAutoDefense() {
-		autoDefense = (String) defenseChooser.getSelected();
-		return autoDefense;
+		return (String) defenseChooser.getSelected();
 	}
 }

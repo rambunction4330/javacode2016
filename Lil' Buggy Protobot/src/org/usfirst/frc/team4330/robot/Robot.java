@@ -53,9 +53,8 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void autonomousInit() {
-		smartDashboard.initiliaze();
-		System.out.println("Position choice is " + smartDashboard.autoPosition);
-		System.out.println("Defense choice is " + smartDashboard.autoDefense);
+		System.out.println("Position choice is " + smartDashboard.getAutoPosition());
+		System.out.println("Defense choice is " + smartDashboard.getAutoDefense());
 		manager.autonomousInit();
 	}
 
@@ -116,8 +115,8 @@ public class Robot extends IterativeRobot {
 
 	public void testInit() {
 		manager.testInit();
-		System.out.println("Defense is : " + smartDashboard.autoDefense);
-		System.out.println("Position is : " + smartDashboard.autoPosition);
+		System.out.println("Defense is : " + smartDashboard.getAutoDefense());
+		System.out.println("Position is : " + smartDashboard.getAutoPosition());
 	}
 
 	public void testPeriodic() {
