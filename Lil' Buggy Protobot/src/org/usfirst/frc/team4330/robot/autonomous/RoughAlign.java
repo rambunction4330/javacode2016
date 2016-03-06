@@ -10,19 +10,11 @@ public class RoughAlign extends Command {
 	private Gyro gyro;
 	private double desiredHeading;
 	private boolean finished = false;
-	private String name;
 	
 	public RoughAlign(DriveTrain dT, Gyro gyro, double desiredHeading) {
 		this.dT = dT;
 		this.gyro = gyro;
 		this.desiredHeading = desiredHeading;
-	}
-
-	public RoughAlign(DriveTrain dT, Gyro gyro, double desiredHeading, String name) {
-		this.dT = dT;
-		this.gyro = gyro;
-		this.desiredHeading = desiredHeading;
-		this.name = name;
 	}
 
 	@Override
@@ -37,18 +29,17 @@ public class RoughAlign extends Command {
 	@Override
 	protected void execute() {
 		double turnAmount = HeadingCalculator.calculateCourseChange(getRaw(), desiredHeading);
-		System.out.println(name + " turn Amount: " + turnAmount);
 		if (Math.abs(turnAmount) < getTolerance()) {
-			dT.drive(0, 0);
+			dT.stop();
 			System.out.println("Done.");
 			finished = true;
 		} else {
 			if (turnAmount < 0) {
 				System.out.println("Turning Left");
-				dT.autonomousTurnLeft();
+				turnLeft();
 			} else {
 				System.out.println("Turning Right");
-				dT.autonomousTurnRight();
+				turnRight();
 			}
 		}
 	}

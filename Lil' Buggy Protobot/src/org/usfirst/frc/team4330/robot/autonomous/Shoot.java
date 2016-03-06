@@ -4,11 +4,11 @@ import org.usfirst.frc.team4330.robot.BallControl;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ShootCommand extends Command {
+public class Shoot extends Command {
 	
 	private BallControl ballControl;
 	
-	public ShootCommand ( BallControl ballControl ) {
+	public Shoot ( BallControl ballControl ) {
 		this.ballControl = ballControl;
 	}
 

@@ -107,11 +107,11 @@ public class Manager {
 		testInitialized = true;
 		commands.clear();
 		commands.add(new WaitCommand(5.0));
-		commands.add(new RoughAlign(driveTrain, gyro, 30, "30 turn"));
+		commands.add(new RoughAlign(driveTrain, gyro, 30));
 		commands.add(new WaitCommand(5.0));
-		commands.add(new RoughAlign(driveTrain, gyro, 60, "60 turn"));
+		commands.add(new RoughAlign(driveTrain, gyro, 60));
 		commands.add(new WaitCommand(5.0));
-		commands.add(new RoughAlign(driveTrain, gyro, 90, "90 turn"));
+		commands.add(new RoughAlign(driveTrain, gyro, 90));
 		scheduleCommands();
 	}
 	
@@ -200,7 +200,7 @@ public class Manager {
 		double newHeading = HeadingCalculator.normalize(shootAngle + 180);
 		turnToHeading(newHeading);
 		commands.add(new DriveStraight(driveTrain, gyro, -1 * distanceToDriveInReversePriorToShoot, newHeading));
-		commands.add(new ShootCommand(ballControl));
+		commands.add(new Shoot(ballControl));
 		scheduleCommands();
 	}
 	
