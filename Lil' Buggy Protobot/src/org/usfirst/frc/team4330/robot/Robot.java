@@ -32,6 +32,8 @@ public class Robot extends IterativeRobot {
 	SensorDataRetriever vision;
 	Gyro gyro;
 	Manager manager;
+	private long lastPeriodicTimeCalled;
+	private long warningCounter;
 
 	SmartDashboardSetup smartDashboard;
 
@@ -56,10 +58,22 @@ public class Robot extends IterativeRobot {
 		System.out.println("Position choice is " + smartDashboard.getAutoPosition());
 		System.out.println("Defense choice is " + smartDashboard.getAutoDefense());
 		manager.autonomousInit();
+		
+		lastPeriodicTimeCalled = System.currentTimeMillis();
+		warningCounter = 0;
 	}
 
 	public void autonomousPeriodic() {		
 		manager.autonomousPeriodic();
+		
+		// warn if robot seems non responsive
+		long time = System.currentTimeMillis();
+		if ( time - lastPeriodicTimeCalled > 25 && warningCounter % 50 == 1) {
+			warningCounter++;
+			System.out.println("---WARNING--- Non responsive robot in autonomous phase with interval being " + 
+					(time - lastPeriodicTimeCalled) + " msec");
+		}
+		lastPeriodicTimeCalled = time;
 	}
 
 	public void teleopInit() {
@@ -79,6 +93,9 @@ public class Robot extends IterativeRobot {
 				+ "\nPRESS Trigger to power Trekudesu." + "\n");
 		System.out.println("****************************************");
 		System.out.println("****************************************" + "\n");
+		
+		lastPeriodicTimeCalled = System.currentTimeMillis();
+		warningCounter = 0;
 
 	}
 
@@ -108,8 +125,18 @@ public class Robot extends IterativeRobot {
 					rightJoystick.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)); // 8
 		else
 			*/
+		
 		driveTrain.drive(leftJoystick, rightJoystick,
 					rightJoystick.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)); // 8
+		
+		// warn if robot seems non responsive
+		long time = System.currentTimeMillis();
+		if ( time - lastPeriodicTimeCalled > 25 && warningCounter % 50 == 1 ) {
+			warningCounter++;
+			System.out.println("---WARNING--- Non responsive robot in teleop phase with interval being " + 
+					(time - lastPeriodicTimeCalled) + " msec");
+		}
+		lastPeriodicTimeCalled = time;
 
 	}
 
