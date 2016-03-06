@@ -11,7 +11,7 @@ public class HeadingCalculatorTest {
 		
 		// checking all turns
 		for ( double turn = 180; turn > -180; turn = turn - 0.5) {
-			for ( double walkAroundValue = -720; walkAroundValue < 720; walkAroundValue = walkAroundValue + 0.5 ) {
+			for ( double walkAroundValue = 0; walkAroundValue < 360; walkAroundValue = walkAroundValue + 0.5 ) {
 				for ( int i = -1; i <= 1; i++ ) {
 					for ( int j = -1; j <= 1; j++ ) {
 						double currentHeading = walkAroundValue + i * 360;
