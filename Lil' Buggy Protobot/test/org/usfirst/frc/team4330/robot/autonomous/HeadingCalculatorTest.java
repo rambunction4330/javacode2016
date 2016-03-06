@@ -9,6 +9,23 @@ public class HeadingCalculatorTest {
 	@Test
 	public void testHeadingCalculator() {
 		
+		// checking all turns
+		for ( double turn = 180; turn > -180; turn = turn - 0.5) {
+			for ( double walkAroundValue = -720; walkAroundValue < 720; walkAroundValue = walkAroundValue + 0.5 ) {
+				for ( int i = -1; i <= 1; i++ ) {
+					for ( int j = -1; j <= 1; j++ ) {
+						double currentHeading = walkAroundValue + i * 360;
+						double desiredHeading = walkAroundValue + turn + j * 360;
+						//System.out.println("Testing " + turn + " turn from " + currentHeading + " to " + desiredHeading);
+						assertEquals(turn, HeadingCalculator.calculateCourseChange(
+								currentHeading, desiredHeading), 0.01);
+					}
+				}
+			}
+		}
+		
+		// manual checks
+		
 		// test left turns
 		assertEquals(-1, HeadingCalculator.calculateCourseChange(-179, 180), 0.1);
 		assertEquals(-1, HeadingCalculator.calculateCourseChange(1, 0), 0.1);

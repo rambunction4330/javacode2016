@@ -3,36 +3,37 @@ package org.usfirst.frc.team4330.robot.autonomous;
 public class HeadingCalculator {
 	
 	/**
-	 * 
-	 * @param rawCurrentHeading
+	 * Calculate the course changed needed to go from current heading to desired heading.  Both
+	 * the current heading and desired heading should be in degrees with 360 degrees in a revolution.
+	 * The calculation will work even if the current heading or the desired heading have 
+	 * accumulation of multiple revolutions resulting in values less than -180 or greater than 180.
+	 * @param currentHeading
 	 * @param desiredHeading
-	 * @return the course change with -180 < value <= 180
+	 * @return the course change with -180 < value <= 180.  Positive value means to turn right
+	 * to come to desired heading and negative value means to turn left to come to desired heading.
 	 */
-	public static double calculateCourseChange ( double rawCurrentHeading, double desiredHeading ) {
-		double normalizedCurrentHeading = normalize(rawCurrentHeading);
+	public static double calculateCourseChange ( double currentHeading, double desiredHeading ) {
 		
-		double desiredp = desiredHeading;
-		double currentp = normalizedCurrentHeading;
-		if (currentp > 0 && desiredp < 0) {
-			desiredp = desiredHeading + 360;
-		} else if ( currentp < 0 && desiredp > 0 ) {
-			if ( currentp > -90 ) {
-				desiredp = desiredHeading + 360;
-			}
-			currentp = normalizedCurrentHeading + 360;
+		double desiredPositive = normalize(desiredHeading);
+		double currentPositive = normalize(currentHeading);
+		
+		if (desiredPositive < 0) {
+			desiredPositive += 360;
+		} 
+		
+		if ( currentPositive < 0 ) {
+			currentPositive += 360;
 		}
 
-		double val = desiredp - currentp;
+		double courseChange = desiredPositive - currentPositive;
 		
-		if ( val == -180 ) {
-			val = 180;
-		} else if ( val < -180 ) {
-			val += 360;
-		} else if ( val > 180 ) {
-			val -= 360;
+		if ( courseChange <= -180 ) {
+			courseChange += 360;
+		} else if ( courseChange > 180 ) {
+			courseChange -= 360;
 		}
 		
-		return val;
+		return courseChange;
 	}
 	
 	/**
