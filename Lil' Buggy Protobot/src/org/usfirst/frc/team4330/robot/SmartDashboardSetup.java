@@ -22,14 +22,14 @@ public class SmartDashboardSetup {
 	
 	public SmartDashboardSetup() {
 		defenseChooser = new SendableChooser();
-		defenseChooser.addDefault("Portcullis", portcullis);
-		defenseChooser.addObject("Chival de Frise (four moving trains)",
+		defenseChooser.addDefault("Low Bar", lowBar);
+		defenseChooser.addObject("Portcullis", portcullis);
+		defenseChooser.addObject("Chival de Frise (four moving planes)",
 				chivalDeFrise);
-		defenseChooser.addObject("Rough Terrain", roughTerrain);
 		defenseChooser.addObject("Moat", moat);
-		defenseChooser.addObject("Rampart (two non-moving trains)", rampart);
+		defenseChooser.addObject("Rampart (two non-moving planes)", rampart);
 		defenseChooser.addObject("Rock Wall", rockWall);
-		defenseChooser.addObject("Low Bar", lowBar);
+		defenseChooser.addObject("Rough Terrain", roughTerrain);
 		SmartDashboard.putData("Autonomous Defense", defenseChooser);
 
 		positionChooser = new SendableChooser();
