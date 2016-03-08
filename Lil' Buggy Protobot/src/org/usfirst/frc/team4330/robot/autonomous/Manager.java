@@ -97,21 +97,20 @@ public class Manager {
 	
 	public void testPeriodic() {
 		scheduler.run();
+		System.out.println("Gyro " + gyro.getAngle());
 		if ( testInitialized ) {
 		
 			return;
 		}
 		System.out.println("Initializing");
 		gyro.calibrate();
+		System.out.println("Calibration complete");
 		
 		testInitialized = true;
 		commands.clear();
-		commands.add(new WaitCommand(5.0));
-		commands.add(new RoughAlign(driveTrain, gyro, 30));
-		commands.add(new WaitCommand(5.0));
-		commands.add(new RoughAlign(driveTrain, gyro, 60));
-		commands.add(new WaitCommand(5.0));
-		commands.add(new RoughAlign(driveTrain, gyro, 90));
+		//commands.add(new WaitCommand(5.0));
+		commands.add(new RoughAlign(driveTrain, gyro, -90));
+		//commands.add(new DriveStraight(driveTrain, gyro, 5, 20));
 		scheduleCommands();
 	}
 	

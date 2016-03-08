@@ -21,7 +21,7 @@ public class DriveTrain {
 
 		// if a wheel is not spinning the right direction, use .setInverted(true) to change for that individual wheel
 		rFW = new Jaguar(RobotMap.RIGHT_FRONT_WHEEL);
-		rFW.setInverted(true);
+		//rFW.setInverted(true);
 		rBW = new Jaguar(RobotMap.RIGHT_BACK_WHEEL);
 		rBW.setInverted(true);
 		lFW = new Jaguar(RobotMap.LEFT_FRONT_WHEEL);

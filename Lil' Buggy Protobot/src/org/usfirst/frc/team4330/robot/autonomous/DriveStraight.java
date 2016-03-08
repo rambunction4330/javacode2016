@@ -7,13 +7,13 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 public class DriveStraight extends Command {
 	
-	public static final double speedActual = 3; // (Physical speed of the robot in feet per second)
-	public static final double motorSpeed = 0.7;  // base amount of motor speed when driving forward or reverse
+	public static final double speedActual = 6.2; // (Physical speed of the robot in feet per second)
+	public static final double motorSpeed = 0.4;  // base amount of motor speed when driving forward or reverse
 	public static final double motorDelta = 0.1;  // amount to add/subtract to steer robot to maintain heading
 	public static final double headingTolerance = 3;  // in degrees
 	
-	public static final double stopTimeFactor = 0.2;  // distance to drive * this factor = stopping time in seconds
-	public static final double maxStopTime = 0.5;  // cap of stopping time in seconds
+	public static final double stopTimeFactor = 0.1;  // distance to drive * this factor = stopping time in seconds
+	public static final double maxStopTime = 0.3;  // cap of stopping time in seconds
 	
 	private DriveTrain dT;
 	private Gyro gyro;
