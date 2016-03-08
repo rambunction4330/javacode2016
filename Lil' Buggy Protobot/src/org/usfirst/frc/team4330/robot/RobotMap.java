@@ -10,7 +10,7 @@ public class RobotMap {
 	public static final int SCALAR_PORT = 4; // wench
 	public static final int TREXARM_PORT_ONE = 7;
 	public static final int TREXARM_PORT_TWO = 8;	
-	public static final int INTAKE_PORT = 1; // (1?)
+	public static final int INTAKE_PORT = 1;
 
 	// Relays
 	public static final int SPIKE_PORT = 3; // kicker
