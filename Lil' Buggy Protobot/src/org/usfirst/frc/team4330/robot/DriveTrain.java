@@ -4,7 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Jaguar;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedController;
 
@@ -20,12 +20,12 @@ public class DriveTrain {
 		lastPressed = false;
 
 		// if a wheel is not spinning the right direction, use .setInverted(true) to change for that individual wheel
-		rFW = new Jaguar(RobotMap.RIGHT_FRONT_WHEEL);
+		rFW = new Talon(RobotMap.RIGHT_FRONT_WHEEL);
 		//rFW.setInverted(true);
-		rBW = new Jaguar(RobotMap.RIGHT_BACK_WHEEL);
+		rBW = new Talon(RobotMap.RIGHT_BACK_WHEEL);
 		rBW.setInverted(true);
-		lFW = new Jaguar(RobotMap.LEFT_FRONT_WHEEL);
-		lBW = new Jaguar(RobotMap.LEFT_BACK_WHEEL);
+		lFW = new Talon(RobotMap.LEFT_FRONT_WHEEL);
+		lBW = new Talon(RobotMap.LEFT_BACK_WHEEL);
 	}
 
 	/**
