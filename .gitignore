@@ -7,6 +7,10 @@ dist/**
 /**/build/**
 /**/dist/**
  
+# FRC stuff
+sysProps.xml
+/**/sysProps.xml
+ 
 # OS Files #
 .DS_Store
  
