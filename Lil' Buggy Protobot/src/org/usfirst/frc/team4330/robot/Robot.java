@@ -49,8 +49,8 @@ public class Robot extends IterativeRobot {
 		vision = new SensorDataRetriever();
 //		gyro = new AnalogGyro(0, 0, 0);
 		gyro = new AnalogGyro(0); // TODO Find the right port for the gyro
-		manager = new Manager(driveTrain, gyro, smartDashboard, vision, ballControl, trekudesu, Scheduler.getInstance());
 		smartDashboard = new SmartDashboardSetup();
+		manager = new Manager(driveTrain, gyro, smartDashboard, vision, ballControl, trekudesu, Scheduler.getInstance());
 		// scaleraptor = new Scaling(new Victor(RobotMap.SCALAR_PORT));
 	}
 

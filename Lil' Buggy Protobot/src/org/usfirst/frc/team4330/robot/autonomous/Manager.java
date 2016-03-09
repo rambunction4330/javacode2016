@@ -108,8 +108,9 @@ public class Manager {
 		
 		testInitialized = true;
 		commands.clear();
+		loadCommandsForRoughTerrain();
 		//commands.add(new WaitCommand(5.0));
-		commands.add(new RoughAlign(driveTrain, gyro, -90));
+		//commands.add(new RoughAlign(driveTrain, gyro, -90));
 		//commands.add(new DriveStraight(driveTrain, gyro, 5, 20));
 		scheduleCommands();
 	}
@@ -189,7 +190,8 @@ public class Manager {
 			break;
 		}
 		
-		commands.add(new CallbackToManager(this));
+		// TODO uncomment this once defense testing is complete
+		// commands.add(new CallbackToManager(this));
 		scheduleCommands();
 		
 	}
