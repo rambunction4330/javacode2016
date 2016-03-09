@@ -4,6 +4,8 @@ bin/**
 target/**
 /**/.gitignore
 dist/**
+/**/build/**
+/**/dist/**
  
 # OS Files #
 .DS_Store
