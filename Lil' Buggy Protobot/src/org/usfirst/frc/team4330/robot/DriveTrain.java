@@ -4,9 +4,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveTrain {
 	private SpeedController rFW, lFW, rBW, lBW;
@@ -20,12 +22,12 @@ public class DriveTrain {
 		lastPressed = false;
 
 		// if a wheel is not spinning the right direction, use .setInverted(true) to change for that individual wheel
-		rFW = new Talon(RobotMap.RIGHT_FRONT_WHEEL);
-		//rFW.setInverted(true);
-		rBW = new Talon(RobotMap.RIGHT_BACK_WHEEL);
+		rFW = new Victor(RobotMap.RIGHT_FRONT_WHEEL);
+		rFW.setInverted(true);
+		rBW = new Victor(RobotMap.RIGHT_BACK_WHEEL);
 		rBW.setInverted(true);
-		lFW = new Talon(RobotMap.LEFT_FRONT_WHEEL);
-		lBW = new Talon(RobotMap.LEFT_BACK_WHEEL);
+		lFW = new Victor(RobotMap.LEFT_FRONT_WHEEL);
+		lBW = new Victor(RobotMap.LEFT_BACK_WHEEL);
 	}
 
 	/**
@@ -97,34 +99,34 @@ public class DriveTrain {
 	
 	public void autonomousTurnLeft() {
 		// TODO tune robot so pivots left in place
+		lFW.set(-0.7);
+		lBW.set(-0.7);
+		rFW.set(0.7);
+		rBW.set(0.7);
+	}
+	
+	public void autonomousTurnLeftSlow() {
+		// TODO tune robot so pivots left in place
 		lFW.set(-0.4);
 		lBW.set(-0.4);
 		rFW.set(0.4);
 		rBW.set(0.4);
 	}
 	
-	public void autonomousTurnLeftSlow() {
-		// TODO tune robot so pivots left in place
-		lFW.set(-0.3);
-		lBW.set(-0.3);
-		rFW.set(0.3);
-		rBW.set(0.3);
+	public void autonomousTurnRight() {
+		// TODO tune robot so pivots right in place
+		lFW.set(0.7);
+		lBW.set(0.7);
+		rFW.set(-0.7);
+		rBW.set(-0.7);
 	}
 	
-	public void autonomousTurnRight() {
+	public void autonomousTurnRightSlow() {
 		// TODO tune robot so pivots right in place
 		lFW.set(0.4);
 		lBW.set(0.4);
 		rFW.set(-0.4);
 		rBW.set(-0.4);
-	}
-	
-	public void autonomousTurnRightSlow() {
-		// TODO tune robot so pivots right in place
-		lFW.set(0.3);
-		lBW.set(0.3);
-		rFW.set(-0.3);
-		rBW.set(-0.3);
 	}
 	
 	public void drive(double left, double right){

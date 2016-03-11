@@ -2,38 +2,26 @@ package org.usfirst.frc.team4330.robot.autonomous;
 
 import org.usfirst.frc.team4330.robot.DriveTrain;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 
-public class RammingSpeed extends Command{
-	private DriveTrain dT;
+public class RammingSpeed extends DriveStraight{
 	
-	public RammingSpeed(DriveTrain dT) {
-		this.dT = dT;
+	public RammingSpeed(DriveTrain dT, Gyro gyro, double distance, double heading) {
+//		this.dT = dT;
+		super(dT, gyro, distance, heading);
+	}
+	
+	public RammingSpeed(DriveTrain dT, Gyro gyro, double distance) {
+		super(dT, gyro, distance, 0);
 	}
 
 	@Override
-	protected void initialize() {
-		dT.drive(1, 1);
+	protected double getMotorSpeed() {
+		return .9;
 	}
-
-	@Override
-	protected void execute() {
-		
-	}
-
-	@Override
-	protected boolean isFinished() {
-		return true;
-	}
-
-	@Override
-	protected void end() {
-		
-	}
-
-	@Override
-	protected void interrupted() {
-		
+	
+	protected double getMotorDelta() {
+		return .3;
 	}
 	
 	

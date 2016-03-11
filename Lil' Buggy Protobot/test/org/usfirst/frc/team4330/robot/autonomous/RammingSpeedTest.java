@@ -16,15 +16,15 @@ public class RammingSpeedTest {
 	@Before
 	public void setUp() {
 		driveTrain = mock(DriveTrain.class);
-		testObject = new RammingSpeed(driveTrain);
+//		testObject = new RammingSpeed(driveTrain);
 	}
 	
-	@Test
+/*	@Test
 	public void testRammingSpeed() {
 		testObject.initialize();
 		testObject.execute();
 		verify(driveTrain).drive(1, 1);
 		assertTrue(testObject.isFinished());
-	}
+	}*/
 
 }

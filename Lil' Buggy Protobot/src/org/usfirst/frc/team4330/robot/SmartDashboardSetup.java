@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class SmartDashboardSetup {
 	SendableChooser defenseChooser;
 	SendableChooser positionChooser;
+	SendableChooser goalChooser;
 
 	public static final String portcullis = "portcullis";
 	public static final String chivalDeFrise = "chivalDeFrise";
@@ -19,9 +20,15 @@ public class SmartDashboardSetup {
 	public static final int three = 3;
 	public static final int four = 4;
 	public static final int five = 5;
+	public static final String none = "none";
 	
+	public static final String left = "left";
+	public static final String right = "right";
+	public static final String defult = "default";
+		
 	public SmartDashboardSetup() {
 		defenseChooser = new SendableChooser();
+		defenseChooser.addObject("No Autonomous", none);
 		defenseChooser.addDefault("Low Bar", lowBar);
 		defenseChooser.addObject("Portcullis", portcullis);
 		defenseChooser.addObject("Chival de Frise (four moving planes)",
@@ -39,6 +46,12 @@ public class SmartDashboardSetup {
 		positionChooser.addObject("Four", four);
 		positionChooser.addObject("Five", five);
 		SmartDashboard.putData("Autonomous Position", positionChooser);
+		
+		goalChooser = new SendableChooser();
+		goalChooser.addDefault("Default", defult);
+		goalChooser.addObject("Left Goal", left);
+		goalChooser.addObject("Right Goal", right);
+		SmartDashboard.putData("Goal Chooser", goalChooser);
 	}
 	
 	public int getAutoPosition() {
@@ -47,5 +60,9 @@ public class SmartDashboardSetup {
 	
 	public String getAutoDefense() {
 		return (String) defenseChooser.getSelected();
+	}
+	
+	public String getGoalChoice() {
+		return (String) goalChooser.getSelected();
 	}
 }

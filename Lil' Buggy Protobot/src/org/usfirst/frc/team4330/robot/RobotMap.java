@@ -4,13 +4,14 @@ public class RobotMap {
 
 	// SpeedControllers
 	public static final int RIGHT_BACK_WHEEL = 2;
-	public static final int LEFT_BACK_WHEEL = 9;
+	public static final int LEFT_BACK_WHEEL = 5;
 	public static final int RIGHT_FRONT_WHEEL = 6;
 	public static final int LEFT_FRONT_WHEEL = 3;
-	public static final int SCALAR_PORT = 4; // wench
+//	public static final int SCALAR_PORT = 4; // wench
 	public static final int TREXARM_PORT_ONE = 7;
 	public static final int TREXARM_PORT_TWO = 8;	
-	public static final int INTAKE_PORT = 1;
+	public static final int INTAKE_PORT = 4;
+	public static final int GYRO_PORT = 0;
 
 	// Relays
 	public static final int SPIKE_PORT = 3; // kicker
@@ -26,8 +27,8 @@ public class RobotMap {
 	public static final int BALL_CONTROL_SHOOT_BUTTON = 4;
 	public static final int TREXARM_LOWER_BUTTON = 3;
 	public static final int TREXARM_RAISE_BUTTON = 5;
-	public static final int SCALING_UPWARDS_BUTTON = 6;
-	public static final int SCALING_DOWNWARDS_BUTTON = 4;
+//	public static final int SCALING_UPWARDS_BUTTON = 6;
+//	public static final int SCALING_DOWNWARDS_BUTTON = 4;
 	public static final int TREXARM_POWER_BUTTON = 2;
 
 	// Joysticks

@@ -18,8 +18,8 @@ public class BallControl {
 	private Relay kicker;
 	private Timer timer = new Timer();
 
-	private static final double inSpeed = -1;
-	private static final double outSpeed = 1;
+	private static final double inSpeed = -.8;
+	private static final double outSpeed = .8;
 
 	public BallControl(SpeedController blueWheelsController, Relay kickerRelay) {
 		this.blueWheels = blueWheelsController;

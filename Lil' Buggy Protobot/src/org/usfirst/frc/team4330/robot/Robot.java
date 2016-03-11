@@ -32,8 +32,8 @@ public class Robot extends IterativeRobot {
 	SensorDataRetriever vision;
 	Gyro gyro;
 	Manager manager;
-	private long lastPeriodicTimeCalled;
-	private long warningCounter;
+//	private long lastPeriodicTimeCalled;
+//	private long warningCounter;
 
 	SmartDashboardSetup smartDashboard;
 
@@ -43,12 +43,13 @@ public class Robot extends IterativeRobot {
 
 		driveTrain = new DriveTrain();
 		leddar = new LeddarDistanceSensor();
-		trekudesu = new Arm(); // new Victor(RobotMap.TREXARM_PORT)
+		trekudesu = new Arm();
 		ballControl = new BallControl(new Victor(RobotMap.INTAKE_PORT),
 				new Relay(RobotMap.SPIKE_PORT, Direction.kBoth));
 		vision = new SensorDataRetriever();
-		gyro = new AnalogGyro(0, 0, 0);
-		// gyro = new AnalogGyro(0); // TODO Find the right port for the gyro
+		System.out.println("Calibrating gyro");
+		gyro = new AnalogGyro(RobotMap.GYRO_PORT);
+		System.out.println("Gyro calibrated");
 		smartDashboard = new SmartDashboardSetup();
 		manager = new Manager(driveTrain, gyro, smartDashboard, vision, ballControl, trekudesu, Scheduler.getInstance());
 		// scaleraptor = new Scaling(new Victor(RobotMap.SCALAR_PORT));
@@ -59,21 +60,21 @@ public class Robot extends IterativeRobot {
 		System.out.println("Defense choice is " + smartDashboard.getAutoDefense());
 		manager.autonomousInit();
 		
-		lastPeriodicTimeCalled = System.currentTimeMillis();
-		warningCounter = 0;
+//		lastPeriodicTimeCalled = System.currentTimeMillis();
+//		warningCounter = 0;
 	}
 
 	public void autonomousPeriodic() {		
 		manager.autonomousPeriodic();
 		
 		// warn if robot seems non responsive
-		long time = System.currentTimeMillis();
+		/*long time = System.currentTimeMillis();
 		if ( time - lastPeriodicTimeCalled > 25 && warningCounter % 50 == 1) {
 			warningCounter++;
 			System.out.println("---WARNING--- Non responsive robot in autonomous phase with interval being " + 
 					(time - lastPeriodicTimeCalled) + " msec");
 		}
-		lastPeriodicTimeCalled = time;
+		lastPeriodicTimeCalled = time;*/
 	}
 
 	public void teleopInit() {
@@ -94,8 +95,11 @@ public class Robot extends IterativeRobot {
 		System.out.println("****************************************");
 		System.out.println("****************************************" + "\n");
 		
-		lastPeriodicTimeCalled = System.currentTimeMillis();
-		warningCounter = 0;
+		// trying to do this to fix crash reported during match when changing from autonomous to teleop
+		disabledInit();
+		
+		/*lastPeriodicTimeCalled = System.currentTimeMillis();
+		warningCounter = 0;*/
 
 	}
 
@@ -109,7 +113,7 @@ public class Robot extends IterativeRobot {
 		trekudesu.handleButtons(
 				leftJoystick.getRawButton(RobotMap.TREXARM_RAISE_BUTTON), // 5
 				leftJoystick.getRawButton(RobotMap.TREXARM_LOWER_BUTTON), // 3
-				leftJoystick.getRawButton(RobotMap.TREXARM_POWER_BUTTON)); // 2
+				leftJoystick.getTrigger());
 
 		// RIP HER DREAMS, NOBODY WANTED THEM ANYWAYS
 
@@ -130,18 +134,19 @@ public class Robot extends IterativeRobot {
 					rightJoystick.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)); // 8
 		
 		// warn if robot seems non responsive
-		long time = System.currentTimeMillis();
+		/*long time = System.currentTimeMillis();
 		if ( time - lastPeriodicTimeCalled > 25 && warningCounter % 50 == 1 ) {
 			warningCounter++;
 			System.out.println("---WARNING--- Non responsive robot in teleop phase with interval being " + 
 					(time - lastPeriodicTimeCalled) + " msec");
 		}
-		lastPeriodicTimeCalled = time;
+		lastPeriodicTimeCalled = time;*/
 
 	}
 
 	public void testInit() {
 		manager.testInit();
+		
 		System.out.println("Defense is : " + smartDashboard.getAutoDefense());
 		System.out.println("Position is : " + smartDashboard.getAutoPosition());
 	}

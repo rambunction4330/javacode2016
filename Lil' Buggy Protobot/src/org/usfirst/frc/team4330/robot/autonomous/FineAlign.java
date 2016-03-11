@@ -12,7 +12,7 @@ public class FineAlign extends RoughAlign {
 
 	@Override
 	protected double getTolerance() {
-		return 2;
+		return 3;
 	}
 
 	@Override
