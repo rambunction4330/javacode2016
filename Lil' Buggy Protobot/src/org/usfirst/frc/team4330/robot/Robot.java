@@ -58,6 +58,7 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		System.out.println("Position choice is " + smartDashboard.getAutoPosition());
 		System.out.println("Defense choice is " + smartDashboard.getAutoDefense());
+		gyro.reset();
 		manager.autonomousInit();
 		
 //		lastPeriodicTimeCalled = System.currentTimeMillis();
@@ -96,14 +97,15 @@ public class Robot extends IterativeRobot {
 		System.out.println("****************************************" + "\n");
 		
 		// trying to do this to fix crash reported during match when changing from autonomous to teleop
-		disabledInit();
+//		disabledInit();
+		gyro.reset();
 		
 		/*lastPeriodicTimeCalled = System.currentTimeMillis();
 		warningCounter = 0;*/
 
 	}
 
-	public void teleopPeriodic() {
+	public void teleopPeriodic() {		
 		ballControl.performIntake(rightJoystick
 				.getRawButton(RobotMap.BALL_CONTROL_INTAKE_BUTTON)); // 6
 
@@ -149,10 +151,12 @@ public class Robot extends IterativeRobot {
 		
 		System.out.println("Defense is : " + smartDashboard.getAutoDefense());
 		System.out.println("Position is : " + smartDashboard.getAutoPosition());
+		
 	}
 
 	public void testPeriodic() {
 		manager.testPeriodic();
+		System.out.println("Gyro reading is " + gyro.getAngle());
 		
 //		hotbod.drive(.2, .2);
 //		System.out.println("Left values: " + leftJoystick.getY() + "; Right values: " + rightJoystick.getY());

@@ -66,7 +66,7 @@ public class Manager {
 	private static final double distanceToDriveInReversePriorToShoot = 2;
 
 	private Timer timer = new Timer();
-	private Command driveInCommand;
+	private DriveStraight driveInCommand;
 
 	public Manager(DriveTrain dT, Gyro gyro,
 			SmartDashboardSetup smartDashboardSetup,
@@ -110,10 +110,11 @@ public class Manager {
 		}
 		testInitialized = true;
 		commands.clear();
-		gyro.calibrate();
+		// gyro.calibrate();
 		// commands.add(new WaitCommand(5.0));
-		commands.add(new RoughAlign(driveTrain, gyro, -90));
-		commands.add(new FineAlign(driveTrain, gyro, -90));
+		commands.add(new DriveStraight(driveTrain, gyro, 9, 0));
+		// commands.add(new RoughAlign(driveTrain, gyro, -90));
+		// commands.add(new FineAlign(driveTrain, gyro, -90));
 		scheduleCommands();
 
 		/*
@@ -131,49 +132,6 @@ public class Manager {
 	public void disableInit() {
 		timer.cancel();
 		scheduler.disable();
-	}
-
-	public double getX() {
-		return x;
-	}
-
-	public double getY() {
-		return y;
-	}
-
-	public void callback() {
-		if (givingUp) {
-			return;
-		}
-
-		switch (state) {
-		case Initial:
-			y += crossDefenseDistance;
-			state = AutonomousState.CrossedDefense;
-			loadCommandsToGetToLookingAtTarget();
-			break;
-		case CrossedDefense:
-			state = AutonomousState.LookingAtTarget;
-			performVisionControlledDriveIn();
-			break;
-		default:
-			throw new RuntimeException("Unexpected Manager state " + state);
-		}
-	}
-
-	private void performVisionControlledDriveIn() {
-		String relativeBearingStr = vision.retrieveData().get(
-				SensorDataRetriever.RELATIVE_BEARING);
-		if (relativeBearingStr != null) {
-			double relativeBearing = Double.parseDouble(relativeBearingStr);
-			double newHeading = HeadingCalculator.normalize(gyro.getAngle()
-					+ relativeBearing);
-			turnToHeading(newHeading);
-			driveInCommand = new DriveStraight(driveTrain, gyro, 20, newHeading);
-			commands.add(driveInCommand);
-			scheduleCommands();
-			timer.schedule(new DriveInMonitorTask(), 20, 20);
-		}
 	}
 
 	private void loadCommandsToGetOverDefence() {
@@ -207,27 +165,10 @@ public class Manager {
 
 		// TODO uncomment this once defense testing is complete
 		// TODO recomment if in testing area
-		commands.add(new CallbackToManager(this));
+		if (smartDashboardSetup.getGoalChoice() != smartDashboardSetup.none)
+			commands.add(new CallbackToManager(this));
 		scheduleCommands();
 
-	}
-
-	private void loadCommandsToGetToShoot() {
-		driveTrain.drive(-0.2, -0.2);
-		commands.add(new WaitCommand(0.3));
-		commands.add(new Stop(driveTrain));
-		commands.add(new WaitCommand(.5));
-		double newHeading = HeadingCalculator.normalize(shootAngle + 180);
-		turnToHeading(newHeading);
-		commands.add(new DriveStraight(driveTrain, gyro, -1
-				* distanceToDriveInReversePriorToShoot, newHeading));
-		commands.add(new Shoot(ballControl));
-		scheduleCommands();
-	}
-
-	private void turnToHeading(double heading) {
-		commands.add(new RoughAlign(driveTrain, gyro, heading));
-		commands.add(new FineAlign(driveTrain, gyro, heading));
 	}
 
 	private void loadCommandsToGetToLookingAtTarget() {
@@ -247,6 +188,59 @@ public class Manager {
 		commands.add(new WaitCommand(1));
 		commands.add(new CallbackToManager(this));
 		scheduleCommands();
+	}
+
+	private void loadCommandsToShoot() {
+		String relativeBearingStr = vision.retrieveData().get(
+				SensorDataRetriever.RELATIVE_BEARING);
+		if (relativeBearingStr != null) {
+			double relativeBearing = Double.parseDouble(relativeBearingStr);
+			double newHeading = HeadingCalculator.normalize(gyro.getAngle()
+					+ relativeBearing);
+			turnToHeading(newHeading);
+			driveInCommand = new DriveStraight(driveTrain, gyro, 20, newHeading);
+			commands.add(driveInCommand);
+			double turnHeading = HeadingCalculator.normalize(newHeading + 180);
+			turnToHeading(turnHeading);
+			commands.add(new DriveStraight(driveTrain, gyro, -1
+					* distanceToDriveInReversePriorToShoot, turnHeading));
+			commands.add(new Shoot(ballControl));
+			scheduleCommands();
+			timer.schedule(new DriveInMonitorTask(), 20, 20);
+		}
+	}
+
+	public double getX() {
+		return x;
+	}
+
+	public double getY() {
+		return y;
+	}
+
+	public void callback() {
+		if (givingUp) {
+			return;
+		}
+
+		switch (state) {
+		case Initial:
+			y += crossDefenseDistance;
+			state = AutonomousState.CrossedDefense;
+			loadCommandsToGetToLookingAtTarget();
+			break;
+		case CrossedDefense:
+			state = AutonomousState.LookingAtTarget;
+			loadCommandsToShoot();
+			break;
+		default:
+			throw new RuntimeException("Unexpected Manager state " + state);
+		}
+	}
+
+	private void turnToHeading(double heading) {
+		commands.add(new RoughAlign(driveTrain, gyro, heading));
+		commands.add(new FineAlign(driveTrain, gyro, heading));
 	}
 
 	protected double[] calculateDirectionAndDistance(double currentX,
@@ -284,7 +278,7 @@ public class Manager {
 	}
 
 	protected boolean isLeftTargetActive() {
-//		int startingPosition = smartDashboardSetup.getAutoPosition();
+		// int startingPosition = smartDashboardSetup.getAutoPosition();
 		String goalChoice = smartDashboardSetup.getGoalChoice();
 		boolean result = true;
 
@@ -316,18 +310,29 @@ public class Manager {
 	}
 
 	private void loadCommandsForLowbar() {
-		commands.add(new DriveStraight(driveTrain, gyro, crossDefenseDistance,
-				0));
+		commands.add(new DriveStraight(driveTrain, gyro,
+				crossDefenseDistance + 3, 0));
+	}
+
+	private void loadCommandsForLowbar2() {
+		commands.add(new DriveStraight(driveTrain, gyro,
+				crossDefenseDistance + 3, 0));
+		commands.add(new DriveStraight(driveTrain, gyro,
+				-crossDefenseDistance - 3, 0));
+		commands.add(new DriveStraight(driveTrain, gyro,
+				crossDefenseDistance + 3, 0));
 	}
 
 	private void loadCommandsForRockWall() {
-		commands.add(new RammingSpeed(driveTrain, gyro, 8));
+		commands.add(new DriveStraight(driveTrain, gyro, crossDefenseDistance-3, 0));
+		commands.add(new WaitCommand(.3));
+		commands.add(new DriveStraight(driveTrain, gyro, 5, 0));
 		// commands.add(new WaitCommand(2));
 		// commands.add(new Stop(driveTrain));
 	}
 
 	private void loadCommandsForRoughTerrain() {
-		commands.add(new RammingSpeed(driveTrain, gyro, 8));
+		commands.add(new RammingSpeed(driveTrain, gyro, 12));
 		// commands.add(new WaitCommand(0.5));
 		// commands.add(new RammingSpeed(driveTrain, gyro, 1.5));
 		// commands.add(new Stop(driveTrain));
@@ -341,25 +346,36 @@ public class Manager {
 		commands.add(new PowerArm(arm, true, 1));
 		commands.add(new DriveStraight(driveTrain, gyro, .5, 0));
 		commands.add(new WaitCommand(.2));
-		commands.add(new RammingSpeed(driveTrain, gyro, 2.0));
+		commands.add(new RammingSpeed(driveTrain, gyro, 4));
+		commands.add(new DriveStraight(driveTrain, gyro, 3, 0));
 	}
 
 	private void loadCommandsForChevalDeFrise() {
-		commands.add(new DriveStraight(driveTrain, gyro, 3.5, 0));
-		commands.add(new PowerArm(arm, false, 0.5));
-		commands.add(new RammingSpeed(driveTrain, gyro, 5));
+		commands.add(new DriveStraight(driveTrain, gyro, 4.3, 0));
+		commands.add(new PowerArm(arm, true, 1));
+		commands.add(new WaitCommand(.1));
+		commands.add(new RammingSpeed(driveTrain, gyro, 7));
+		commands.add(new DriveStraight(driveTrain, gyro, 3, 0));
 		// commands.add(new WaitCommand(2));
 		// commands.add(new Stop(driveTrain));
 	}
 
 	private void loadCommandsForMoat() {
-		commands.add(new RammingSpeed(driveTrain, gyro, 8));
+		commands.add(new RammingSpeed(driveTrain, gyro, 12) {
+
+			@Override
+			protected double getMotorSpeed() {
+				return .7;
+			}
+			
+		});
 		// commands.add(new WaitCommand(2));
 		// commands.add(new Stop(driveTrain));
 	}
 
 	private void loadCommandsForRamparts() {
-		commands.add(new RammingSpeed(driveTrain, gyro, 8));
+		commands.add(new RammingSpeed(driveTrain, gyro, 15));
+		turnToHeading(0);
 		// commands.add(new WaitCommand(2));
 		// commands.add(new Stop(driveTrain));
 	}
@@ -420,8 +436,7 @@ public class Manager {
 			}
 
 			if (done) {
-				driveInCommand.cancel();
-				loadCommandsToGetToShoot();
+				driveInCommand.stop();
 				this.cancel();
 				timer.cancel();
 			}
