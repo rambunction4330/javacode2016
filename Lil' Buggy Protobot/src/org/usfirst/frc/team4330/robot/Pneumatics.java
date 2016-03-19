@@ -32,7 +32,7 @@ public class Pneumatics extends RobotMap {
 	}
 
 	public void KickerIn() {
-		kicker.set(true);
+		kicker.set(false);
 	}
 
 	public void start() {
