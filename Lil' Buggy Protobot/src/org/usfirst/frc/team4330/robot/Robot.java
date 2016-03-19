@@ -32,6 +32,7 @@ public class Robot extends IterativeRobot {
 	SensorDataRetriever vision;
 	Gyro gyro;
 	Manager manager;
+	Pneumatics pneu;
 //	private long lastPeriodicTimeCalled;
 //	private long warningCounter;
 
@@ -46,12 +47,14 @@ public class Robot extends IterativeRobot {
 		trekudesu = new Arm();
 		ballControl = new BallControl(new Victor(RobotMap.INTAKE_PORT),
 				new Relay(RobotMap.SPIKE_PORT, Direction.kBoth));
+		pneu = new Pneumatics(new Compressor(RobotMap.COMPRESSOR), new Solenoid(RobotMap.KICKER_SOL));
 		vision = new SensorDataRetriever();
 		System.out.println("Calibrating gyro");
 		gyro = new AnalogGyro(RobotMap.GYRO_PORT);
 		System.out.println("Gyro calibrated");
 		smartDashboard = new SmartDashboardSetup();
 		manager = new Manager(driveTrain, gyro, smartDashboard, vision, ballControl, trekudesu, Scheduler.getInstance());
+		
 		// scaleraptor = new Scaling(new Victor(RobotMap.SCALAR_PORT));
 	}
 
@@ -161,6 +164,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledInit() {
 		manager.disableInit();
+		pneu.disabled();
+		
 	}
 
 	@Override

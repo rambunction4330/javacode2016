@@ -18,12 +18,11 @@ public class Pneumatics{
 		return instance;
 	}
 
-	private Pneumatics() {
-		comp = new Compressor(RobotMap.COMPRESSOR);
-		
+	public Pneumatics(Compressor comp, Solenoid kicker) {
+		this.comp = comp;
 		comp.start();
 
-		kicker = new Solenoid(RobotMap.KICKER_SOL);
+		this.kicker = kicker;
 		time = new Timer();
 	}
 
@@ -34,14 +33,19 @@ public class Pneumatics{
 	public void KickerIn() {
 		kicker.set(false);
 	}
+	
+	public void disabled() {
+		comp.stop();
+		kicker.set(false);
+	}
 
-	public void start() {
+	/*public void start() {
 		time.reset();
 		time.start();
 	}
 
 	public double getTime() {
 		return time.get();
-	}
+	}*/
 	
 }
