@@ -3,7 +3,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 
-public class Pneumatics extends RobotMap {
+public class Pneumatics{
 
 	private static Pneumatics instance;
 
@@ -19,11 +19,11 @@ public class Pneumatics extends RobotMap {
 	}
 
 	private Pneumatics() {
-		comp = new Compressor(COMPRESSOR);
+		comp = new Compressor(RobotMap.COMPRESSOR);
 		
 		comp.start();
 
-		kicker = new Solenoid(KICKER_SOL);
+		kicker = new Solenoid(RobotMap.KICKER_SOL);
 		time = new Timer();
 	}
 
