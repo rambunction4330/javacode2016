@@ -41,4 +41,9 @@ public class RobotMap {
 	public static final int ENCODER_PORT_TWO = 3;
 	public static final int ARM_ENCODER_PORT_ONE = 1; // confirmed goes forward
 	public static final int ARM_ENCODER_PORT_TWO = 0;
+	
+	// Pneumatics
+	public static final int COMPRESSOR = 0;
+	public static final int KICKER_SOL = 2;
+	
 }
