@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 public class Manager {
+	private static Manager instance;
 
 	private AutonomousState state = AutonomousState.Initial;
 
@@ -68,10 +69,31 @@ public class Manager {
 	private Timer timer = new Timer();
 	private DriveStraight driveInCommand;
 
+	public synchronized static Manager getInstance(Gyro gyro, SensorDataRetriever sensorDataRetriever) {
+		/*if (instance == null)
+			instance = new Manager(gyro, sensorDataRetriever);
+		return instance;*/
+		
+	    return instance == null ? instance = new Manager(gyro, sensorDataRetriever) : instance;
+	}
+	
+	private Manager(Gyro gyro, SensorDataRetriever sensorDataRetriever) {
+		driveTrain = DriveTrain.getInstance();
+		smartDashboardSetup = SmartDashboardSetup.getInstance();
+		ballControl = BallControl.getInstance();
+		arm = Arm.getInstance();
+		scheduler = Scheduler.getInstance();
+		
+		vision = sensorDataRetriever;
+		this.gyro = gyro;
+	}
+
 	public Manager(DriveTrain dT, Gyro gyro,
 			SmartDashboardSetup smartDashboardSetup,
 			SensorDataRetriever sensorDataRetriever, BallControl ballControl,
 			Arm arm, Scheduler scheduler) {
+		instance = this;
+
 		this.driveTrain = dT;
 		this.gyro = gyro;
 		this.smartDashboardSetup = smartDashboardSetup;
@@ -324,7 +346,8 @@ public class Manager {
 	}
 
 	private void loadCommandsForRockWall() {
-		commands.add(new DriveStraight(driveTrain, gyro, crossDefenseDistance-3, 0));
+		commands.add(new DriveStraight(driveTrain, gyro,
+				crossDefenseDistance - 3, 0));
 		commands.add(new WaitCommand(.3));
 		commands.add(new DriveStraight(driveTrain, gyro, 5, 0));
 		// commands.add(new WaitCommand(2));
@@ -367,7 +390,7 @@ public class Manager {
 			protected double getMotorSpeed() {
 				return .7;
 			}
-			
+
 		});
 		// commands.add(new WaitCommand(2));
 		// commands.add(new Stop(driveTrain));

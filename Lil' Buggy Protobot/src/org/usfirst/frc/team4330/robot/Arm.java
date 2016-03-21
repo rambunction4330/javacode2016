@@ -5,18 +5,29 @@ import java.util.TimerTask;
 
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Victor;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Arm {
 	private SpeedController motorController1;
 	private SpeedController motorController2;
+
+	private static Arm instance;
 
 	private Timer timer;
 
 	private static final double ARM_WHEEL_SPEED = .3;
 	private static final double POWER_SPEED = 1.0;
 
-	public Arm() {
+	public static Arm getInstance() {
+		/*if (instance == null)
+			instance = new Arm();
+		return instance;*/
+
+		return instance == null ? instance = new Arm() : instance;
+	}
+
+	private Arm() {
+		instance = this;
+
 		motorController1 = new Victor(RobotMap.TREXARM_PORT_ONE);
 		motorController2 = new Victor(RobotMap.TREXARM_PORT_TWO);
 
@@ -43,9 +54,9 @@ public class Arm {
 
 		motorController1.set(speed);
 		motorController2.set(speed);
-		
-//		SmartDashboard.putDouble("arm 1", motorController1.get());
-//		SmartDashboard.putDouble("arm 2", motorController2.get());
+
+		// SmartDashboard.putDouble("arm 1", motorController1.get());
+		// SmartDashboard.putDouble("arm 2", motorController2.get());
 	}
 
 	public void autonomousArm(boolean raise, boolean lower, boolean power,

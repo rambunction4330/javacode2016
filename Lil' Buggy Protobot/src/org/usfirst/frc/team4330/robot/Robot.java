@@ -9,10 +9,6 @@ import org.usfirst.frc.team4330.robot.raspberrypi.SensorDataRetriever;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.Relay.Direction;
-import edu.wpi.first.wpilibj.Victor;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 /**
@@ -33,8 +29,8 @@ public class Robot extends IterativeRobot {
 	Gyro gyro;
 	Manager manager;
 	Pneumatics pneu;
-//	private long lastPeriodicTimeCalled;
-//	private long warningCounter;
+	// private long lastPeriodicTimeCalled;
+	// private long warningCounter;
 
 	SmartDashboardSetup smartDashboard;
 
@@ -42,43 +38,46 @@ public class Robot extends IterativeRobot {
 		leftJoystick = new Joystick(RobotMap.JOYSTICK_ONE);
 		rightJoystick = new Joystick(RobotMap.JOYSTICK_TWO);
 
-		driveTrain = new DriveTrain();
-		leddar = new LeddarDistanceSensor();
-		trekudesu = new Arm();
-		ballControl = new BallControl(new Victor(RobotMap.INTAKE_PORT),
-				new Relay(RobotMap.SPIKE_PORT, Direction.kBoth));
-		pneu = new Pneumatics(new Compressor(RobotMap.COMPRESSOR), new Solenoid(RobotMap.KICKER_SOL));
+		driveTrain = DriveTrain.getInstance();
+		pneu = Pneumatics.getInstance();
+		trekudesu = Arm.getInstance();
+		ballControl = BallControl.getInstance();
+		smartDashboard = SmartDashboardSetup.getInstance();
 		vision = new SensorDataRetriever();
+		manager = Manager.getInstance(gyro, vision);
+		
+		leddar = new LeddarDistanceSensor();
 		System.out.println("Calibrating gyro");
 		gyro = new AnalogGyro(RobotMap.GYRO_PORT);
 		System.out.println("Gyro calibrated");
-		smartDashboard = new SmartDashboardSetup();
-		manager = new Manager(driveTrain, gyro, smartDashboard, vision, ballControl, trekudesu, Scheduler.getInstance());
-		
+
 		// scaleraptor = new Scaling(new Victor(RobotMap.SCALAR_PORT));
 	}
 
 	public void autonomousInit() {
-		System.out.println("Position choice is " + smartDashboard.getAutoPosition());
-		System.out.println("Defense choice is " + smartDashboard.getAutoDefense());
+		System.out.println("Position choice is "
+				+ smartDashboard.getAutoPosition());
+		System.out.println("Defense choice is "
+				+ smartDashboard.getAutoDefense());
 		gyro.reset();
 		manager.autonomousInit();
-		
-//		lastPeriodicTimeCalled = System.currentTimeMillis();
-//		warningCounter = 0;
+
+		// lastPeriodicTimeCalled = System.currentTimeMillis();
+		// warningCounter = 0;
 	}
 
-	public void autonomousPeriodic() {		
+	public void autonomousPeriodic() {
 		manager.autonomousPeriodic();
-		
+
 		// warn if robot seems non responsive
-		/*long time = System.currentTimeMillis();
-		if ( time - lastPeriodicTimeCalled > 25 && warningCounter % 50 == 1) {
-			warningCounter++;
-			System.out.println("---WARNING--- Non responsive robot in autonomous phase with interval being " + 
-					(time - lastPeriodicTimeCalled) + " msec");
-		}
-		lastPeriodicTimeCalled = time;*/
+		/*
+		 * long time = System.currentTimeMillis(); if ( time -
+		 * lastPeriodicTimeCalled > 25 && warningCounter % 50 == 1) {
+		 * warningCounter++; System.out.println(
+		 * "---WARNING--- Non responsive robot in autonomous phase with interval being "
+		 * + (time - lastPeriodicTimeCalled) + " msec"); }
+		 * lastPeriodicTimeCalled = time;
+		 */
 	}
 
 	public void teleopInit() {
@@ -98,17 +97,20 @@ public class Robot extends IterativeRobot {
 				+ "\nPRESS Trigger to power Trekudesu." + "\n");
 		System.out.println("****************************************");
 		System.out.println("****************************************" + "\n");
-		
-		// trying to do this to fix crash reported during match when changing from autonomous to teleop
-//		disabledInit();
+
+		// trying to do this to fix crash reported during match when changing
+		// from autonomous to teleop
+		// disabledInit();
 		gyro.reset();
-		
-		/*lastPeriodicTimeCalled = System.currentTimeMillis();
-		warningCounter = 0;*/
+
+		/*
+		 * lastPeriodicTimeCalled = System.currentTimeMillis(); warningCounter =
+		 * 0;
+		 */
 
 	}
 
-	public void teleopPeriodic() {		
+	public void teleopPeriodic() {
 		ballControl.performIntake(rightJoystick
 				.getRawButton(RobotMap.BALL_CONTROL_INTAKE_BUTTON)); // 6
 
@@ -129,53 +131,52 @@ public class Robot extends IterativeRobot {
 		// shooter.getRawButton(RobotMap.SCALING_DOWNWARDS_BUTTON), // 4
 		// shooter.getTrigger(), 20);
 
-		/*if (leftJoystick.getIsXbox())
-			hotbod.xboxDrive(leftJoystick,
-					rightJoystick.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)); // 8
-		else
-			*/
-		
+		/*
+		 * if (leftJoystick.getIsXbox()) hotbod.xboxDrive(leftJoystick,
+		 * rightJoystick.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)); // 8 else
+		 */
+
 		driveTrain.drive(leftJoystick, rightJoystick,
-					rightJoystick.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)); // 8
-		
+				rightJoystick.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)); // 8
+
 		// warn if robot seems non responsive
-		/*long time = System.currentTimeMillis();
-		if ( time - lastPeriodicTimeCalled > 25 && warningCounter % 50 == 1 ) {
-			warningCounter++;
-			System.out.println("---WARNING--- Non responsive robot in teleop phase with interval being " + 
-					(time - lastPeriodicTimeCalled) + " msec");
-		}
-		lastPeriodicTimeCalled = time;*/
+		/*
+		 * long time = System.currentTimeMillis(); if ( time -
+		 * lastPeriodicTimeCalled > 25 && warningCounter % 50 == 1 ) {
+		 * warningCounter++; System.out.println(
+		 * "---WARNING--- Non responsive robot in teleop phase with interval being "
+		 * + (time - lastPeriodicTimeCalled) + " msec"); }
+		 * lastPeriodicTimeCalled = time;
+		 */
 
 	}
 
 	public void testInit() {
 		manager.testInit();
-		
+
 		System.out.println("Defense is : " + smartDashboard.getAutoDefense());
 		System.out.println("Position is : " + smartDashboard.getAutoPosition());
-		
+
 	}
 
 	public void testPeriodic() {
 		manager.testPeriodic();
 		System.out.println("Gyro reading is " + gyro.getAngle());
-		
-//		hotbod.drive(.2, .2);
-//		System.out.println("Left values: " + leftJoystick.getY() + "; Right values: " + rightJoystick.getY());
+
+		// hotbod.drive(.2, .2);
+		// System.out.println("Left values: " + leftJoystick.getY() +
+		// "; Right values: " + rightJoystick.getY());
 	}
 
 	@Override
 	public void disabledInit() {
 		manager.disableInit();
 		pneu.disabled();
-		
+
 	}
 
 	@Override
 	public void disabledPeriodic() {
 	}
-	
-	
 
 }

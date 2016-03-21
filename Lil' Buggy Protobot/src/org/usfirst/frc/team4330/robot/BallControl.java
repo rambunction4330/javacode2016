@@ -4,6 +4,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.Relay.Direction;
 import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.SpeedController;
 
@@ -11,7 +13,8 @@ import edu.wpi.first.wpilibj.SpeedController;
  * confirmed working as of 2/18
  */
 public class BallControl {
-
+	private static BallControl instance;
+	
 	private boolean isPerformingIntake;
 	private boolean isPerformingShoot;
 	private SpeedController blueWheels;
@@ -21,7 +24,22 @@ public class BallControl {
 	private static final double inSpeed = -.8;
 	private static final double outSpeed = .8;
 
-	public BallControl(SpeedController blueWheelsController, Relay kickerRelay) {
+	public static BallControl getInstance() {
+		/*if (instance == null)
+			instance = new BallControl();
+		return instance;*/
+		
+		return instance == null ? instance = new BallControl() : instance;
+	}
+	
+	private BallControl() {
+		new BallControl(new Victor(RobotMap.INTAKE_PORT),
+				new Relay(RobotMap.SPIKE_PORT, Direction.kBoth));
+	}
+
+	private BallControl(SpeedController blueWheelsController, Relay kickerRelay) {
+		instance = this;
+		
 		this.blueWheels = blueWheelsController;
 		blueWheels.setInverted(true);
 		

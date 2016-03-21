@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SmartDashboardSetup {
+	private static SmartDashboardSetup instance;
+	
 	SendableChooser defenseChooser;
 	SendableChooser positionChooser;
 	SendableChooser goalChooser;
@@ -27,8 +29,16 @@ public class SmartDashboardSetup {
 	public static final String left = "left";
 	public static final String right = "right";
 	public static final String defult = "default";
+	
+	public static SmartDashboardSetup getInstance() {
+		if (instance == null)
+			instance = new SmartDashboardSetup();
+		return instance;
+	}
+	
+	private SmartDashboardSetup() {
+		instance = this;
 		
-	public SmartDashboardSetup() {
 		defenseChooser = new SendableChooser();
 		defenseChooser.addObject("No Autonomous", none);
 		defenseChooser.addDefault("Low Bar", lowBar);
