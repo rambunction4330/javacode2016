@@ -13,7 +13,7 @@ public class DriveStraight extends Command {
 	public static final double motorSpeed = 0.6; // base amount of motor speed
 													// when driving forward or
 													// reverse
-	public static final double motorDelta = 0.1; // amount to add/subtract to
+	public static final double motorDelta = 0.2; // amount to add/subtract to
 													// steer robot to maintain
 													// heading
 	public static final double headingTolerance = .5; // in degrees
@@ -36,6 +36,15 @@ public class DriveStraight extends Command {
 	private int stoppingCounter = 0;
 	private double speed = 0;
 
+	public DriveStraight(DriveTrain dT, Gyro gyro, double distanceToDrive) {
+		this.dT = dT;
+		this.gyro = gyro;
+		this.distanceToDrive = distanceToDrive;
+		this.heading = 0;
+		speed = 0;
+	}
+	
+	
 	public DriveStraight(DriveTrain dT, Gyro gyro, double distanceToDrive,
 			double heading) {
 		this.dT = dT;
@@ -63,6 +72,7 @@ public class DriveStraight extends Command {
 
 	@Override
 	protected void execute() {
+		System.out.println("Gyro is " + gyro.getAngle());
 		
 		try {
 			if (stopping) {
@@ -131,9 +141,9 @@ public class DriveStraight extends Command {
 		distanceTravelled += 0.02 * speed;
 	}
 
-	private double getSpeed() {
+	/*private double getSpeed() {
 		return speed;
-	}
+	}*/
 
 	@Override
 	protected boolean isFinished() {

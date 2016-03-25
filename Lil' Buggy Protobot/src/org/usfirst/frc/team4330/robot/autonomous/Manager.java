@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 public class Manager {
-	private static Manager instance;
 
 	private AutonomousState state = AutonomousState.Initial;
 
@@ -36,6 +35,7 @@ public class Manager {
 	private boolean givingUp = false;
 	private double shootAngle;
 	private boolean testInitialized = false;
+	private double gyroanglestart;
 
 	// autoline is at 1'2"
 	private static final double autoLineY = 1 + 2 / 12;
@@ -69,31 +69,10 @@ public class Manager {
 	private Timer timer = new Timer();
 	private DriveStraight driveInCommand;
 
-	public synchronized static Manager getInstance(Gyro gyro, SensorDataRetriever sensorDataRetriever) {
-		/*if (instance == null)
-			instance = new Manager(gyro, sensorDataRetriever);
-		return instance;*/
-		
-	    return instance == null ? instance = new Manager(gyro, sensorDataRetriever) : instance;
-	}
-	
-	private Manager(Gyro gyro, SensorDataRetriever sensorDataRetriever) {
-		driveTrain = DriveTrain.getInstance();
-		smartDashboardSetup = SmartDashboardSetup.getInstance();
-		ballControl = BallControl.getInstance();
-		arm = Arm.getInstance();
-		scheduler = Scheduler.getInstance();
-		
-		vision = sensorDataRetriever;
-		this.gyro = gyro;
-	}
-
 	public Manager(DriveTrain dT, Gyro gyro,
 			SmartDashboardSetup smartDashboardSetup,
 			SensorDataRetriever sensorDataRetriever, BallControl ballControl,
 			Arm arm, Scheduler scheduler) {
-		instance = this;
-
 		this.driveTrain = dT;
 		this.gyro = gyro;
 		this.smartDashboardSetup = smartDashboardSetup;
@@ -101,6 +80,7 @@ public class Manager {
 		this.ballControl = ballControl;
 		this.arm = arm;
 		this.scheduler = scheduler;
+		gyroanglestart = gyro.getAngle();
 	}
 
 	public void autonomousInit() {
@@ -333,7 +313,7 @@ public class Manager {
 
 	private void loadCommandsForLowbar() {
 		commands.add(new DriveStraight(driveTrain, gyro,
-				crossDefenseDistance + 3, 0));
+				crossDefenseDistance + 3, gyroanglestart));
 	}
 
 	private void loadCommandsForLowbar2() {
@@ -346,8 +326,7 @@ public class Manager {
 	}
 
 	private void loadCommandsForRockWall() {
-		commands.add(new DriveStraight(driveTrain, gyro,
-				crossDefenseDistance - 3, 0));
+		commands.add(new DriveStraight(driveTrain, gyro, crossDefenseDistance-3, 0));
 		commands.add(new WaitCommand(.3));
 		commands.add(new DriveStraight(driveTrain, gyro, 5, 0));
 		// commands.add(new WaitCommand(2));
@@ -365,7 +344,7 @@ public class Manager {
 		commands.add(new MoveArm(arm, false));
 		// give time for arm to move down before driving forward
 		commands.add(new WaitCommand(0.3));
-		commands.add(new DriveStraight(driveTrain, gyro, 5.1, 0));
+		commands.add(new DriveStraight(driveTrain, gyro, 5.8, 0));
 		commands.add(new PowerArm(arm, true, 1));
 		commands.add(new DriveStraight(driveTrain, gyro, .5, 0));
 		commands.add(new WaitCommand(.2));
@@ -374,24 +353,24 @@ public class Manager {
 	}
 
 	private void loadCommandsForChevalDeFrise() {
-		commands.add(new DriveStraight(driveTrain, gyro, 4.3, 0));
-		commands.add(new PowerArm(arm, true, 1));
+		commands.add(new DriveStraight(driveTrain, gyro, 4.5, gyroanglestart));
+		commands.add(new PowerArm(arm, false, .7));
+		/*commands.add(new DriveStraight(driveTrain, gyro, 3) {
+			@Override
+			public double getMotorSpeed() {
+				return .3;
+			}
+		});*/
 		commands.add(new WaitCommand(.1));
-		commands.add(new RammingSpeed(driveTrain, gyro, 7));
-		commands.add(new DriveStraight(driveTrain, gyro, 3, 0));
+		commands.add(new RammingSpeed(driveTrain, gyro, 10));
+//		commands.add(new DriveStraight(driveTrain, gyro, 3, 0));
 		// commands.add(new WaitCommand(2));
 		// commands.add(new Stop(driveTrain));
 	}
 
 	private void loadCommandsForMoat() {
-		commands.add(new RammingSpeed(driveTrain, gyro, 12) {
-
-			@Override
-			protected double getMotorSpeed() {
-				return .7;
-			}
-
-		});
+		commands.add(new DriveStraight(driveTrain, gyro, 5));
+		commands.add(new RammingSpeed(driveTrain, gyro, 15));
 		// commands.add(new WaitCommand(2));
 		// commands.add(new Stop(driveTrain));
 	}

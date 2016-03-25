@@ -6,24 +6,18 @@ import java.util.TimerTask;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveTrain {
-	private static DriveTrain instance;
-	
 	private SpeedController rFW, lFW, rBW, lBW;
 	boolean reverse;
 	boolean lastPressed;
 	
 	Timer timer = new Timer();
 
-	public static DriveTrain getInstance() {
-	    return instance == null ? instance = new DriveTrain() : instance;
-	}
-	
-	private DriveTrain() {
-		instance = this;
-		
+	public DriveTrain() {
 		reverse = false;
 		lastPressed = false;
 
