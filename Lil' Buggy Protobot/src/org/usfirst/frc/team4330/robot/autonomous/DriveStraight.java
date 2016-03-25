@@ -72,7 +72,7 @@ public class DriveStraight extends Command {
 
 	@Override
 	protected void execute() {
-		System.out.println("Gyro is " + gyro.getAngle());
+//		System.out.println("Gyro is " + gyro.getAngle());
 		
 		try {
 			if (stopping) {

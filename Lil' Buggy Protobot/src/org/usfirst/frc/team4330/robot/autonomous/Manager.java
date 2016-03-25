@@ -144,6 +144,9 @@ public class Manager {
 			break;
 		case SmartDashboardSetup.chivalDeFrise:
 			loadCommandsForChevalDeFrise();
+			turnToHeading(180);
+			commands.add(new WaitCommand(.3));
+			commands.add(new NonPowerArm(arm, true, .5));
 			break;
 		case SmartDashboardSetup.moat:
 			loadCommandsForMoat();
@@ -167,8 +170,10 @@ public class Manager {
 
 		// TODO uncomment this once defense testing is complete
 		// TODO recomment if in testing area
+		
 		if (smartDashboardSetup.getGoalChoice() != smartDashboardSetup.none)
 			commands.add(new CallbackToManager(this));
+		
 		scheduleCommands();
 
 	}
@@ -353,19 +358,10 @@ public class Manager {
 	}
 
 	private void loadCommandsForChevalDeFrise() {
-		commands.add(new DriveStraight(driveTrain, gyro, 4.5, gyroanglestart));
+		commands.add(new DriveStraight(driveTrain, gyro, 4.4, gyroanglestart));
 		commands.add(new PowerArm(arm, false, .7));
-		/*commands.add(new DriveStraight(driveTrain, gyro, 3) {
-			@Override
-			public double getMotorSpeed() {
-				return .3;
-			}
-		});*/
-		commands.add(new WaitCommand(.1));
+		commands.add(new WaitCommand(.15));
 		commands.add(new RammingSpeed(driveTrain, gyro, 10));
-//		commands.add(new DriveStraight(driveTrain, gyro, 3, 0));
-		// commands.add(new WaitCommand(2));
-		// commands.add(new Stop(driveTrain));
 	}
 
 	private void loadCommandsForMoat() {
