@@ -91,9 +91,9 @@ public class DriveTrain {
 		// joystick getY returns negative value when pushing stick forward, so multiply times -1
 		// when in forward and don't when in reverse.  If wheels are not spinning correct direction,
 		// DO NOT CHANGE HERE but instead change in the DriveTrain constructor
-		if (reverse)
+		/*if (reverse)
 			drive(left.getY(), right.getY());
-		else
+		else*/
 			drive(-1 * left.getY(), -1 * right.getY());
 	}
 	

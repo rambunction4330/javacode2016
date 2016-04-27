@@ -15,6 +15,8 @@ public class SmartDashboardSetup {
 	public static final String rampart = "rampart";
 	public static final String rockWall = "rockWall";
 	public static final String lowBar = "lowBar";
+	public static final String lowBar2 = "lowBar2";
+
 	public static final int one = 1;
 	public static final int two = 2;
 	public static final int three = 3;
@@ -48,6 +50,7 @@ public class SmartDashboardSetup {
 		SmartDashboard.putData("Autonomous Position", positionChooser);
 		
 		goalChooser = new SendableChooser();
+		goalChooser.addObject("No Goal", none);
 		goalChooser.addDefault("Default", defult);
 		goalChooser.addObject("Left Goal", left);
 		goalChooser.addObject("Right Goal", right);

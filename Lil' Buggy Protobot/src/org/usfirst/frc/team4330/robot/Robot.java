@@ -32,7 +32,7 @@ public class Robot extends IterativeRobot {
 	SensorDataRetriever vision;
 	Gyro gyro;
 	Manager manager;
-	Pneumatics pneu;
+	//Pneumatics pneu;
 //	private long lastPeriodicTimeCalled;
 //	private long warningCounter;
 
@@ -47,7 +47,7 @@ public class Robot extends IterativeRobot {
 		trekudesu = new Arm();
 		ballControl = new BallControl(new Victor(RobotMap.INTAKE_PORT),
 				new Relay(RobotMap.SPIKE_PORT, Direction.kBoth));
-		pneu = new Pneumatics(new Compressor(RobotMap.COMPRESSOR), new Solenoid(RobotMap.KICKER_SOL));
+		//pneu = new Pneumatics(new Compressor(RobotMap.COMPRESSOR), new Solenoid(RobotMap.KICKER_SOL));
 		vision = new SensorDataRetriever();
 		System.out.println("Calibrating gyro");
 		gyro = new AnalogGyro(RobotMap.GYRO_PORT);
@@ -61,6 +61,7 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		System.out.println("Position choice is " + smartDashboard.getAutoPosition());
 		System.out.println("Defense choice is " + smartDashboard.getAutoDefense());
+		gyro.reset();
 		manager.autonomousInit();
 		
 //		lastPeriodicTimeCalled = System.currentTimeMillis();
@@ -99,14 +100,15 @@ public class Robot extends IterativeRobot {
 		System.out.println("****************************************" + "\n");
 		
 		// trying to do this to fix crash reported during match when changing from autonomous to teleop
-		disabledInit();
+//		disabledInit();
+		gyro.reset();
 		
 		/*lastPeriodicTimeCalled = System.currentTimeMillis();
 		warningCounter = 0;*/
 
 	}
 
-	public void teleopPeriodic() {
+	public void teleopPeriodic() {		
 		ballControl.performIntake(rightJoystick
 				.getRawButton(RobotMap.BALL_CONTROL_INTAKE_BUTTON)); // 6
 
@@ -133,8 +135,10 @@ public class Robot extends IterativeRobot {
 		else
 			*/
 		
-		driveTrain.drive(leftJoystick, rightJoystick,
+		driveTrain.drive(leftJoystick, rightJoystick, 
 					rightJoystick.getRawButton(RobotMap.REVERSE_DRIVE_BUTTON)); // 8
+		
+		System.out.println("Gyro is" + gyro.getAngle());
 		
 		// warn if robot seems non responsive
 		/*long time = System.currentTimeMillis();
@@ -148,15 +152,18 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void testInit() {
-		manager.testInit();
+//		manager.testInit();
+		gyro.calibrate();
 		
 		System.out.println("Defense is : " + smartDashboard.getAutoDefense());
 		System.out.println("Position is : " + smartDashboard.getAutoPosition());
+		
 	}
 
 	public void testPeriodic() {
-		manager.testPeriodic();
-		
+//		manager.testPeriodic();
+//		System.out.println("Gyro reading is " + gyro.getAngle());
+		System.out.println("Vision angle" + vision.RELATIVE_BEARING);
 //		hotbod.drive(.2, .2);
 //		System.out.println("Left values: " + leftJoystick.getY() + "; Right values: " + rightJoystick.getY());
 	}
@@ -164,7 +171,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledInit() {
 		manager.disableInit();
-		pneu.disabled();
+	//	pneu.disabled();
 		
 	}
 
