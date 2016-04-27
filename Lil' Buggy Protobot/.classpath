@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="testlibs/junit-4.12.jar"/>
 	<classpathentry kind="lib" path="testlibs/mockito-core-1.10.19.jar"/>
 	<classpathentry kind="lib" path="testlibs/objenesis-2.2.jar"/>
+	<classpathentry kind="lib" path="libs/log4j-1.2.17.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
