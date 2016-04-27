@@ -31,14 +31,14 @@ public class RoughAlign extends Command {
 		double turnAmount = HeadingCalculator.calculateCourseChange(getRaw(), desiredHeading);
 		if (Math.abs(turnAmount) < getTolerance()) {
 			dT.stop();
-			System.out.println("Done.");
+			System.out.println("Done turning. Angle is " + gyro.getAngle());
 			finished = true;
 		} else {
 			if (turnAmount < 0) {
-				System.out.println("Turning Left");
+//				System.out.println("Turning Left");
 				turnLeft();
 			} else {
-				System.out.println("Turning Right");
+//				System.out.println("Turning Right");
 				turnRight();
 			}
 		}

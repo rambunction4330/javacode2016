@@ -144,9 +144,6 @@ public class Manager {
 			break;
 		case SmartDashboardSetup.chivalDeFrise:
 			loadCommandsForChevalDeFrise();
-			turnToHeading(180);
-			commands.add(new WaitCommand(.3));
-			commands.add(new NonPowerArm(arm, true, .5));
 			break;
 		case SmartDashboardSetup.moat:
 			loadCommandsForMoat();
@@ -171,7 +168,9 @@ public class Manager {
 		// TODO uncomment this once defense testing is complete
 		// TODO recomment if in testing area
 		
-		if (smartDashboardSetup.getGoalChoice() != smartDashboardSetup.none)
+		if (smartDashboardSetup.getGoalChoice() == smartDashboardSetup.turn)
+			turnToHeading(180);
+		else if (smartDashboardSetup.getGoalChoice() != smartDashboardSetup.none)
 			commands.add(new CallbackToManager(this));
 		
 		scheduleCommands();
@@ -192,7 +191,8 @@ public class Manager {
 		turnToHeading(direction);
 		commands.add(new DriveStraight(driveTrain, gyro, distance, direction));
 		turnToHeading(newHeading);
-		commands.add(new WaitCommand(1));
+//		commands.add(new WaitCommand(1));
+		System.out.println("got to callback");
 		commands.add(new CallbackToManager(this));
 		scheduleCommands();
 	}
@@ -201,16 +201,17 @@ public class Manager {
 		String relativeBearingStr = vision.retrieveData().get(
 				SensorDataRetriever.RELATIVE_BEARING);
 		if (relativeBearingStr != null) {
+			System.out.println("doing shooting");
 			double relativeBearing = Double.parseDouble(relativeBearingStr);
 			double newHeading = HeadingCalculator.normalize(gyro.getAngle()
 					+ relativeBearing);
 			turnToHeading(newHeading);
 			driveInCommand = new DriveStraight(driveTrain, gyro, 20, newHeading);
 			commands.add(driveInCommand);
-			double turnHeading = HeadingCalculator.normalize(newHeading + 180);
+			double turnHeading = HeadingCalculator.normalize(newHeading + 190);
 			turnToHeading(turnHeading);
-			commands.add(new DriveStraight(driveTrain, gyro, -1
-					* distanceToDriveInReversePriorToShoot, turnHeading));
+//			commands.add(new DriveStraight(driveTrain, gyro, -1
+//					* distanceToDriveInReversePriorToShoot, turnHeading));
 			commands.add(new Shoot(ballControl));
 			scheduleCommands();
 			timer.schedule(new DriveInMonitorTask(), 20, 20);
@@ -362,6 +363,8 @@ public class Manager {
 		commands.add(new PowerArm(arm, false, .7));
 		commands.add(new WaitCommand(.15));
 		commands.add(new RammingSpeed(driveTrain, gyro, 10));
+		commands.add(new WaitCommand(.3));
+		commands.add(new NonPowerArm(arm, true, .5));
 	}
 
 	private void loadCommandsForMoat() {

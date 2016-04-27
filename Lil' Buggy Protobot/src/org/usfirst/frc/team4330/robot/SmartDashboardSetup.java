@@ -27,6 +27,7 @@ public class SmartDashboardSetup {
 	public static final String left = "left";
 	public static final String right = "right";
 	public static final String defult = "default";
+	public static final String turn = "turnAround";
 		
 	public SmartDashboardSetup() {
 		defenseChooser = new SendableChooser();
@@ -51,7 +52,8 @@ public class SmartDashboardSetup {
 		
 		goalChooser = new SendableChooser();
 		goalChooser.addObject("No Goal", none);
-		goalChooser.addDefault("Default", defult);
+		goalChooser.addDefault("Turn Around", turn);
+		goalChooser.addObject("Default", defult);
 		goalChooser.addObject("Left Goal", left);
 		goalChooser.addObject("Right Goal", right);
 		SmartDashboard.putData("Goal Chooser", goalChooser);
