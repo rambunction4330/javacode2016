@@ -4,8 +4,11 @@ package org.usfirst.frc.team4330.robot;
 
 import java.io.IOException;
 
-import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.FileAppender;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
 import org.usfirst.frc.team4330.robot.autonomous.Manager;
 import org.usfirst.frc.team4330.robot.canbus.LeddarDistanceSensor;
 import org.usfirst.frc.team4330.robot.raspberrypi.SensorDataRetriever;
@@ -45,7 +48,7 @@ public class Robot extends IterativeRobot {
 	SmartDashboardSetup smartDashboard;
 
 	public Robot() {
-		BasicConfigurator.configure();
+		configureLogging();
 		log.info("log4j Start Up");
 
 		leftJoystick = new Joystick(RobotMap.JOYSTICK_ONE);
@@ -242,6 +245,28 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void disabledPeriodic() {
+	}
+	
+	private void configureLogging() {
+		ConsoleAppender console = new ConsoleAppender(); // create appender
+		// configure the appender
+		String PATTERN = "%d [%p|%c|%C{1}] %m%n";
+		console.setLayout(new PatternLayout(PATTERN));
+		console.setThreshold(Level.INFO);
+		console.activateOptions();
+		// add appender to any Logger (here is root)
+		Logger.getRootLogger().addAppender(console);
+
+		FileAppender fa = new FileAppender();
+		fa.setName("FileLogger");
+		fa.setFile("robot.log");
+		fa.setLayout(new PatternLayout("%d %-5p [%c{1}] %m%n"));
+		fa.setThreshold(Level.INFO);
+		fa.setAppend(true);
+		fa.activateOptions();
+
+		// add appender to any Logger (here is root)
+		Logger.getRootLogger().addAppender(fa);
 	}
 
 }
